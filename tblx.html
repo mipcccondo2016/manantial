@@ -1,0 +1,197 @@
+<html>
+    <head>
+    <link rel="stylesheet" href="webix.css" type="text/css"> 
+    <script src="webix.js" type="text/javascript"></script> 
+  <link rel="stylesheet" href="bootstrap.min.css">
+  <script src="jquery.min.js"></script>
+  <script src="bootstrap.min.js"></script>
+	
+    </head>
+    <body>
+	
+	<div id="menu" style="position: fixed;top: 20px; left:20px;width:100%; height:450px; "></div>
+	<div id="box" style="width:400px;height:200px;"></div>
+	<div class='header_comment'>Gele - Menu Sabores</div>
+	<div id="my_box" style='display:none;'>
+			<h2 style='text-align:center'> Try to resize this cell </h2>
+				<textarea style='width:300px; height:400px;'>
+					Textarea will always fit the cell size, due to onViewResize event handler
+				</textarea>
+			</div>
+		</div>
+		<div class="col-sm-4" id='testA'></div>		
+		<div class="col-sm-5" id='testB'></div>	
+		<div class="col-sm-4" id='testC'></div>	
+        <script type="text/javascript" charset="utf-8">
+var menu = { container:"menu",view:"menu", data:["Google", "Facebook", "Twitter"] } ;		
+		
+		
+var grid = {
+			view:"datatable",	id:"mytable",
+			columns:[
+				{ id:"id",	editor:"text",  header:"Id",  width:40},
+				{ id:"str1",	editor:"text",  header:"Sabor",	width:200},
+				{ id:"ent1",	editor:"text",  header:"Peso mínimo",	width:200},
+			
+			],
+			autoheight:true,
+			autowidth:true,
+			select:"row", editable:true, editaction:"dblclick",
+			save: "rest->tbl1",
+			url: "rest->tbl1"
+		};
+		var buttons = {
+			view:"toolbar", elements:[
+				{ view:"button", value:"Agregar ", 
+				click:function(){
+					$$('mytable').add({
+						id:'#',
+						str1:"SaborX",
+						ent1:5000,
+					});					
+					$$("mytable").clearAll();
+					$$("mytable").load('tbl1');
+					console.log("agregando....");
+				}},
+				{ view:"button", value:"Eliminar", click:function(){
+					var id = $$('mytable').getSelectedId();
+					if (id)
+						$$('mytable').remove(id);
+						
+				}}
+				
+			]
+		};
+
+		var grid2 = {
+			view:"datatable",	id:"mytable1",
+			columns:[
+				{ id:"id",	editor:"text",  header:"Id", css:"ent1",  width:50},
+				{ id:"str1",	editor:"text",  header:"Ubicación", css:"ent1",  width:200}
+			
+			],
+			autoheight:true,
+			autowidth:true,
+			select:"row", editable:true, editaction:"dblclick",
+			save: "rest->tbl2",
+			url: "rest->tbl2"
+		};
+		var buttons2 = {
+			view:"toolbar", elements:[
+				{ view:"button", value:"Agregar ", click:function(){
+				
+					$$('mytable1').add({
+						id:"#",
+						str1:"ubicaciónX",
+						
+						
+					});
+				$$("mytable1").clearAll();
+					$$("mytable1").load('tbl2');
+				}},
+				{ view:"button", value:"Eliminar", click:function(){
+					var id = $$('mytable1').getSelectedId();
+					if (id)
+						$$('mytable1').remove(id);
+				}}
+				
+			]
+		};
+		
+		var grid3 = {
+			view:"datatable",	id:"mytable3",
+			columns:[
+			{ id:"id",	editor:"text",  header:"Id", css:"ent1",  width:50},
+				{ id:"str1",	editor:"text",  header:"Codigo Interno", css:"ent1",  width:130},
+				{ id:"ent1",	editor:"text",  header:"Peso",	width:70},
+				{ id:"tbl1Id",	editor:"text",  header:"Sabor",	width:200},
+				{ id:"tbl2Id",	editor:"text",  header:"Ubicación",	width:200},
+			{ id:"ent3",	editor:"text",  header:"Acitvo",	width:200},
+			],
+			autoheight:true,
+			autowidth:true,
+			select:"row", editable:true, editaction:"dblclick",
+			save: "rest->tbl3",
+			url: "rest->tbl3"
+		};
+		var buttons3 = {
+			view:"toolbar", elements:[
+				{ view:"button", value:"Agregar ", click:function(){
+					$$('mytable3').add({
+						str1:"22102016095825",
+						ent1:"5000",
+						tbl1Id:'1',
+						tbl2Id:'2',
+						ent3:'1'
+						
+					});
+					
+				$$("mytable3").clearAll();
+					$$("mytable3").load('tbl3');	
+				}},
+				{ view:"button", value:"Eliminar", click:function(){
+					var id = $$('mytable3').getSelectedId();
+					if (id)
+						$$('mytable3').remove(id);
+				}},
+				{ view:"button", value:"Dar de baja", click:function(){
+					var id = $$('mytable3').getSelectedId();
+					if (id)
+						$$('mytable3').remove(id);
+				}}
+				
+			]
+		};		
+		
+		webix.ready(function(){
+		
+		
+		webix.ui({view:"layout",
+		container:"menu",
+
+
+		view:"menu",
+		type: {
+			height: 40
+		},
+		data:[
+			{ id:"1",value:"Sabores", href: "#verse1"},
+			{ id:"2",value:"The Human Seasons", href: "#verse2"},
+			{ id:"3",value:"Fame", href: "#verse3"},
+			{ id:"4",value:"Ode on Melancholy", href: "#verse4"}
+		]
+
+	});
+		
+			grida = webix.ui({
+				container:"testA",
+				rows:[
+					buttons, grid
+				]
+			});
+			grida1 = webix.ui({
+				container:"testB",
+				rows:[
+					buttons2, grid2,
+				]
+			});
+			
+			grida1 = webix.ui({
+				container:"testC",
+				rows:[
+					buttons3, grid3,
+				]
+			});
+			
+			
+			
+		});
+		
+		
+		
+	
+		
+		
+        </script>
+    </body>
+</html>

@@ -1,0 +1,35 @@
+<html>
+    <head>
+<meta charset="UTF-8">
+    <link rel="stylesheet" href="webix.css" type="text/css"> 
+    <script src="webix.js" type="text/javascript"></script>  
+	<script src="w3data.js"></script>
+  <link rel="stylesheet" href="bootstrap.min.css">
+  <script src="jquery.min.js"></script>
+  <script src="moment-with-locales.js"></script>
+  <script src="bootstrap.min.js"></script>
+    </head>
+    <body background="bg.jpg">
+	<div w3-include-html="b3.html"></div>
+	
+	<div class='header_comment'>Gele - Menu Sabores</div>
+		<div id='testA'></div>
+		 <script src="components.js"></script>
+        <script type="text/javascript" >		
+		w3IncludeHTML();
+		webix.ready(function(){
+		
+			grida = webix.ui({
+				container:"testA",
+				rows:[
+					buttons, grid
+				]
+			});
+		});
+		
+	
+		
+		
+        </script>
+    </body>
+</html>

@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html >
+<meta charset="UTF-8"/>
+<style>
+table, th , td  {
+  border: 1px solid grey;
+  border-collapse: collapse;
+  padding: 5px;
+}
+table tr:nth-child(odd) {
+  background-color: #f1f1f1;
+}
+table tr:nth-child(even) {
+  background-color: #ffffff;
+}
+</style>
+<script src="angular.min.js"></script>
+	<script src="w3data.js"></script>
+	<link rel="stylesheet" href="bootstrap.min.css">
+  <script src="jquery.min.js"></script>
+  <script src="bootstrap.min.js"></script>
+<script src="moment-with-locales.js"></script>
+  <body>
+	<div ng-app="myApp" ng-controller="customersCtrl">
+<div ng-include="'b3.html'"></div>
+<div class="col-sm-2" style="background-color:lavender;">
+<input size="1" readonly ng-model="tbl2.id"><p>{{tbl2.str1}}</p>
+  Seleccionar Destino: <input  ng-click="hideShow()" type="checkbox" ng-model="myVar">
+ <div ng-hide="!(myVar)">
+ <p><input type="text" name="myVar" placeholder="Buscar Ubicación" ng-model="test"></p>
+ <table>
+ <thead >
+    <td>ID</td>
+    <td>Ubicación</td>
+	<td></td>
+  </thead>
+  <tr ng-repeat="x in tbl2s | filter : test">
+    <td>{{ x.id }}</td>
+    <td>{{ x.str1 }}</td>
+  <td>{{ x.ent1 }}</td>
+    <td> <button ng-click="select(x.id,x.str1)">Seleccionar</button></td>
+  </tr>
+</table>
+ </div> 
+</div>
+<div class="col-sm-3" style="background-color:lavender;">
+<input  size="1" readonly ng-model="tbl3.id"><p>{{tbl3.str1}}</p>
+  ID Caja a Trasladar: <input  name="myVar2"  type="checkbox" ng-model="myVar2">
+ <div ng-hide="!(myVar2)">
+ <p><input type="text" placeholder="Buscar Caja" ng-model="test2"></p>
+ <table>
+<thead >
+    <td>ID</td>
+    <td>Código</td>
+  <td>Peso</td>
+	<td></td>
+  </thead>
+ <tr ng-repeat="y in tbl3s | filter : test2">
+    <td>{{ y.id }}</td>
+    <td>{{ y.str1 }}</td>
+  <td>{{ y.ent1 }}</td>
+   <td> <button ng-click="select2(y.id,y.str1,y)"></button></td> 
+	<!--<td> <button  ng-click="select2(y.id,y.str1,y)"></td>-->
+  </tr>
+</table>
+ </div> 
+</div>
+<div class="col-sm-7" style="background-color:lavender;">
+<form ng-submit="saveTbl8()">
+    CodigoTraslado:<input size="24"  type="text" ng-model="tbl8.str1"  placeholder="">
+	ID Destino<input  size="1" type="text" ng-model="tbl8.ent2">
+    <input type="submit" value="">
+</form>
+<table>
+<p>Cajas a trasladar</p>
+<thead >
+    <td>ID</td>
+    <td>Código</td>
+  <td>ID Origen</td>
+	<td>ID Destino</td>
+	<td>Caja</td>
+  </thead>
+  <tr ng-repeat="z in tbl8s track by $index">
+    <td>{{ z.id }}</td>
+    <td>{{ z.str1 }}</td>
+  <td>{{ z.ent1 }}</td>
+	 <td>{{ z.ent2 }}</td>
+	  <td>{{ z.ent3 }}</td>
+	<td> <button ng-click="unSelect(z)"></button></td>
+  </tr>
+</table>
+<button ng-click="saveTbl8()">Guardar</button>
+</div>
+ </div> 
+<script>
+
+var app = angular.module('myApp', []);
+app.controller('customersCtrl', function($scope, $http) {
+$scope.tbl8s = [];
+$scope.tbl2 = {}; 
+$scope.tbl3 = {};
+$scope.tbl8 = {};
+$scope.vv = moment().format('YYYYMMDDhhmmssa'); 
+$scope.t = "Translado-";
+	$scope.tbl8.str1 = $scope.t.concat($scope.vv);
+	//$scope.tbl8.str1 = t;
+   $http.get("api.php/tbl2s?transform=1")
+   .then(function (response) {$scope.tbl2s = response.data.tbl2s;});
+   $http.get("api.php/tbl3s?transform=1")
+   .then(function (response) {$scope.tbl3s = response.data.tbl3s;});
+   $scope.myVar = false;
+		$scope.myVar2 = false;
+		$scope.count = 0;
+		$scope.myFunction = function(id,str1,ent1) {
+			$scope.id = id;
+			$scope.str1 = str1;
+			$scope.ent1 = ent1;
+			console.log($scope.x);
+		}
+	$scope.unSelect = function(z) {
+	console.log("Unselecting........");
+			$scope
+			$scope.tbl3s.push(z);
+	 		$scope.tbl8s.splice(z,1);
+	}
+	$scope.saveTbl8 = function() {
+	 var data=$scope.tbl1;  
+        $http.post("api.php/tbl8s", data).then(function (response) 
+		{ console.log( response.data.tbl2s);
+		}
+		);		
+	}
+    $scope.hideShow = function() {
+	$scope.myVar4 = false;
+	}
+	$scope.hideShow2 = function() {
+	$scope.myVar2 = !( $scope.myVar2 );
+	}
+   $scope.select = function(id,tbl2str1) {
+		$scope.tbl2.id = id;
+	$scope.myVar =  !( $scope.myVar) ;
+	$scope.tbl2.str1 =  tbl2str1 ;
+	$scope.tbl8.ent2 = id; 
+	}
+	$scope.select2 = function(id,tbl3str1,obj) {
+		$scope.tbl3.id = id;
+		$scope.myVar4 =  false ;
+	$scope.tbl8.ent1 = obj.tbl2Id;
+	$scope.tbl8.ent3 = obj.id;
+$scope.tbl8s.push($scope.tbl8);	
+	//$scope.myVar2 =  !( $scope.myVar2) ;
+	
+	$scope.tbl3.str1 =  tbl3str1 ;
+
+	$scope.tbl3s.splice(obj,1);
+	}
+   $scope.delete = function(id) {
+		var url = "api.php/tbl2s/";
+		url = url.concat(id);
+		$http.delete(url).then(function (response) {console.log(response);});
+	 $scope.load_tbl1s();
+	}
+   $scope.load_tbl1s = function() {
+		$http.get("api.php/tbl2s?transform=1").then(function (response) {$scope.tbl1s = response.data.tbl1s;});
+	console.log("load_tbl1s");
+	}
+   });
+</script>
+ 
+</body>
+</html>
