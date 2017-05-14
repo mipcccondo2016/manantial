@@ -14,8 +14,8 @@
 <div ng-include="'b3.html'"></div>	
 					<form>
 						<div class="form-group">
-							Sabor:<br><input type="text" ng-model="tbl1.str1"><br>
-							Peso mínimo:<br><input type="number" ng-model="tbl1.ent1">
+							{{headers[1].header}}:<br><input type="text" ng-model="tbl1.str1"><br>
+							{{headers[2].header}}:<br><input type="number" ng-model="tbl1.ent1">
 						</div>
 					</form>
 					<button type="button" ng-click="saveTbl1()" class="btn btn-primary">Guardar</button>
