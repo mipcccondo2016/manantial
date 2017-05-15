@@ -53,13 +53,13 @@ table tr:nth-child(even) {
     <td>ID</td>
     <td>Código</td>
   <td>Peso</td>
-	<td>ID Sabor</td>
+	<td>ID Ubicación</td>
   </thead>
  <tr ng-repeat="y in tbl3s | filter : test2 " >
     <td>{{ y.id }}</td>
     <td>{{ y.str1 }}</td>
   <td>{{ y.ent1 }}</td>
-  <td>{{ y.tbl1Id }}</td>
+  <td>{{ y.tbl2Id }}</td>
   
    <td> <button ng-click="select2(y.id,y.str1,y)"><span class="glyphicon glyphicon-ok"></span></button></td> 
 	<!--<td> <button  ng-click="select2(y.id,y.str1,y)"></td>-->
@@ -120,8 +120,8 @@ $scope.tbl8s = []; $scope.tbl3s_aux = [];
 $scope.tbl2 = {}; 
 $scope.tbl3 = {};
 $scope.tbl8 = {}; $scope.tbl8_aux = {};
-$scope.vv = moment().format('YYYYMMDDhhmmssa'); 
-$scope.t = "Translado-";
+$scope.vv = moment().format('DD-MM-YY-HH-mm-ss'); 
+$scope.t = "Tr-";
 	$scope.tbl8_aux.str1 = $scope.t.concat($scope.vv);
 	//$scope.tbl8.str1 = t;
    $http.get("api.php/tbl2s?transform=1")
