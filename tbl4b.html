@@ -1,0 +1,73 @@
+<html>
+    <head>
+<meta charset="UTF-8">
+	<script src="w3data.js"></script>
+  <link rel="stylesheet" href="bootstrap.min.css">
+  <script src="jquery.min.js"></script>
+  <script src="moment-with-locales.js"></script>
+  <script src="bootstrap.min.js"></script>
+  <script src="angular.min.js"></script>
+    </head>
+    <body >
+	<div ng-app="myApp">	
+<div  ng-controller="formCtrl">
+<div ng-include="'b3.html'"></div>	
+					<form>
+						<div class="form-group">
+							<div ng-repeat="n in headers">
+							{{n.header}}:<br><input type="text" ng-model="tbl[n.column]"><br>
+							</div>
+						</div>
+					</form>
+					<button type="button" ng-click="saveTbl()" class="btn btn-primary">Guardar</button>
+					<button type="button" ng-click="updateTbl()" class="btn btn-success">Actualizar</button>
+					
+					<table class="table">
+						<thead  ><td ng-repeat="n in headers">{{n.header}}
+						<input type="text" ng-model="filters[n.column]" placeholder={{n.header}}></td></thead>
+						<tr ng-repeat="a in tbl1s | filter:{id:filters.id} | filter:{str1:filters.str1} | filter:{ent1:filters.ent1} ">
+							<td  ng-repeat="n in headers" >{{ a[n.column] }}</td>
+							<td><button ng-click="select(a)" type="button" class="btn btn-warning"> <span class="glyphicon glyphicon-ok"></span>Seleccionar</button>
+							<button ng-click="deleteTbl1(a)" type="button" class="btn btn-danger"> <span class="glyphicon glyphicon-remove"></span>Eliminar</button></td>
+						</tr>
+					</table>
+				</div>
+</div>				
+	     <script >		
+
+		var app = angular.module('myApp', []);	  
+		app.controller('formCtrl', function($scope,$http) {
+$scope.headers = [{column: "id",header:"ID"},{column: "str1",header:"Nombre/Razon Social"},{column: "str2",header:"RUC/CI"}];
+   $scope.filters = []; 
+		$scope.tbl = {}; $scope.tbl1_aux = {}; 
+   $http.get("api.php/tbl4s?transform=1").then(function (response) {$scope.tbl1s = response.data.tbl4s;});
+	//Save tbl1s via POST
+	$scope.saveTbl = function() {
+	console.log('TBL==');console.log($scope.tbl);console.log('==');
+	  $scope.tbl.id = null ;
+	var data = $scope.tbl;
+	$http.post("api.php/tbl4s",data).then(function (response) {$scope.tbl1 = {}; 
+	$scope.refreshTbl1s();
+	});
+	}
+	//Update tbl1s via PUT
+	$scope.updateTbl = function() {
+	var url = "api.php/tbl4s/";url = url.concat($scope.tbl.id);
+	$http.put(url,$scope.tbl).then(function (response){$scope.tbl1 = {};$scope.refreshTbl1s();});
+	}
+	$scope.select = function(a) {$scope.tbl = a;var data = $scope.tbl1;}
+	
+	$scope.refreshTbl1s = function() {
+			$scope.tbl1s = [];
+			$http.get("api.php/tbl4s?transform=1").then(function (response) {$scope.tbl1s = response.data.tbl4s;
+			console.log($scope.tbl1s);});
+	}
+	
+	$scope.deleteTbl1 = function(x1) {
+		var url = "api.php/tbl4s/";url = url.concat(x1.id);
+		$http.delete(url).then(function (response) {$scope.refreshTbl1s();});
+	  	}		
+});
+        </script>
+    </body>
+</html>
