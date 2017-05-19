@@ -33,10 +33,11 @@
 						<thead  ><td ng-repeat="n in headers">{{n.header}}
 						<input type="text" ng-model="filters[n.column]" placeholder={{n.header}}></td></thead>
 						<tr ng-repeat="a in tbl3s | filter:{id:filters.id}:identical | filter:{str1:filters.str1} | filter:{ent1:filters.ent1} | filter:{tbl1Id:filters.tbl1Id}:identical | filter:{tbl2Id:filters.tbl2Id}:identical 
-						| filter:{tbl2Id:filters.tbl2Id} | filter:{ent3:filters.ent3}">
-							<td>{{ a.id }}</td>		<td>{{ a.str1 }}</td>	<td>{{ a.ent1 }}</td><td>{{ a.tbl1Id }}</td><td>{{ a.tbl2Id }}</td> <td>{{ a.ent3 }}</td>
+						| filter:{tbl2Id:filters.tbl2Id} | filter:{ent3:filters.ent3} | filter:{str2:filters.str2}">
+							<td>{{ a.id }}</td>		<td>{{ a.str1 }}</td>	<td>{{ a.ent1 }}</td><td>{{ a.tbl1Id }}</td><td>{{ a.tbl2Id }}</td><td>{{a.ent3}}</td><td>{{a.str2}}</td>
 							<td><button ng-click="select(a)" type="button" class="btn btn-warning"> <span class="glyphicon glyphicon-ok"></span>Seleccionar</button>
 							<button ng-click="deleteTbl2(a)" type="button" class="btn btn-danger"> <span class="glyphicon glyphicon-remove"></span>Eliminar</button></td>
+							<td><button ng-click="baja(a)" type="button" class="btn btn-danger"> <span class="glyphicon glyphicon-remove"></span>Dar de baja</button></td>
 						</tr>
 					</table>
         </div>
@@ -175,14 +176,15 @@ $scope.refreshTbl1s = function() {
 //fin funcion que transforma
 $scope.refreshTbls = function() {
 			$scope.tbl3s = [];
-			$http.get("api.php/tbl3s?filter=ent3,eq,1&order=id,desc").then(function (response) {
+			$http.get("api.php/tbl3s?order=id,desc").then(function (response) {
 			   var data = $scope.php_crud_api_transform(response.data);
 			   $scope.tbl3s = data.tbl3s;
 			});	
 			}		
 		
 		$scope.headers = [{column: "id",header:"ID"},{column: "str1",header:"Codigo"},
-{column: "ent1",header:"Peso mínimo"},{column: "tbl1Id",header:"Sabor"},{column: "tbl2Id",header:"Ubicación"},{column: "ent3",header:"Activo/Inactivo"}];
+{column: "ent1",header:"Peso mínimo"},{column: "tbl1Id",header:"Sabor"},{column: "tbl2Id",header:"Ubicación"},
+{column: "ent3",header:"Activo/Inactivo"},{column: "str2",header:"Fecha de baja"}];
    $scope.filters = {};
 		$scope.Tbl3 = {}; $scope.tbl3_aux = {}; 
    $scope.tbl3s = [];
@@ -209,6 +211,13 @@ $scope.refreshTbls = function() {
 	$scope.updateTbl = function() {
 	var url = "api.php/tbl3s/";url = url.concat($scope.tbl.id);
 	$http.put(url,$scope.tbl).then(function (response){$scope.tbl1 = {};$scope.refreshTbls();});
+	}
+	
+	$scope.baja = function(a) {
+	a.str2 = moment().format('C-DD-MM-YY-HH-mm-ss');
+	var url = "api.php/tbl3s/";url = url.concat(a.id);
+	a.ent3 = 0;
+	$http.put(url,a).then(function (response){$scope.tbl1 = {};$scope.refreshTbls();});
 	}
 	
 	$scope.select = function(a) {$scope.tbl = a;var data = $scope.tbl1;}
