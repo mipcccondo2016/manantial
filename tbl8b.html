@@ -17,6 +17,8 @@ table tr:nth-child(even) {
 <script src="angular.min.js"></script>	<script src="w3data.js"></script>
 	<link rel="stylesheet" href="bootstrap.min.css">	<script src="jquery.min.js"></script>		
   <script src="bootstrap.min.js"></script>	<script src="moment-with-locales.js"></script>
+  <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
   <body>
 	<div ng-app="myApp" ng-controller="customersCtrl">
 <div ng-include="'b3.html'"></div>
@@ -44,9 +46,9 @@ table tr:nth-child(even) {
 <thead  ><td ng-repeat="n in headers">{{n.header}}
 <input size="1" type="text" ng-model="filters[n.column]" placeholder={{n.header}}></td></thead>
 <tr ng-repeat="y in tbl3s | filter:{id:filters.id} | filter:{str1:filters.str1} 
-| filter:{ent1:filters.ent1} ">
+| filter:{ent1:filters.ent1}  track by $index">
     <td ng-repeat="n in headers">{{y[n.column]}}</td>
-   <td> <button ng-click="select2(y.id,y.str1,y)"><span class="glyphicon glyphicon-ok"></span></button></td> 
+   <td> <button ng-click="select2(y.id,y.str1,y)"><i class="fa fa-check-square" style="font-size:48px;color:blue"></i></button></td> 
   </tr>
 </table>
  </div> 
@@ -90,7 +92,7 @@ table tr:nth-child(even) {
   <td>{{ a.ent1 }}</td>
 	 <td>{{ a.tbl2Id }}</td>
 	  <td>{{ a.tbl1Id}}</td>
-	<td> <button ng-click="unSelect2(a)"> <span class="glyphicon glyphicon-ok"></button></td>
+	<td> <button ng-click="unSelect2(a)"> <i class="fa fa-close" style="font-size:40px;color:red"></i></button></td>
   </tr>
 </table>
 <button ng-click="saveTbl8()">Guardar</button>
@@ -130,13 +132,28 @@ $scope.t = "Tr-";
 			$scope.ent1 = ent1;
 			console.log($scope.x);
 		}
+		//inicio funcion unSelect 
 	$scope.unSelect = function(z) {
 	console.log("Unselecting........");
-			$scope
+		
 			$scope.tbl3s.push(z);
-	 		$scope.tbl8s.splice(z,1);
-			$scope.tbl3s_aux.splice(z,1);
+			var index = $scope.tbl3s_aux.indexOf(a);
+			$scope.tbl3s_aux.splice(index,1);
 	}
+	//fin funcion unSelect
+	//inicio funcion unSelect 
+	$scope.unSelect2 = function(a) {
+	console.log("Unselecting 222........");
+	console.log('========a========');
+	console.log(a);
+	console.log('========a========');
+			$scope.tbl3s.push(a);
+			 var index = $scope.tbl3s_aux.indexOf(a);
+			$scope.tbl3s_aux.splice(index,1);
+	}
+	//fin funcion unSelect
+	
+	//inicio funcion  saveTbl8
 	$scope.saveTbl8 = function() {
 	$scope.tbl8s = [];
 	$scope.tbl3s_aux.forEach(function(value, index, array) {
@@ -161,18 +178,23 @@ $scope.tbl8s.push($scope.tbl8);
 	 console.log(data);
 $http.post("api.php/tbl8s", data).then(function (response) {console.log( response.data);});		
 	}
+	//fin funcion saveTbl8
+	
     $scope.hideShow = function() {
 	$scope.myVar4 = false;
 	}
 	$scope.hideShow2 = function() {
 	$scope.myVar2 = !( $scope.myVar2 );
 	}
+	//inicio función Select
    $scope.select = function(id,tbl2str1) {
 		$scope.tbl2.id = id;
 	$scope.myVar =  !( $scope.myVar) ;
 	$scope.tbl2.str1 =  tbl2str1 ;
 	$scope.tbl8_aux.ent2 = id; 
 	}
+	//fin funcion Select
+	//inicio función select2
 	$scope.select2 = function(id,tbl3str1,obj) {
 		$scope.tbl8 = {};
 		$scope.tbl3.id = id;
@@ -181,14 +203,19 @@ $http.post("api.php/tbl8s", data).then(function (response) {console.log( respons
 	//$scope.myVar2 =  !( $scope.myVar2) ;
 	$scope.tbl3.str1 =  tbl3str1 ;
 	$scope.tbl3s_aux.push(obj);
-	$scope.tbl3s.splice(obj,1);
+	var index = $scope.tbl3s.indexOf(obj);
+	$scope.tbl3s.splice(index,1);
 	}
+	//fin función select2
+	//inicio función delete
    $scope.delete = function(id) {
 		var url = "api.php/tbl2s/";
 		url = url.concat(id);
 		$http.delete(url).then(function (response) {console.log(response);});
 	 $scope.load_tbl1s();
 	}
+	//fin función delete
+	
    $scope.load_tbl1s = function() {
 		$http.get("api.php/tbl2s?transform=1").then(function (response) {$scope.tbl1s = response.data.tbl1s;});
 	console.log("load_tbl1s");
