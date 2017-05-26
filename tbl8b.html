@@ -47,9 +47,9 @@ table tr:nth-child(even) {
 <input size="1" type="text" ng-model="filters[n.column]" placeholder={{n.header}}></td></thead>
 <tr ng-repeat="y in tbl3s | filter:{id:filters.id} | filter:{str1:filters.str1} 
 | filter:{ent1:filters.ent1}  track by $index">
-   <td> <button ng-click="select2(y.id,y.str1,y)"><i class="fa fa-check-square" style="font-size:48px;color:blue"></i></button></td>
+   
     <td ng-repeat="n in headers">{{y[n.column]}}</td>
- 
+ <td> <button ng-click="select2(y.id,y.str1,y)"><i class="fa fa-check-square" style="font-size:48px;color:blue"></i></button></td>
   </tr>
 </table>
  </div> 
