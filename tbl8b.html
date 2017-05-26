@@ -22,7 +22,7 @@ table tr:nth-child(even) {
   <body>
 	<div ng-app="myApp" ng-controller="customersCtrl">
 <div ng-include="'b3.html'"></div>
-<div class="col-sm-2" style="background-color:lavender;">
+<div class="w3-col s2 w3-center" style="background-color:lavender;">
 <input size="1" readonly ng-model="tbl2.id"><p>{{tbl2.str1}}</p>
   Seleccionar Destino: <input  ng-click="hideShow()" type="checkbox" ng-model="myVar">
  <div ng-hide="!(myVar)">
@@ -37,7 +37,7 @@ table tr:nth-child(even) {
 </table>
  </div> 
 </div>
-<div class="col-sm-4" style="background-color:lavender;">
+<div class="w3-col s5 w3-center" style="background-color:lavender;">
 <input  size="1" readonly ng-model="tbl3.id"><p>{{tbl3.str1}}</p>
   ID Caja a Trasladar: <input  name="myVar2"  type="checkbox" ng-model="myVar2">
  <div  ng-hide="!(myVar2)">
@@ -47,13 +47,14 @@ table tr:nth-child(even) {
 <input size="1" type="text" ng-model="filters[n.column]" placeholder={{n.header}}></td></thead>
 <tr ng-repeat="y in tbl3s | filter:{id:filters.id} | filter:{str1:filters.str1} 
 | filter:{ent1:filters.ent1}  track by $index">
+   <td> <button ng-click="select2(y.id,y.str1,y)"><i class="fa fa-check-square" style="font-size:48px;color:blue"></i></button></td>
     <td ng-repeat="n in headers">{{y[n.column]}}</td>
-   <td> <button ng-click="select2(y.id,y.str1,y)"><i class="fa fa-check-square" style="font-size:48px;color:blue"></i></button></td> 
+ 
   </tr>
 </table>
  </div> 
 </div>
-<div class="col-sm-6" style="background-color:lavender;">
+<div class="w3-col s5 w3-center" style="background-color:lavender;">
 <form ng-submit="saveTbl8()">
     CodigoTraslado:<input size="24"  type="text" ng-model="tbl8_aux.str1"  placeholder="">
 	ID Destino<input  size="1" type="text" ng-model="tbl8_aux.ent2">
