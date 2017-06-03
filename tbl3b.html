@@ -28,8 +28,8 @@
 					</form>
 					<button type="button" ng-click="saveTbl()" class="btn btn-primary">Guardar</button>
 					<button type="button" ng-click="updateTbl()" class="btn btn-success">Actualizar</button>
-					
-					<table class="table">
+					<div class="w3-responsive">
+					<table  class="w3-table-all w3-tiny">
 						<thead  ><td ng-repeat="n in headers">{{n.header}}
 						<input type="text" ng-model="filters[n.column]" placeholder={{n.header}}></td></thead>
 						<tr ng-repeat="a in tbl3s | filter:{id:filters.id}:identical | filter:{str1:filters.str1} | filter:{ent1:filters.ent1} | filter:{tbl1Id:filters.tbl1Id}:identical | filter:{tbl2Id:filters.tbl2Id}:identical 
@@ -40,6 +40,7 @@
 							<td><button ng-click="baja(a)" type="button" class="btn btn-danger"> <span class="glyphicon glyphicon-remove"></span>Dar de baja</button></td>
 						</tr>
 					</table>
+        </div>					
         </div>
     </div>
     <div class="col-md-4">
@@ -76,25 +77,12 @@
             
         </div>
         <div class="row">
-            <div class="col-md-6">
-                <div class="well">4</div>
-            </div>
-            <div class="col-md-6">
-                <div class="well">5</div>
-            </div>
+           
         </div>
     </div>
 </div>
 <div class="row">
-    <div class="col-md-4">
-        <div class="well">6</div>
-    </div>
-    <div class="col-md-4">
-        <div class="well">7</div>
-    </div>
-    <div class="col-md-4">
-        <div class="well">8</div>
-    </div>
+    
 </div>
 				</div>
 </div>				
