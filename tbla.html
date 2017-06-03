@@ -35,7 +35,7 @@ $scope.headers = [{column: "id",header:"ID",size:"1"},{column: "str1",header:"Sa
 {column: "str2",header:" Ubicación"},{column: "ent1",header:"Peso mínimo"},{column: "sum",header:"Suma Cajas"},{column: "dif",header:"Valor a producir"}];
    $scope.filters = {};
 	
-	$http.get("api.php/v1?order=id,desc").then(function (response) {
+	$http.get("api.php/v1?order=dif").then(function (response) {
    var data = $scope.php_crud_api_transform(response.data);
    console.log(data.v1);
 			   $scope.tbl1s = data.v1;
