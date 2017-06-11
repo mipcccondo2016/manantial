@@ -182,7 +182,7 @@ $scope.refreshTbls = function() {
 			   $scope.tbl3s = data.tbl3s;
 			});
 			$scope.tbl = {};
-			$scope.tbl.str1 = moment().format('B-DD-MM-YY-HH-mm-ss');
+			$scope.tbl.str1 = moment().format('C-DD-MM-YY-HH-mm-ss');
 			$scope.tbl.ent3 = 1;
 	$scope.refreshTbls();
 	$scope.refreshTbl1s();
@@ -203,7 +203,7 @@ $scope.refreshTbls = function() {
 	}
 	
 	$scope.baja = function(a) {
-	a.str2 = moment().format('C-DD-MM-YY-HH-mm-ss');
+	a.str2 = moment().format('B-DD-MM-YY-HH-mm-ss');
 	var url = "api.php/tbl3s/";url = url.concat(a.id);
 	a.ent3 = 0;
 	$http.put(url,a).then(function (response){$scope.tbl1 = {};$scope.refreshTbls();});
