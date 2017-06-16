@@ -6,17 +6,30 @@
   <script src="jquery.min.js"></script>
   <script src="moment-with-locales.js"></script>
   <script src="bootstrap.min.js"></script>
-  
+  <link rel="stylesheet" href="w3mobile.css">
   <script src="angular.min.js"></script>
   <script src="dirPagination.js"></script>
+  <style>
+div.scroll {
+    background-color: #00FFFF;
+    width: 100px;
+    height: 100px;
+    overflow: true;
+}
+
+div.hidden {
+    background-color: #00FF00;
+    width: 100px;
+    height: 100px;
+    overflow: hidden;
+}
+</style>
     </head>
     <body >
+	<div class="page-content infinite-scroll" >
 	<div ng-app="myApp">	
 <div  ng-controller="formCtrl3">
 <div ng-include="'b3.html'"></div>	
-
-
-
 
  <div class="row">
     <div class="col-md-8">
@@ -28,9 +41,10 @@
 							</div>
 						</div>
 					</form>
-					<button type="button" ng-click="saveTbl()" class="btn btn-primary">Guardar</button>
-					<button type="button" ng-click="updateTbl()" class="btn btn-success">Actualizar</button>
-					
+				<p class="buttons-row">	<button type="button" ng-click="saveTbl()" class="button button-big color-green">Guardar</button>
+					<button type="button" ng-click="updateTbl()" class="button button-big color-green">Actualizar</button>
+										<button type="button" ng-click="refreshTbls()" class="button button-big color-green">Solo Activos</button>
+					<button type="button" ng-click="refreshTblsAll()" class="button button-big color-green">Listar Todos</button> </p> 
         </div>
     </div>
     <div class="col-md-4">
@@ -41,8 +55,9 @@
 					Seleccionar Ubicación: <input type="checkbox" ng-model="myVar2">		
 							<div ng-hide="!myVar">
 						<input type="text" ng-model="tbl1_id" placeholder="ID">
-						<input type="text" ng-model="tbl1_str1" placeholder="Sabor">					
-					<table border="3">
+						<input type="text" ng-model="tbl1_str1" placeholder="Sabor">
+										
+					<table class="w3-table-all" border="3">
 					
 						<thead><td>ID</td><td>Sabor</td></thead>
 						<tr ng-repeat="a in tbl1s | filter:{id:tbl1_id}:identical | filter:{str1:tbl1_str1} ">
@@ -61,10 +76,9 @@
 							<td><button ng-click="selectTbl2(a)" type="button" class="btn btn-warning"> <span class="glyphicon glyphicon-ok"></span></button></td>
 						</tr>
 					</table>
-							</div>
-							</div>
-			</div>
-            
+				</div>
+				</div>
+			</div> 
         </div>
         <div class="row">
            
@@ -72,10 +86,10 @@
     </div>
 </div>
 <div class="row">
-<div class="w3-responsive">
-					<table  class="w3-table-all w3-tiny">
+<div class="data-table">
+					<table  class="scroll">
 						<thead  ><td ng-repeat="n in headers">{{n.header}}
-						<input type="text" ng-model="filters[n.column]" placeholder={{n.header}}></td></thead>
+						<input type="text" ng-model="filters[n.column]" size={{n.size}} placeholder={{n.header}}></td></thead>
 						<tr dir-paginate="a in tbl3s | filter:{id:filters.id}:identical | filter:{str1:filters.str1} | filter:{ent1:filters.ent1} | filter:{tbl1Id:filters.tbl1Id}:identical | filter:{tbl2Id:filters.tbl2Id}:identical 
 						| filter:{tbl2Id:filters.tbl2Id} | filter:{ent3:filters.ent3} | filter:{str2:filters.str2} | itemsPerPage: 50">
 							<td>{{ a.id }}</td>		<td>{{ a.str1 }}</td>	<td>{{ a.ent1 }}</td><td>{{ a.tbl1Id }}</td><td>{{ a.tbl2Id }}</td><td>{{a.ent3}}</td><td>{{a.str2}}</td>
@@ -88,9 +102,8 @@
                 max-size="5"
                 direction-links="true"
                 boundary-links="true" >
-</dir-pagination-controls>
-        </div>					
-    
+</dir-pagination-controls>  
+</div>
 </div>
 				</div>
 </div>				
@@ -169,18 +182,30 @@ $scope.refreshTbl1s = function() {
 	}
 	return tree;
 }
+
+
+//fin funcion que transforma
+$scope.refreshTblsAll = function() {
+			$scope.tbl3s = [];
+			$http.get("api.php/tbl3s?order=id,desc&filter[]=ent1,neq,0").then(function (response) {
+			   var data = $scope.php_crud_api_transform(response.data);
+			   $scope.tbl3s = data.tbl3s;
+			});	
+			}		
+			
+			
 //fin funcion que transforma
 $scope.refreshTbls = function() {
 			$scope.tbl3s = [];
-			$http.get("api.php/tbl3s?order=id,desc&filter=ent1,neq,0").then(function (response) {
+			$http.get("api.php/tbl3s?order=id,desc&filter[]=ent1,neq,0&filter[]=ent3,eq,1").then(function (response) {
 			   var data = $scope.php_crud_api_transform(response.data);
 			   $scope.tbl3s = data.tbl3s;
 			});	
 			}		
 		
-		$scope.headers = [{column: "id",header:"ID"},{column: "str1",header:"Codigo"},
-{column: "ent1",header:"Peso mínimo"},{column: "tbl1Id",header:"Sabor"},{column: "tbl2Id",header:"Ubicación"},
-{column: "ent3",header:"Activo/Inactivo"},{column: "str2",header:"Fecha de baja"}];
+		$scope.headers = [{column: "id",header:"ID",size:"1"},{column: "str1",header:"Codigo",size:"5"},
+{column: "ent1",header:"Peso mínimo",size:"10"},{column: "tbl1Id",header:"Sabor",size:"1"},{column: "tbl2Id",header:"Ubicación",size:"1"},
+{column: "ent3",header:"Activo/Inactivo",size:"1"},{column: "str2",header:"Fecha de baja",size:"10"}];
    $scope.filters = {};
 		$scope.Tbl3 = {}; $scope.tbl3_aux = {}; 
    $scope.tbl3s = [];
@@ -227,5 +252,6 @@ $scope.refreshTbls = function() {
 
 
         </script>
+		</div>
     </body>
 </html>

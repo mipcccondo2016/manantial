@@ -2,35 +2,53 @@
     <head>
 <meta charset="UTF-8">
 	<script src="w3data.js"></script>
-  <link rel="stylesheet" href="bootstrap.min.css">
-  <script src="jquery.min.js"></script>
   <script src="moment-with-locales.js"></script>
-  <script src="bootstrap.min.js"></script>
   <script src="angular.min.js"></script>
+ <style>
+div.scroll {
+    background-color: #00FFFF;
+    width: 100px;
+    height: 100px;
+    overflow: true;
+}
+
+</style>
+   
     </head>
     <body >
 	<div ng-app="myApp">	
 <div  ng-controller="formCtrl">
 <div ng-include="'b3.html'"></div>	
-					<form>
-						<div class="form-group">
-							{{headers[1].header}}:<br><input type="text" ng-model="tbl1.str1"><br>
-							{{headers[2].header}}:<br><input type="number" ng-model="tbl1.ent1">
-						</div>
-					</form>
-					<button type="button" ng-click="saveTbl1()" class="btn btn-primary">Guardar</button>
-					<button type="button" ng-click="updateTbl1()" class="btn btn-success">Actualizar</button>
-					
-					<table class="table">
+
+			<div class = "content-block-title">Formulario Sabores</div>
+                     <div class = "list-block">			
+  <div class="item-inner"><div class="item-input"><input type="text" ng-model="tbl1.str1" placeholder={{headers[1].header}}> </div></div>
+	<div class="item-inner">
+          <div class="item-input"><input type="text" ng-model="tbl1.ent1" placeholder={{headers[2].header}}> </div></div>
+		<p class="buttons-row"> <button type="button" ng-click="saveTbl1()" class="button button-big color-green">Guardar</button>
+					<button type="button" ng-click="updateTbl1()" class="button button-big color-green">Actualizar</button>
+					<button type="button" ng-click="ListDeleted()" class="button button-big color-green">Listar Eliminados/Activos</button>	</p>
+		 </div>
+									
+					<div class="page-content infinite-scroll" data-distance="1">
+					<div class="data-table">
+					<table   class="scroll">
 						<thead  ><td ng-repeat="n in headers">{{n.header}}
 						<input type="text" ng-model="filters[n.column]" placeholder={{n.header}}></td></thead>
 						<tr ng-repeat="a in tbl1s | filter:{id:filters.id} | filter:{str1:filters.str1} | filter:{ent1:filters.ent1} ">
-							<td>{{ a.id }}</td>		<td>{{ a.str1 }}</td>	<td>{{ a.ent1 }}</td>
-							<td><button ng-click="select(a)" type="button" class="btn btn-warning"> <span class="glyphicon glyphicon-ok"></span>Seleccionar</button>
-							<button ng-click="deleteTbl1(a)" type="button" class="btn btn-danger"> <span class="glyphicon glyphicon-remove"></span>Eliminar</button></td>
+							<td class="numeric-cell" >{{ a.id }}</td>		<td class="label-cell">{{ a.str1 }}</td>	<td class="numeric-cell">{{ a.ent1 }}</td>
+							<td class="label-cell"><button ng-hide={{show}} ng-click="select(a)" type="button"class="button button-fill color-green"> <span class="glyphicon glyphicon-ok"></span>Seleccionar</button>
+							<button ng-hide={{show}} ng-click="deleteTbl1(a)" type="button" class="button button-fill color-green"> <span class="glyphicon glyphicon-remove"></span>Eliminar</button>
+							<button ng-hide={{!show}} ng-click="restore(a)" type="button" class="button button-fill color-green"> <span class="glyphicon glyphicon-remove"></span>Restaurar</button>
+							</td>
 						</tr>
 					</table>
-				</div>
+					</div>
+					</div>
+				
+				     
+    </div>
+	
 </div>				
 	     <script >		
 
@@ -40,7 +58,7 @@
 $scope.headers = [{column: "id",header:"ID"},{column: "str1",header:"Sabor"},{column: "ent1",header:"Peso mínimo"}];
    $scope.filters = {};
 		$scope.tbl1 = {}; $scope.tbl1_aux = {}; 
-   $http.get("api.php/tbl1s?order=id,desc").then(function (response) {
+   $http.get("api.php/tbl1s?order=id,desc&filter[]=del1,eq,0").then(function (response) {
    var data = $scope.php_crud_api_transform(response.data);
 			   $scope.tbl1s = data.tbl1s;
    });
@@ -62,16 +80,49 @@ $scope.headers = [{column: "id",header:"ID"},{column: "str1",header:"Sabor"},{co
 	
 	$scope.refreshTbl1s = function() {
 			$scope.tbl1s = [];
-			$http.get("api.php/tbl1s?order=id,desc").then(function (response) {
+			$http.get("api.php/tbl1s?order=id,desc&filter[]=del1,eq,0").then(function (response) {
 			   var data = $scope.php_crud_api_transform(response.data);
 			   $scope.tbl1s = data.tbl1s;
 			});
 	}
 	
+	$scope.ListDeleted = function() {
+			$scope.tbl1s = [];
+			console.log($scope.show);
+			if (!$scope.show) { $scope.append1 =  "eq,1";
+			$scope.show = true;}
+			else { $scope.append1 =  "eq,0";$scope.show = false;  }
+			console.log($scope.show);
+			$scope.query = "api.php/tbl1s?order=id,desc&filter[]=del1," ;
+			$scope.query = $scope.query.concat($scope.append1);
+			console.log($scope.query);
+			$http.get($scope.query).then(function (response) {
+			   var data = $scope.php_crud_api_transform(response.data);
+			   $scope.tbl1s = data.tbl1s;
+			});
+			
+	}
+	
+	$scope.restore = function(x1) {
+	var url = "api.php/tbl1s/";url = url.concat(x1.id);
+	$scope.tbl1.del1 = null;
+	$scope.tbl1.id = x1.id;
+	console.log("Restoring data");
+	$http.put(url,$scope.tbl1).then(function (response){$scope.tbl1 = {};$scope.refreshTbl1s();});
+		$scope.show = !$scope.show;
+		}	
+		
 	$scope.deleteTbl1 = function(x1) {
-		var url = "api.php/tbl1s/";url = url.concat(x1.id);
-		$http.delete(url).then(function (response) {$scope.refreshTbl1s();});
-	  	}		
+	var url = "api.php/tbl1s/";url = url.concat(x1.id);
+	$scope.tbl1.del1 = 1;
+	$scope.tbl1.id = x1.id;
+	console.log("Intentando eliminado logico");
+	$http.put(url,$scope.tbl1).then(function (response){$scope.tbl1 = {};$scope.refreshTbl1s();});
+	//inicio Eliminado fisico
+		//var url = "api.php/tbl1s/";url = url.concat(x1.id);
+		//$http.delete(url).then(function (response) {$scope.refreshTbl1s();});
+	//fin Eliminado fisico  	
+		}		
 		
 		//funcion que transforma
 	$scope.php_crud_api_transform = function(tables) {
