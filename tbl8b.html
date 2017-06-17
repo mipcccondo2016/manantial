@@ -1,29 +1,20 @@
 <!DOCTYPE html>
 <html >
 <meta charset="UTF-8"/>
+  <script src="moment-with-locales.js"></script>
+  <script src="angular.min.js"></script>
+
 <style>
-table, th , td  {
-  border: 1px solid grey;
-  border-collapse: collapse;
-  padding: 5px;
-}
-table tr:nth-child(odd) {
-  background-color: #f1f1f1;
-}
-table tr:nth-child(even) {
-  background-color: #ffffff;
-}
 </style>
-<script src="angular.min.js"></script>	<script src="w3data.js"></script>
-	<link rel="stylesheet" href="bootstrap.min.css">	<script src="jquery.min.js"></script>		
-  <script src="bootstrap.min.js"></script>	<script src="moment-with-locales.js"></script>
-  <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
   <body>
 	<div ng-app="myApp" ng-controller="customersCtrl">
 <div ng-include="'b3.html'"></div>
-<div class="w3-col s2 w3-center" style="background-color:lavender;">
-<input size="1" readonly ng-model="tbl2.id"><p>{{tbl2.str1}}</p>
+
+
+
+<div class="row">
+  <div class="col-xs-6 col-md-6">
+  <input size="1" readonly ng-model="tbl2.id"><p>{{tbl2.str1}}</p>
   Seleccionar Destino: <input  ng-click="hideShow()" type="checkbox" ng-model="myVar">
  <div ng-hide="!(myVar)">
  <p><input type="text" name="myVar" placeholder="Buscar Ubicación" ng-model="test"></p>
@@ -35,14 +26,13 @@ table tr:nth-child(even) {
     <td> <button ng-click="select(a.id,a.str1)"><span class="glyphicon glyphicon-ok"></button></td>
   </tr>
 </table>
- </div> 
 </div>
-<div class="w3-col s5 w3-center" style="background-color:lavender;">
+
 <input  size="1" readonly ng-model="tbl3.id"><p>{{tbl3.str1}}</p>
   ID Caja a Trasladar: <input  name="myVar2"  type="checkbox" ng-model="myVar2">
  <div  ng-hide="!(myVar2)">
  <p><input type="text" placeholder="Buscar Caja" ng-model="test2"></p>
- <table  >
+ <table  class="table table-responsive" >
 <thead  ><td ng-repeat="n in headers">{{n.header}}
 <input size="1" type="text" ng-model="filters[n.column]" placeholder={{n.header}}></td></thead>
 <tr ng-repeat="y in tbl3s | filter:{id:filters.id} | filter:{str1:filters.str1} 
@@ -53,8 +43,6 @@ table tr:nth-child(even) {
   </tr>
 </table>
  </div> 
-</div>
-<div class="w3-col s5 w3-center" style="background-color:lavender;">
 <form ng-submit="saveTbl8()">
     CodigoTraslado:<input size="24"  type="text" ng-model="tbl8_aux.str1"  placeholder="">
 	ID Destino<input  size="1" type="text" ng-model="tbl8_aux.ent2">
@@ -78,7 +66,9 @@ table tr:nth-child(even) {
 	<td> <button ng-click="unSelect(z)"><span class="glyphicon glyphicon-ok"></span></button></td>
   </tr>
 </table>
-<table>
+  </div>
+  <div class="col-xs-6 col-md-6">
+  <table>
 <p>Cajas a trasladar</p>
 <thead >
     <td>ID</td>
@@ -97,7 +87,14 @@ table tr:nth-child(even) {
   </tr>
 </table>
 <button ng-click="saveTbl8()">Guardar</button>
+
+  
+  </div>
 </div>
+
+
+
+
  </div> 
 <script>
 

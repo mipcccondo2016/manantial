@@ -4,7 +4,6 @@
 	<script src="w3data.js"></script>
   <script src="jquery.min.js"></script>
   <script src="moment-with-locales.js"></script>
-
   <script src="angular.min.js"></script>
   <script src="dirPagination.js"></script>
   <style>
@@ -12,7 +11,7 @@
     </head>
     <body >
 	
-	<div class="page-content infinite-scroll" >	<div ng-app="myApp">	
+	class="btn btn-primary"	<div ng-app="myApp">	
 <div  ng-controller="formCtrl3">
 <div ng-include="'b3.html'"></div>	
 
@@ -26,10 +25,10 @@
 							</div>
 						</div>
 					</form>
-				<p class="buttons-row">	<button type="button" ng-click="saveTbl()" class="button button-big color-green">Guardar</button>
-					<button type="button" ng-click="updateTbl()" class="button button-big color-green">Actualizar</button>
-										<button type="button" ng-click="refreshTbls()" class="button button-big color-green">Solo Activos</button>
-					<button type="button" ng-click="refreshTblsAll()" class="button button-big color-green">Listar Todos</button> </p> 
+				<p class="buttons-row">	<button type="button" ng-click="saveTbl()" class="btn btn-primary">Guardar</button>
+					<button type="button" ng-click="updateTbl()" class="btn btn-primary">Actualizar</button>
+										<button type="button" ng-click="refreshTbls()" class="btn btn-primary">Solo Activos</button>
+					<button type="button" ng-click="refreshTblsAll()" class="btn btn-primary">Listar Todos</button> </p> 
         </div>
     </div>
     <div class="col-md-4">
@@ -42,7 +41,7 @@
 						<input type="text" ng-model="tbl1_id" placeholder="ID">
 						<input type="text" ng-model="tbl1_str1" placeholder="Sabor">
 										
-					<table class="w3-table-all" border="3">
+					<table  class="table table-responsive"class="w3-table-all" border="3">
 					
 						<thead><td>ID</td><td>Sabor</td></thead>
 						<tr ng-repeat="a in tbl1s | filter:{id:tbl1_id}:identical | filter:{str1:tbl1_str1} ">
@@ -54,7 +53,7 @@
 							<div ng-hide="!myVar2">
 							<input type="text" ng-model="tbl2_id" placeholder="ID">
 						<input type="text" ng-model="tbl2_str1" placeholder="Ubicación">					
-					<table border="3">
+					<table  class="table table-responsive"border="3">
 						<thead><td>ID</td><td>Sabor</td></thead>
 						<tr ng-repeat="a in tbl2s | filter:{id:tbl2_id}:identical | filter:{str1:tbl2_str1} ">
 							<td>{{ a.id }}</td><td>{{ a.str1 }}</td>
@@ -73,7 +72,7 @@
 <div class="row">
 
 					<div class="scroll">
-					<table  class="w3-table-all w3-tiny">
+					<table  class="table table-responsive" class="table table-responsive">
 						<thead  ><td ng-repeat="n in headers">{{n.header}}
 						<input type="text" ng-model="filters[n.column]" size={{n.size}} placeholder={{n.header}}></td></thead>
 						<tr dir-paginate="a in tbl3s | filter:{id:filters.id}:identical | filter:{str1:filters.str1} | filter:{ent1:filters.ent1} | filter:{tbl1Id:filters.tbl1Id}:identical | filter:{tbl2Id:filters.tbl2Id}:identical 

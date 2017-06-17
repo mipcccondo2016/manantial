@@ -1,7 +1,6 @@
 <html>
     <head>
 <meta charset="UTF-8">
-	<script src="w3data.js"></script>
   <script src="moment-with-locales.js"></script>
   <script src="angular.min.js"></script>
  <style>
@@ -25,28 +24,23 @@ div.scroll {
   <div class="item-inner"><div class="item-input"><input type="text" ng-model="tbl1.str1" placeholder={{headers[1].header}}> </div></div>
 	<div class="item-inner">
           <div class="item-input"><input type="text" ng-model="tbl1.ent1" placeholder={{headers[2].header}}> </div></div>
-		<p class="buttons-row"> <button type="button" ng-click="saveTbl1()" class="button button-big color-green">Guardar</button>
-					<button type="button" ng-click="updateTbl1()" class="button button-big color-green">Actualizar</button>
-					<button type="button" ng-click="ListDeleted()" class="button button-big color-green">Listar Eliminados/Activos</button>	</p>
+		<p class="buttons-row"> <button type="button" ng-click="saveTbl1()" class="btn btn-primary">Guardar</button>
+					<button type="button" ng-click="updateTbl1()" class="btn btn-primary">Actualizar</button>
+					<button type="button" ng-click="ListDeleted()" class="btn btn-primary">Listar Eliminados/Activos</button>	</p>
 		 </div>
 									
-					<div class="page-content infinite-scroll" data-distance="1">
-					<div class="data-table">
-					<table   class="scroll">
+					
+					<table  class="table table-responsive"  class="table table-responsive">
 						<thead  ><td ng-repeat="n in headers">{{n.header}}
 						<input type="text" ng-model="filters[n.column]" placeholder={{n.header}}></td></thead>
 						<tr ng-repeat="a in tbl1s | filter:{id:filters.id} | filter:{str1:filters.str1} | filter:{ent1:filters.ent1} ">
 							<td class="numeric-cell" >{{ a.id }}</td>		<td class="label-cell">{{ a.str1 }}</td>	<td class="numeric-cell">{{ a.ent1 }}</td>
-							<td class="label-cell"><button ng-hide={{show}} ng-click="select(a)" type="button"class="button button-fill color-green"> <span class="glyphicon glyphicon-ok"></span>Seleccionar</button>
-							<button ng-hide={{show}} ng-click="deleteTbl1(a)" type="button" class="button button-fill color-green"> <span class="glyphicon glyphicon-remove"></span>Eliminar</button>
-							<button ng-hide={{!show}} ng-click="restore(a)" type="button" class="button button-fill color-green"> <span class="glyphicon glyphicon-remove"></span>Restaurar</button>
+							<td class="label-cell"><button ng-hide={{show}} ng-click="select(a)" type="button" class="btn btn-primary"> <span class="glyphicon glyphicon-ok"></span>Seleccionar</button>
+							<button ng-hide={{show}} ng-click="deleteTbl1(a)" type="button" class="btn btn-primary"> <span class="glyphicon glyphicon-remove"></span>Eliminar</button>
+							<button ng-hide={{!show}} ng-click="restore(a)" type="button" class="btn btn-primary"> <span class="glyphicon glyphicon-remove"></span>Restaurar</button>
 							</td>
 						</tr>
 					</table>
-					</div>
-					</div>
-				
-				     
     </div>
 	
 </div>				
