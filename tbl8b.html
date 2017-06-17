@@ -9,7 +9,6 @@
   <body>
 	<div ng-app="myApp" ng-controller="customersCtrl">
 <div ng-include="'b3.html'"></div>
-
 <div class="row">
   <div class="col-xs-8 col-md-8">
   <input size="1" readonly ng-model="tbl2.id"><p>{{tbl2.str1}}</p>
@@ -31,19 +30,16 @@
  <div  ng-hide="!(myVar2)">
  <p><input type="text" placeholder="Buscar Caja" ng-model="test2"></p>
  <table  class="table table-responsive" >
-<thead  ><td ng-repeat="n in headers">{{n.header}}
-<input size="1" type="text" ng-model="filters[n.column]" placeholder={{n.header}}></td></thead>
-<tr ng-repeat="y in tbl3s | filter:{id:filters.id} | filter:{str1:filters.str1} 
-| filter:{ent1:filters.ent1}  track by $index">
-   
-    <td class="col-1" ng-repeat="n in headers">{{y[n.column]}}</td>
- <td> <button class="btn btn-primary" ng-click="select2(y.id,y.str1,y)"><i class="fa fa-check-square" style="font-size:48px;color:blue"></i></button></td>
-  </tr>
+	<thead  ><td ng-repeat="n in headers">{{n.header}}
+		<input size="1" type="text" ng-model="filters[n.column]" placeholder={{n.header}}></td></thead>
+		<tr ng-repeat="y in tbl3s | filter:{id:filters.id} | filter:{str1:filters.str1}  | filter:{ent1:filters.ent1}  track by $index">
+		<td class="col-1" ng-repeat="n in headers">{{y[n.column]}}</td>
+		<td> <button class="btn btn-primary" ng-click="select2(y.id,y.str1,y)"><i class="fa fa-check-square" style="font-size:48px;color:blue"></i></button></td>
+		</tr>
 </table>
  </div> 
   </div>
   <div class="col-xs-4 col-md-4">
-  <table>
 <form ng-submit="saveTbl8()">
     CodigoTraslado:<input size="24"  type="text" ng-model="tbl8_aux.str1"  placeholder="">
 	ID Destino<input  size="1" type="text" ng-model="tbl8_aux.ent2">
@@ -67,8 +63,7 @@
 	<td> <button class="btn btn-primary" ng-click="unSelect(z)"><span class="glyphicon glyphicon-ok"></span></button></td>
   </tr>
 </table>
-
-  
+<table>
   <p>Cajas a trasladar</p>
 <thead >
     <td>ID</td>
