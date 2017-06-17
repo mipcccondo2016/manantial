@@ -10,8 +10,6 @@
 	<div ng-app="myApp" ng-controller="customersCtrl">
 <div ng-include="'b3.html'"></div>
 
-
-
 <div class="row">
   <div class="col-xs-8 col-md-8">
   <input size="1" readonly ng-model="tbl2.id"><p>{{tbl2.str1}}</p>
@@ -23,7 +21,7 @@
 <input size="1" type="text" ng-model="filters2[n.column]" placeholder={{n.header}}></td></thead>
  <tr ng-repeat="a in tbl2s | filter:{id:filters2.id} | filter:{str1:filters2.str1} ">
     <td ng-repeat="n in headers2">{{a[n.column]}}</td>
-    <td> <button ng-click="select(a.id,a.str1)"><span class="glyphicon glyphicon-ok"></button></td>
+    <td> <button class="btn btn-primary" ng-click="select(a.id,a.str1)"><span class="glyphicon glyphicon-ok"></button></td>
   </tr>
 </table>
 </div>
@@ -38,17 +36,20 @@
 <tr ng-repeat="y in tbl3s | filter:{id:filters.id} | filter:{str1:filters.str1} 
 | filter:{ent1:filters.ent1}  track by $index">
    
-    <td ng-repeat="n in headers">{{y[n.column]}}</td>
- <td> <button ng-click="select2(y.id,y.str1,y)"><i class="fa fa-check-square" style="font-size:48px;color:blue"></i></button></td>
+    <td class="col-1" ng-repeat="n in headers">{{y[n.column]}}</td>
+ <td> <button class="btn btn-primary" ng-click="select2(y.id,y.str1,y)"><i class="fa fa-check-square" style="font-size:48px;color:blue"></i></button></td>
   </tr>
 </table>
  </div> 
+  </div>
+  <div class="col-xs-4 col-md-4">
+  <table>
 <form ng-submit="saveTbl8()">
     CodigoTraslado:<input size="24"  type="text" ng-model="tbl8_aux.str1"  placeholder="">
 	ID Destino<input  size="1" type="text" ng-model="tbl8_aux.ent2">
     <input type="submit" value="">
 </form>
-<table>
+<table >
 <p>Traslados creados</p>
 <thead >
     <td>ID</td>
@@ -63,13 +64,12 @@
   <td>{{ z.ent1 }}</td>
 	 <td>{{ z.ent2 }}</td>
 	  <td>{{ z.ent3 }}</td>
-	<td> <button ng-click="unSelect(z)"><span class="glyphicon glyphicon-ok"></span></button></td>
+	<td> <button class="btn btn-primary" ng-click="unSelect(z)"><span class="glyphicon glyphicon-ok"></span></button></td>
   </tr>
 </table>
-  </div>
-  <div class="col-xs-4 col-md-4">
-  <table>
-<p>Cajas a trasladar</p>
+
+  
+  <p>Cajas a trasladar</p>
 <thead >
     <td>ID</td>
     <td>Código</td>
@@ -83,18 +83,12 @@
   <td>{{ a.ent1 }}</td>
 	 <td>{{ a.tbl2Id }}</td>
 	  <td>{{ a.tbl1Id}}</td>
-	<td> <button ng-click="unSelect2(a)"> <i class="fa fa-close" style="font-size:40px;color:red"></i></button></td>
+	<td> <button class="btn btn-primary" ng-click="unSelect2(a)"> <i class="fa fa-close" style="font-size:40px;color:red"></i></button></td>
   </tr>
 </table>
 <button ng-click="saveTbl8()">Guardar</button>
-
-  
   </div>
 </div>
-
-
-
-
  </div> 
 <script>
 
