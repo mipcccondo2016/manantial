@@ -11,6 +11,11 @@
 <div ng-include="'b3.html'"></div>
 <div class="row">
   <div class="col-xs-8 col-md-8">
+  <form ng-submit="saveTbl8()">
+    CodigoTraslado:<input size="24"  type="text" ng-model="tbl8_aux.str1"  placeholder="">
+	ID Destino<input  size="1" type="text" ng-model="tbl8_aux.ent2">
+    <input type="submit" value="">
+</form>
 <table   class="table table-sm">
   <p>Cajas a trasladar</p>
 <thead >
@@ -62,13 +67,9 @@
  </div> 
   </div>
   <div class="col-xs-4 col-md-4">
-<form ng-submit="saveTbl8()">
-    CodigoTraslado:<input size="24"  type="text" ng-model="tbl8_aux.str1"  placeholder="">
-	ID Destino<input  size="1" type="text" ng-model="tbl8_aux.ent2">
-    <input type="submit" value="">
-</form>
-<table   class="table table-sm">
-<p>Traslados creados</p>
+
+<table   style="display:none" class="table table-sm">
+<p style="display:none">Traslados creados</p>
 <thead >
     <td>ID</td>
     <td>Código</td>
