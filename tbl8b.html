@@ -15,7 +15,7 @@
   Seleccionar Destino: <input  ng-click="hideShow()" type="checkbox" ng-model="myVar">
  <div ng-hide="!(myVar)">
  <p><input type="text" name="myVar" placeholder="Buscar Ubicación" ng-model="test"></p>
- <table>
+ <table   class="table table-sm">
  <thead  ><td ng-repeat="n in headers2">{{n.header}}
 <input size="1" type="text" ng-model="filters2[n.column]" placeholder={{n.header}}></td></thead>
  <tr ng-repeat="a in tbl2s | filter:{id:filters2.id} | filter:{str1:filters2.str1} ">
@@ -29,7 +29,7 @@
   ID Caja a Trasladar: <input  name="myVar2"  type="checkbox" ng-model="myVar2">
  <div  ng-hide="!(myVar2)">
  <p><input type="text" placeholder="Buscar Caja" ng-model="test2"></p>
- <table  class="table table-responsive" >
+ <table   class="table table-sm" >
 	<thead  ><td ng-repeat="n in headers">{{n.header}}
 		<input size="1" type="text" ng-model="filters[n.column]" placeholder={{n.header}}></td></thead>
 		<tr ng-repeat="y in tbl3s | filter:{id:filters.id} | filter:{str1:filters.str1}  | filter:{ent1:filters.ent1}  track by $index">
@@ -45,7 +45,7 @@
 	ID Destino<input  size="1" type="text" ng-model="tbl8_aux.ent2">
     <input type="submit" value="">
 </form>
-<table >
+<table   class="table table-sm">
 <p>Traslados creados</p>
 <thead >
     <td>ID</td>
@@ -63,7 +63,7 @@
 	<td> <button class="btn btn-primary" ng-click="unSelect(z)"><span class="glyphicon glyphicon-ok"></span></button></td>
   </tr>
 </table>
-<table>
+<table   class="table table-sm">
   <p>Cajas a trasladar</p>
 <thead >
     <td>ID</td>
