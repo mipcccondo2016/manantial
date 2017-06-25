@@ -11,6 +11,28 @@
 <div ng-include="'b3.html'"></div>
 <div class="row">
   <div class="col-xs-8 col-md-8">
+<table   class="table table-sm">
+  <p>Cajas a trasladar</p>
+<thead >
+    <td>ID</td>
+    <td>Código</td>
+  <td>Peso mínimo</td>
+	<td>ID Ubicación</td>
+	<td>ID sabor</td>
+  </thead>
+  <tr ng-repeat="a in tbl3s_aux track by $index">
+    <td>{{ a.id }}</td>
+    <td>{{ a.str1 }}</td>
+  <td>{{ a.ent1 }}</td>
+	 <td>{{ a.tbl2Id }}</td>
+	  <td>{{ a.tbl1Id}}</td>
+	<td> <button class="btn btn-primary" ng-click="unSelect2(a)"> <i class="fa fa-close" style="font-size:40px;color:red"></i></button></td>
+  </tr>
+</table>
+<button ng-click="saveTbl8()">Crear Traslado Masivo</button>
+
+
+
   <input size="1" readonly ng-model="tbl2.id"><p>{{tbl2.str1}}</p>
   Seleccionar Destino: <input  ng-click="hideShow()" type="checkbox" ng-model="myVar">
  <div ng-hide="!(myVar)">
@@ -63,25 +85,7 @@
 	<td> <button class="btn btn-primary" ng-click="unSelect(z)"><span class="glyphicon glyphicon-ok"></span></button></td>
   </tr>
 </table>
-<table   class="table table-sm">
-  <p>Cajas a trasladar</p>
-<thead >
-    <td>ID</td>
-    <td>Código</td>
-  <td>Peso mínimo</td>
-	<td>ID Ubicación</td>
-	<td>ID sabor</td>
-  </thead>
-  <tr ng-repeat="a in tbl3s_aux track by $index">
-    <td>{{ a.id }}</td>
-    <td>{{ a.str1 }}</td>
-  <td>{{ a.ent1 }}</td>
-	 <td>{{ a.tbl2Id }}</td>
-	  <td>{{ a.tbl1Id}}</td>
-	<td> <button class="btn btn-primary" ng-click="unSelect2(a)"> <i class="fa fa-close" style="font-size:40px;color:red"></i></button></td>
-  </tr>
-</table>
-<button ng-click="saveTbl8()">Guardar</button>
+
   </div>
 </div>
  </div> 
