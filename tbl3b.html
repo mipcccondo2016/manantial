@@ -25,7 +25,7 @@
 							</div>
 						</div>
 					</form>
-				<p class="buttons-row">	<button type="button" ng-click="saveTbl()" class="btn btn-primary">Guardar</button>
+				<p class="buttons-row">	<button type="button" ng-click="saveTbl()" class="btn btn-primary">Crear</button>
 					<button type="button" ng-click="updateTbl()" class="btn btn-primary">Actualizar</button>
 										<button type="button" ng-click="refreshTbls()" class="btn btn-primary">Solo Activos</button>
 					<button type="button" ng-click="refreshTblsAll()" class="btn btn-primary">Listar Todos</button> </p> 
@@ -71,7 +71,7 @@
 </div>
 <div class="row">
 
-					<div class="scroll">
+					
 					<table  class="table table-sm">
 						<thead  ><td ng-repeat="n in headers">{{n.header}}
 						<input type="text" ng-model="filters[n.column]" size={{n.size}} placeholder={{n.header}}></td></thead>
@@ -88,7 +88,6 @@
                 direction-links="true"
                 boundary-links="true" >
 </dir-pagination-controls>  
-</div>
 
 </div>
 				</div>

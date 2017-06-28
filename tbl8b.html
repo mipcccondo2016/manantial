@@ -59,7 +59,8 @@
  <table   class="table table-sm" >
 	<thead  ><td ng-repeat="n in headers">{{n.header}}
 		<input size="1" type="text" ng-model="filters[n.column]" placeholder={{n.header}}></td></thead>
-		<tr ng-repeat="y in tbl3s | filter:{id:filters.id} | filter:{str1:filters.str1}  | filter:{ent1:filters.ent1}  track by $index">
+		<tr ng-repeat="y in tbl3s | filter:{id:filters.id} | filter:{str1:filters.str1}  | filter:{ent1:filters.ent1} | filter:{tbl1Id:filters.tbl1Id}
+| filter:{tbl2Id:filters.tbl2Id}		track by $index">
 		<td class="col-1" ng-repeat="n in headers">{{y[n.column]}}</td>
 		<td> <button class="btn btn-primary" ng-click="select2(y.id,y.str1,y)"><i class="fa fa-check-square" style="font-size:48px;color:blue"></i></button></td>
 		</tr>
