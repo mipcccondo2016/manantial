@@ -1,0 +1,8 @@
+.table-fit {
+    width: 1px;
+}
+
+
+.table-scrollable{
+    overflow: auto;
+}
