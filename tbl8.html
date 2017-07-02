@@ -2,10 +2,8 @@
     <head>
 <meta charset="UTF-8">
 	<script src="w3data.js"></script>
-  <link rel="stylesheet" href="bootstrap.min.css">
   <script src="jquery.min.js"></script>
   <script src="moment-with-locales.js"></script>
-  <script src="bootstrap.min.js"></script>
   <script src="angular.min.js"></script>
     </head>
     <body >
@@ -30,7 +28,7 @@
 						<input type="text" ng-model="filters[n.column]" placeholder={{n.header}}></td></thead>
 						<tr ng-repeat="a in tbl8s | filter:{id:filters.id}:identical | filter:{str1:filters.str1} | filter:{ent1:filters.ent1} | filter:{ent2:filters.ent2}:identical | 
 						filter:{ent3:filters.ent3}:identical">
-							<td>{{ a.id }}</td>		<td>{{ a.str1 }}</td>	<td>{{ a.ent1 }}</td><td>{{ a.ent2 }}</td><td>{{ a.ent3 }}</td>
+							<td>{{ a.id }}</td>		<td>{{ a.str1 }}</td>	<td>{{ a.ent1 }}</td><td>{{ a.ent2 }}</td><td>{{ a.ent3 }}</td><td>{{ a.tbl1s_id }}</td>   
 							<td><button ng-click="select(a)" type="button" class="btn btn-warning"> <span class="glyphicon glyphicon-ok"></span>Seleccionar</button>
 							<button ng-click="deleteTbl(a)" type="button" class="btn btn-danger"> <span class="glyphicon glyphicon-remove"></span>Eliminar</button></td>
 							<td><button ng-click="revert(a)" type="button" class="btn btn-danger"> <span class="glyphicon glyphicon-remove"></span>Eliminar y regresar a origen</button></td>
@@ -89,23 +87,23 @@
         </div>
         <div class="row">
             <div class="col-md-6">
-                <div class="well">4</div>
+                
             </div>
             <div class="col-md-6">
-                <div class="well">5</div>
+               
             </div>
         </div>
     </div>
 </div>
 <div class="row">
     <div class="col-md-4">
-        <div class="well">6</div>
+        
     </div>
     <div class="col-md-4">
-        <div class="well">7</div>
+        
     </div>
     <div class="col-md-4">
-        <div class="well">8</div>
+        
     </div>
 </div>
 				</div>
@@ -196,16 +194,28 @@ $scope.refreshTbl1s = function() {
 	return tree;
 }
 //fin funcion que transforma
+//inicio funcion refreshTbls
 $scope.refreshTbls = function() {
-			$scope.tbl8s = [];
+			$scope.tbl8s = [];			
 			$http.get("api.php/tbl8s?order=id,desc").then(function (response) {
-			   var data = $scope.php_crud_api_transform(response.data);
-			   $scope.tbl8s = data.tbl8s;
+			var data = $scope.php_crud_api_transform(response.data);
+			$scope.tbl8s = data.tbl8s;
+			$scope.tbl8s.forEach(function(value, index, array) {	
+				var url = "api.php/tbl3s/";
+				url = url.concat(value.ent3);
+				$http.get(url).then(function (response) {
+				value.tbl1s_id = response.data.tbl1Id;
+				$scope.tbl8s[index] = value;
+				});				
+					    
+			});
 			});	
-			}		
+			}
+//Fin funcion refreshTbls
+			
 		
 		$scope.headers = [{column: "id",header:"ID"},{column: "str1",header:"Codigo"},
-{column: "ent1",header:"Origen"},{column: "ent2",header:"Destino"},{column: "ent3",header:"ID caja"}];
+{column: "ent1",header:"Origen"},{column: "ent2",header:"Destino"},{column: "ent3",header:"ID caja"},{column: "tbl1s_id",header:"ID Sabor"}];
    $scope.filters = {};
 		$scope.Tbl3 = {}; $scope.tbl3_aux = {}; 
    $scope.tbl3s = [];
@@ -270,6 +280,7 @@ $scope.refreshTbls = function() {
 		$http.delete(url).then(function (response) {$scope.refreshTbls();});
 	  	}
 		
+		
 		$scope.revert = function(x1) {
 		var url = "api.php/tbl3s/";url = url.concat(x1.ent3);
 		$scope.tbl3_aux.tbl2Id = x1.ent1;
@@ -277,9 +288,6 @@ $scope.refreshTbls = function() {
 	  	$scope.deleteTbl(x1);
 			
 		}
-		
-
-		
 });
 
 
