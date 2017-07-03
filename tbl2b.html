@@ -5,9 +5,6 @@
   <script src="angular.min.js"></script>
     </head>
     <body >
-	
-	class="btn btn-primary"
-	
 	<div ng-app="myApp">	
 <div  ng-controller="formCtrl2">
 <div ng-include="'b3.html'"></div>	
@@ -50,7 +47,7 @@ $scope.headers = [{column: "id",header:"ID"},{column: "str1",header:"Ubicación"
 	$scope.tbl2_aux.str1 =  $scope.Tbl2.str1; 
 	var data = $scope.tbl2_aux;
 	$http.post("api.php/tbl2s",data).then(function (response) {$scope.Tbl2 = {}; 
-	$scope.refreshTbl2s();
+	$scope.refreshTbl2s();	$scope.mensaje =  "Objeto creado con éxito! ";
 	});
 	}
 	
@@ -78,7 +75,8 @@ $scope.headers = [{column: "id",header:"ID"},{column: "str1",header:"Ubicación"
 	$scope.Tbl2.del1 = null;
 	$scope.Tbl2.id = x1.id;
 	console.log("Restoring data");
-	$http.put(url,$scope.Tbl2).then(function (response){$scope.Tbl2 = {};$scope.refreshTbl2s();});
+	$http.put(url,$scope.Tbl2).then(function (response){$scope.Tbl2 = {};$scope.refreshTbl2s();
+		$scope.mensaje =  "Objeto restaurado con éxito! ";});
 		$scope.show = !$scope.show;
 		}	
 			
@@ -134,7 +132,9 @@ $scope.headers = [{column: "id",header:"ID"},{column: "str1",header:"Ubicación"
 	//Update tbl1s via PUT
 	$scope.updateTbl2 = function() {
 	var url = "api.php/tbl2s/";url = url.concat($scope.Tbl2.id);
-	$http.put(url,$scope.Tbl2).then(function (response){$scope.Tbl2 = {};$scope.refreshTbl2s();});
+	$http.put(url,$scope.Tbl2).then(function (response){
+		$scope.mensaje =  "Objeto modificado con éxito! ";
+	$scope.Tbl2 = {};$scope.refreshTbl2s();});
 	}
 	$scope.select = function(a) {$scope.Tbl2 = a;var data = $scope.Tbl2;}
 	
@@ -149,7 +149,9 @@ $scope.deleteTbl2 = function(x1) {
 	$scope.Tbl2.del1 = 1;
 	$scope.Tbl2.id = x1.id;
 	console.log("Intentando eliminado logico");
-	$http.put(url,$scope.Tbl2).then(function (response){$scope.tbl2 = {};$scope.refreshTbl2s();});	
+	$http.put(url,$scope.Tbl2).then(function (response){
+		$scope.mensaje =  "Objeto modificado con éxito! ";
+	$scope.tbl2 = {};$scope.refreshTbl2s();});	
 		}		
 });
         </script>

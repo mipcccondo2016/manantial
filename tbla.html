@@ -14,15 +14,15 @@
 <div  ng-controller="formCtrl">
 <div ng-include="'b3.html'"></div>	
 
-					<div class="data-table">
+					<div <table class="table table-sm">
 					<table >
 						<thead  ><td ng-repeat="n in headers">{{n.header}}
 						<input type="text" size={{n.size}} ng-model="filters[n.column]" placeholder={{n.header}}></td></thead>
 						<tr ng-repeat="a in tbl1s | filter:{id:filters.id} | filter:{str1:filters.str1} | filter:{str2:filters.str2} | 
 						filter:{ent1:filters.ent1} | filter:{sum:filters.sum} | filter:{dif:filters.dif} | orderBy: a">
 							<td class="numeric-cell">{{ a.id }}</td><td class="label-cell">{{a.str1}}</td><td class="label-cell">{{a.str2}}</td>	<td class="numeric-cell">{{ a.ent1 }}</td><td>{{ a.sum }}</td><td>{{ a.dif }}</td>
-							<td><button ng-click="select(a)" type="button" class="button button-fill color-green"> <span class="glyphicon glyphicon-ok"></span>Seleccionar</button>
-							<button ng-click="deleteTbl1(a)" type="button" class="btn btn-danger"> <span class="glyphicon glyphicon-remove"></span>Eliminar</button></td>
+					<!-- 		<td><button ng-click="select(a)" type="button"  class="btn btn-primary"> <span class="glyphicon glyphicon-ok"></span>Seleccionar</button>
+							<button ng-click="deleteTbl1(a)" type="button" class="btn btn-primary"> <span class="glyphicon glyphicon-remove"></span>Eliminar</button></td> -->
 						</tr>
 					</table>
 					</div>
@@ -34,7 +34,7 @@
 		app.controller('formCtrl', function($scope,$http) {
 $scope.headers = [{column: "id",header:"ID",size:"1"},{column: "str1",header:"Sabor",size:"2"},
 {column: "str2",header:" Ubicación"},{column: "ent1",header:"Peso mínimo"},{column: "sum",header:"Suma Cajas"},{column: "dif",header:"Valor a producir"}];
-   $scope.filters = {};
+   $scope.filters = {};$scope.mensaje = {};
 	
 	$http.get("api.php/v1?order=dif").then(function (response) {
    var data = $scope.php_crud_api_transform(response.data);
