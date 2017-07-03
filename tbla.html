@@ -21,8 +21,8 @@
 						<tr ng-repeat="a in tbl1s | filter:{id:filters.id} | filter:{str1:filters.str1} | filter:{str2:filters.str2} | 
 						filter:{ent1:filters.ent1} | filter:{sum:filters.sum} | filter:{dif:filters.dif} | orderBy: a">
 							<td class="numeric-cell">{{ a.id }}</td><td class="label-cell">{{a.str1}}</td><td class="label-cell">{{a.str2}}</td>	<td class="numeric-cell">{{ a.ent1 }}</td><td>{{ a.sum }}</td><td>{{ a.dif }}</td>
-							<td><button ng-click="select(a)" type="button" class="button button-fill color-green"> <span class="glyphicon glyphicon-ok"></span>Seleccionar</button>
-							<button ng-click="deleteTbl1(a)" type="button" class="btn btn-danger"> <span class="glyphicon glyphicon-remove"></span>Eliminar</button></td>
+					<!-- 		<td><button ng-click="select(a)" type="button"  class="btn btn-primary"> <span class="glyphicon glyphicon-ok"></span>Seleccionar</button>
+							<button ng-click="deleteTbl1(a)" type="button" class="btn btn-primary"> <span class="glyphicon glyphicon-remove"></span>Eliminar</button></td> -->
 						</tr>
 					</table>
 					</div>

@@ -210,20 +210,22 @@ $scope.refreshTbls = function() {
 	  $scope.tbl.id = null ;
 	var data = $scope.tbl;
 	$http.post("api.php/tbl3s",data).then(function (response) {$scope.tbl1 = {}; 
-	$scope.refreshTbls();
+	$scope.refreshTbls();	$scope.mensaje =  "Objeto creado con éxito! ";
 	});
 	}
 	//Update tbl1s via PUT
 	$scope.updateTbl = function() {
 	var url = "api.php/tbl3s/";url = url.concat($scope.tbl.id);
-	$http.put(url,$scope.tbl).then(function (response){$scope.tbl1 = {};$scope.refreshTbls();});
+	$http.put(url,$scope.tbl).then(function (response){$scope.tbl1 = {};$scope.refreshTbls();
+		$scope.mensaje =  "Objeto modificado con éxito! ";});
 	}
 	
 	$scope.baja = function(a) {
 	a.str2 = moment().format('B-DD-MM-YY-HH-mm-ss');
 	var url = "api.php/tbl3s/";url = url.concat(a.id);
 	a.ent3 = 0;
-	$http.put(url,a).then(function (response){$scope.tbl1 = {};$scope.refreshTbls();});
+	$http.put(url,a).then(function (response){$scope.tbl1 = {};$scope.refreshTbls();
+		$scope.mensaje =  "Objeto dado de baja con éxito! ";});
 	}
 	
 	$scope.select = function(a) {$scope.tbl = a;var data = $scope.tbl1;}

@@ -2,8 +2,7 @@
     <head>
 <meta charset="UTF-8">
 	<script src="w3data.js"></script>
-  <script src="jquery.min.js"></script>
-  <script src="moment-with-locales.js"></script>
+  <script src="moment.min.js"></script>
   <script src="angular.min.js"></script>
     </head>
     <body >
@@ -26,8 +25,8 @@
 					<table class="table">
 						<thead  ><td ng-repeat="n in headers">{{n.header}}
 						<input type="text" ng-model="filters[n.column]" placeholder={{n.header}}></td></thead>
-						<tr ng-repeat="a in tbl8s | filter:{id:filters.id}:identical | filter:{str1:filters.str1} | filter:{ent1:filters.ent1} | filter:{ent2:filters.ent2}:identical | 
-						filter:{ent3:filters.ent3}:identical">
+						<tr ng-repeat="a in tbl8s | filter:{id:filters.id}:identical | filter:{str1:filters.str1} | filter:{ent1:filters.ent1} | filter:{ent2:filters.ent2}:identical 
+						|  filter:{ent3:filters.ent3}:identical |  filter:{tbl1s_id:filters.tbl1s_id}:identical">
 							<td>{{ a.id }}</td>		<td>{{ a.str1 }}</td>	<td>{{ a.ent1 }}</td><td>{{ a.ent2 }}</td><td>{{ a.ent3 }}</td><td>{{ a.tbl1s_id }}</td>   
 							<td><button ng-click="select(a)" type="button" class="btn btn-warning"> <span class="glyphicon glyphicon-ok"></span>Seleccionar</button>
 							<button ng-click="deleteTbl(a)" type="button" class="btn btn-danger"> <span class="glyphicon glyphicon-remove"></span>Eliminar</button></td>

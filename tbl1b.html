@@ -20,9 +20,7 @@ div.scroll {
 <div ng-include="'b3.html'"></div>	
 
 				<form>	
-			  <div class="alert alert-success">
-    <strong>{{mensaje}}</strong> 
-  </div>	
+			
 					<div class="form-group">
 							<div ng-repeat="n in headers  | filter:{show:1}">
 							{{n.header}}:<br><input type="text" ng-model="tbl1[n.column]"><br>
@@ -67,19 +65,21 @@ $scope.headers = [{show:0,column: "id",header:"ID"},{show:1,column: "str1",heade
 	$scope.tbl1_aux.str1 =  $scope.tbl1.str1; 
 	$scope.tbl1_aux.ent1 =  $scope.tbl1.ent1; 
 	var data = $scope.tbl1_aux;
-	var mensaje = "Fue creado con éxito objeto con Id ";
+	
 	$http.post("api.php/tbl1s",data).then(function (response) {
 	//console.log(response);
-	$scope.mensaje =  mensaje.concat(response.data);
+	$scope.mensaje =  "Objeto creado con éxito! ";
 	$scope.tbl1 = {}; 
 	$scope.refreshTbl1s();
 	});
-	
 	}
 	//Update tbl1s via PUT
 	$scope.updateTbl1 = function() {
 	var url = "api.php/tbl1s/";url = url.concat($scope.tbl1.id);
-	$http.put(url,$scope.tbl1).then(function (response){$scope.tbl1 = {};$scope.refreshTbl1s();});
+	$http.put(url,$scope.tbl1).then(function (response){$scope.tbl1 = {};$scope.refreshTbl1s();
+		$scope.mensaje =  "Objeto modificado con éxito! ";
+	});
+		
 	}
 	$scope.select = function(a) {$scope.tbl1 = a;var data = $scope.tbl1;}
 	
@@ -113,8 +113,12 @@ $scope.headers = [{show:0,column: "id",header:"ID"},{show:1,column: "str1",heade
 	$scope.tbl1.del1 = null;
 	$scope.tbl1.id = x1.id;
 	console.log("Restoring data");
-	$http.put(url,$scope.tbl1).then(function (response){$scope.tbl1 = {};$scope.refreshTbl1s();});
+	$http.put(url,$scope.tbl1).then(function (response){
+	$scope.tbl1 = {};$scope.refreshTbl1s();
+	$scope.mensaje =  "Objeto restaurado con éxito! ";
+	});
 		$scope.show = !$scope.show;
+			
 		}	
 		
 	$scope.deleteTbl1 = function(x1) {
@@ -122,11 +126,14 @@ $scope.headers = [{show:0,column: "id",header:"ID"},{show:1,column: "str1",heade
 	$scope.tbl1.del1 = 1;
 	$scope.tbl1.id = x1.id;
 	console.log("Intentando eliminado logico");
-	$http.put(url,$scope.tbl1).then(function (response){$scope.tbl1 = {};$scope.refreshTbl1s();});
+	$http.put(url,$scope.tbl1).then(function (response){$scope.tbl1 = {};$scope.refreshTbl1s();
+	$scope.mensaje =  "Objeto eliminado con éxito! ";
+	$scope.mensaje.concat(response.data);
+	});
 	//inicio Eliminado fisico
 		//var url = "api.php/tbl1s/";url = url.concat(x1.id);
 		//$http.delete(url).then(function (response) {$scope.refreshTbl1s();});
-	//fin Eliminado fisico  	
+	//fin Eliminado fisico  
 		}		
 		
 		//funcion que transforma
