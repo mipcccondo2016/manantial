@@ -10,8 +10,7 @@
 </style>
     </head>
     <body >
-	
-	class="btn btn-primary"	<div ng-app="myApp">	
+	<div ng-app="myApp">	
 <div  ng-controller="formCtrl3">
 <div ng-include="'b3.html'"></div>	
 
@@ -95,8 +94,9 @@
 	     <script >
 		 
 		var app = angular.module('myApp', ['angularUtils.directives.dirPagination']);
-		app.controller('formCtrl3', function($scope,$http) {
 		
+		app.controller('formCtrl3', function($scope,$http) {
+		$scope.mensaje = {};
 //refresh refreshTblws		
 		$scope.refreshTbl2s = function() {
 			$scope.tbl2s = [];

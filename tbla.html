@@ -14,7 +14,7 @@
 <div  ng-controller="formCtrl">
 <div ng-include="'b3.html'"></div>	
 
-					<div class="data-table">
+					<div <table class="table table-sm">
 					<table >
 						<thead  ><td ng-repeat="n in headers">{{n.header}}
 						<input type="text" size={{n.size}} ng-model="filters[n.column]" placeholder={{n.header}}></td></thead>
@@ -34,7 +34,7 @@
 		app.controller('formCtrl', function($scope,$http) {
 $scope.headers = [{column: "id",header:"ID",size:"1"},{column: "str1",header:"Sabor",size:"2"},
 {column: "str2",header:" Ubicación"},{column: "ent1",header:"Peso mínimo"},{column: "sum",header:"Suma Cajas"},{column: "dif",header:"Valor a producir"}];
-   $scope.filters = {};
+   $scope.filters = {};$scope.mensaje = {};
 	
 	$http.get("api.php/v1?order=dif").then(function (response) {
    var data = $scope.php_crud_api_transform(response.data);
