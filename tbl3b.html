@@ -1,11 +1,10 @@
 <html>
     <head>
 <meta charset="UTF-8">
-	<script src="w3data.js"></script>
-  <script src="jquery.min.js"></script>
-  <script src="moment-with-locales.js"></script>
+<script src="moment.min.js"></script>
   <script src="angular.min.js"></script>
-  <script src="dirPagination.js"></script>
+    <script src="dirPagination.js"></script>
+
   <style>
 </style>
     </head>
@@ -75,7 +74,7 @@
 						<thead  ><td ng-repeat="n in headers">{{n.header}}
 						<input type="text" ng-model="filters[n.column]" size={{n.size}} placeholder={{n.header}}></td></thead>
 						<tr dir-paginate="a in tbl3s | filter:{id:filters.id}:identical | filter:{str1:filters.str1} | filter:{ent1:filters.ent1} | filter:{tbl1Id:filters.tbl1Id}:identical | filter:{tbl2Id:filters.tbl2Id}:identical 
-						| filter:{tbl2Id:filters.tbl2Id} | filter:{ent3:filters.ent3} | filter:{str2:filters.str2} | itemsPerPage: 50">
+						| filter:{tbl2Id:filters.tbl2Id} | filter:{ent3:filters.ent3} | filter:{str2:filters.str2} | itemsPerPage: 100">
 							<td>{{ a.id }}</td>		<td>{{ a.str1 }}</td>	<td>{{ a.ent1 }}</td><td>{{ a.tbl1Id }}</td><td>{{ a.tbl2Id }}</td><td>{{a.ent3}}</td><td>{{a.str2}}</td>
 							<td><button ng-click="select(a)" type="button" class="btn btn-warning"> <span class="glyphicon glyphicon-ok"></span>Seleccionar</button>
 							<button ng-click="deleteTbl2(a)" type="button" class="btn btn-danger"> <span class="glyphicon glyphicon-remove"></span>Eliminar</button></td>
@@ -96,7 +95,7 @@
 		var app = angular.module('myApp', ['angularUtils.directives.dirPagination']);
 		
 		app.controller('formCtrl3', function($scope,$http) {
-		$scope.mensaje = {};
+		
 //refresh refreshTblws		
 		$scope.refreshTbl2s = function() {
 			$scope.tbl2s = [];

@@ -16,8 +16,10 @@
 
 <div class="row">
     <div class="col-md-12">
+	 Fecha: <input ng-model="tbl.dat1">
+	Hora: <input ng-model="tbl.time1">
 	Seleccionar Estudiante: <input type="checkbox" ng-model="myVar"   ng-click="refreshTbl2s()" >
-	<input class= type="hidden" ng-model="tbl.tbl4s_id" >
+	<input type="hidden" ng-model="tbl.tbl4s_id" >
 	<input type="text" ng-model="tbl4_selected.str1" >
 	<div ng-hide="!myVar">						
 					<table  class="table  table-sm" >
@@ -35,9 +37,8 @@
 		</div>
 		<div class="row">
 		<div class="col-md-12">
-					Seleccionar Producto/Concepto/Servicio: <input type="checkbox" ng-model="myVar2">
-					<input type="text" ng-model="tbl5_selected.str2" >				
-					<div ng-hide="!myVar2">							
+					<h2>Seleccionar Producto/Concepto/Servicio:</h2>				
+					<div>							
 						<table  class="table  table-sm" >
 						<thead  ><td ng-repeat="n in headers3">{{n.header}}
 						<input type="text" ng-model="filters[n.column]" placeholder={{n.header}}></td></thead>
@@ -55,8 +56,7 @@
 				</div>
 		</div>
     </div>
-	 Fecha: <input ng-model="tbl.dat1">
-	Hora: <input ng-model="tbl.time1">
+	
 		
 	<h2>Servicios A Pagar</h2> 
 	<table  class="table  table-sm" >
