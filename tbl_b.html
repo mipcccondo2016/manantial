@@ -1,0 +1,345 @@
+
+<html>
+    <head>
+<meta charset="UTF-8">
+	<script src="w3data.js"></script>
+  <script src="jquery.min.js"></script>
+  <script src="moment.min.js"></script>
+  <script src="angular.min.js"></script>
+  <script src="dirPagination.js"></script>
+  <style>
+</style>
+    </head>
+    <body >	<div ng-app="myApp">	
+<div  ng-controller="formCtrl3">
+<div ng-include="'b4.html'"></div>	
+
+<div class="row">
+    <div class="col-md-12">
+	Seleccionar Estudiante: <input type="checkbox" ng-model="myVar"   ng-click="refreshTbl2s()" >
+	<input class= type="hidden" ng-model="tbl.tbl4s_id" >
+	<input type="text" ng-model="tbl4_selected.str1" >
+	<div ng-hide="!myVar">						
+					<table  class="table  table-sm" >
+						<thead  ><td ng-repeat="n in headers2">{{n.header}}
+						<input type="text" ng-model="filters[n.column]" placeholder={{n.header}}></td></thead>
+						<tr ng-repeat="a in tbl4s | filter:{id:filters.id} | filter:{str1:filters.str1} | filter:{str2:filters.str2} | filter:{str3:filters.str3}| filter:{str4:filters.str4}| filter:{str5:filters.str5} ">
+							<td ng-click="select_tbl4(a)"  ng-repeat="x in headers2">{{a[x.column]}}</td>
+							<!-- <td><button ng-hide={{show}} ng-click="select(a)" type="button" class="btn btn-primary"> <span class="glyphicon glyphicon-ok"></span>Seleccionar</button>
+							<button ng-hide={{show}} ng-click="deleteTbl2(a)" type="button" class="btn btn-primary"> <span class="glyphicon glyphicon-remove"></span>Eliminar</button>
+							<button ng-hide={{!show}} ng-click="restore(a)" type="button" class="btn btn-primary"> <span class="glyphicon glyphicon-remove"></span>Restaurar</button></td>
+ -->						</tr>
+					</table>
+							</div>
+		</div>
+		</div>
+		<div class="row">
+		<div class="col-md-12">
+					Seleccionar Producto/Concepto/Servicio: <input type="checkbox" ng-model="myVar2">
+					<input type="text" ng-model="tbl5_selected.str2" >				
+					<div ng-hide="!myVar2">							
+						<table  class="table  table-sm" >
+						<thead  ><td ng-repeat="n in headers3">{{n.header}}
+						<input type="text" ng-model="filters[n.column]" placeholder={{n.header}}></td></thead>
+						<tr ng-repeat="a in tbl5s | filter:{id:filters.id} | filter:{str1:filters.str1} | filter:{str2:filters.str2} | filter:{ent1:filters.ent1} ">
+							<td    ng-repeat="x in headers3">
+							<div ng-click="select_tbl5(a)" ng-if="x.column == 'ent1' || x.column == 'ent2'">{{a[x.column]  | number}}</div>
+							<div  ng-click="select_tbl5(a)" ng-if="x.column != 'ent1' && x.column != 'ent2'">{{a[x.column]}}</div>
+							</td>
+<!-- 							<td><button ng-hide={{show}} ng-click="select(a)" type="button" class="btn btn-primary"> <span class="glyphicon glyphicon-ok"></span>Seleccionar</button>
+							<button ng-hide={{show}} ng-click="deleteTbl2(a)" type="button" class="btn btn-primary"> <span class="glyphicon glyphicon-remove"></span>Eliminar</button>
+							<button ng-hide={{!show}} ng-click="restore(a)" type="button" class="btn btn-primary"> <span class="glyphicon glyphicon-remove"></span>Restaurar</button></td> -->
+						</tr>
+					</table>	
+					
+				</div>
+		</div>
+    </div>
+	 Fecha: <input ng-model="tbl.dat1">
+	Hora: <input ng-model="tbl.time1">
+		
+	<h2>Servicios A Pagar</h2> 
+	<table  class="table  table-sm" >
+						<thead  ><td ng-repeat="n in headers4  | filter:{show:1}">{{n.header}}
+						<input type="text" ng-model="filters[n.column]" placeholder={{n.header}}></td></thead>
+						<tr contenteditable="true" ng-repeat="a in tbl7s_list  track by $index">
+							<td    ng-click="updateTotals(a)"  ng-repeat="x in headers4  | filter:{show:1}">
+							<div ng-if="x.column == 'ent1' || x.column == 'ent2' || x.column == 'ent3' ">{{a[x.column]  | number}}</div>
+							<div ng-if="x.column != 'ent1' && x.column != 'ent2' && x.column != 'ent3'">{{a[x.column]}}</div>
+							</td>
+						</tr>
+					<tfoot>
+					<tr >
+							<td ng-repeat="x in headers4  | filter:{show:1}">
+							<div ng-if="x.column == 'ent1' || x.column == 'ent2' || x.column == 'ent3' ">{{total[x.column]  | number}}</div>
+							<div ng-if="x.column != 'ent1' && x.column != 'ent2' && x.column != 'ent3'">{{total[x.column]}}</div>
+							</td>
+						</tr>
+				</tfoot>
+				</table>	
+			
+	
+ <div class="row">
+    <div class="col-md-8">
+        <div class="well">
+				<p class="buttons-row">	<button type="button" ng-click="saveTbl()" class="btn btn-primary">Crear Pago</button>
+					<button type="button" ng-click="updateTbl()" class="btn btn-primary">Actualizar</button>
+										<button type="button" ng-click="refreshTbls()" class="btn btn-primary">Solo Activos</button>
+					<button type="button" ng-click="refreshTblsAll()" class="btn btn-primary">Listar Todos</button> </p> 
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="well">
+					
+				</div>
+			</div> 
+        </div>
+        <div class="row">
+           
+        </div>
+    </div>
+</div>
+<div class="row">
+
+					<div class="scroll">
+					<table  class="table table-sm table-responsive">
+						<thead  ><td ng-repeat="n in headers">{{n.header}}
+						<input type="text" ng-model="filters[n.column]" size={{n.size}} placeholder={{n.header}}></td></thead>
+						<tr dir-paginate="a in tbl7s_list | filter:{id:filters.id}:identical | filter:{str1:filters.str1} | filter:{ent1:filters.ent1} | filter:{tbl1Id:filters.tbl1Id}:identical | filter:{tbl2Id:filters.tbl2Id}:identical 
+						| filter:{tbl2Id:filters.tbl2Id} | filter:{ent3:filters.ent3} | filter:{str2:filters.str2} | itemsPerPage: 5">
+							<td>{{ a.id }}</td>		<td>{{ a.str1 }}</td>	<td>{{ a.ent1 }}</td><td>{{ a.tbl1Id }}</td><td>{{ a.tbl2Id }}</td><td>{{a.ent3}}</td><td>{{a.str2}}</td>
+							<td><button ng-click="selected(a)" type="button" class="btn btn-warning"> <span class="glyphicon glyphicon-ok"></span>Seleccionar</button>
+							<button ng-click="deleteTbl2(a)" type="button" class="btn btn-danger"> <span class="glyphicon glyphicon-remove"></span>Eliminar</button></td>
+							<td><button ng-click="baja(a)" type="button" class="btn btn-danger"> <span class="glyphicon glyphicon-remove"></span>Dar de baja</button></td>
+						</tr>
+					
+					
+</table> 
+
+
+
+<div class="text-center">
+          <dir-pagination-controls 
+		  boundary-links="true" 
+		  on-page-change="pageChangeHandler(newPageNumber)" 
+		  template-url="dirPagination.tpl.html">
+		  </dir-pagination-controls>
+          </div>		  
+</div>
+
+</div>
+				</div>
+</div>				
+	     <script >
+		 
+		var app = angular.module('myApp', ['angularUtils.directives.dirPagination']);
+		app.controller('formCtrl3', function($scope,$http) {
+		
+//refresh refreshTblws		
+		$scope.refreshTbl2s = function() {
+		console.log("Tbl4s ya cargadoooo.....");	
+		console.log($scope.tbl4_id);
+		$scope.tbl4_selected = {};
+		$scope.tbl5_selected = {};
+		$scope.tbl7s = {};
+		$scope.total = {};
+			$scope.tbl2s = [];
+			
+			$scope.tbl7s_list = []; //Alamcena la listra de Detalles de tbl6s
+			
+			$http.get("api.php/tbl4s?order=id,desc&filter[]=del1,eq,0").then(function (response) {
+   var data = $scope.php_crud_api_transform(response.data);
+			   $scope.tbl4s = data.tbl4s;
+   });
+	}
+	//end refreshTbl1
+	
+	//refresh refreshTbl1s
+$scope.refreshTbl1s = function() {
+			$http.get("api.php/tbl5s?order=id,desc&filter[]=del1,eq,0").then(function (response) {
+   var data = $scope.php_crud_api_transform(response.data);
+			   $scope.tbl5s = data.tbl5s;
+   });
+	}
+//end funcion refreshTbl1s
+
+
+$scope.updateTotals = function(a) {
+console.log("Actualizando totales............");
+console.log("Cantidad===============",a.ent1);
+
+$scope.tbl.ent3 = $scope.tbl.ent2 * $scope.tbl.ent1 ;
+$scope.total.ent3  =  0 ;
+	$scope.tbl7s_list.forEach(function(value, index, array) {
+	$scope.total.ent3  = $scope.total.ent3  +  ( value.ent2 * value.ent1 ) ;
+});
+console.log("El valor total calculado ");
+console.log($scope.total.ent3);
+}
+
+
+	//funcion que setea el tbl4 seleccionado
+$scope.select_tbl4 = function(a) {
+			$scope.tbl4_selected = a ;
+			$scope.myVar = false;
+	}
+//fin de funcion que selecciona tbl4
+
+//funcion que setea el tbl4 seleccionado
+$scope.select_tbl5 = function(a) {
+			$scope.tbl7s = {};
+			$scope.tbl7s.ent2 = a.ent1;
+			$scope.tbl7s.tbl5s_id =  a.id;
+			$scope.tbl7s.ent1 =  1;
+			$scope.tbl7s.str1 =  a.str1;
+			$scope.tbl7s.str2 =  a.str2;
+			$scope.tbl7s.ent3 = a.ent1 * 1 ;
+			$scope.tbl7s_list.push($scope.tbl7s);
+			
+			$scope.myVar2 = false;
+	}
+//fin de funcion que selecciona tbl4
+		
+		$scope.identical = function(actual, expected){
+		if ( expected === ''){ return true;}
+    return actual === parseInt(expected);
+}
+
+
+
+//funcion que transforma
+	$scope.php_crud_api_transform = function(tables) {
+	var array_flip = function (trans) {
+		var key, tmp_ar = {};
+		for (key in trans) {
+			tmp_ar[trans[key]] = key;
+		}
+		return tmp_ar;
+	};
+	var get_objects = function (tables,table_name,where_index,match_value) {
+		var objects = [];
+		for (var record in tables[table_name]['records']) {
+			record = tables[table_name]['records'][record];
+			if (!where_index || record[where_index]==match_value) {
+				var object = {};
+				for (var index in tables[table_name]['columns']) {
+					var column = tables[table_name]['columns'][index];
+					object[column] = record[index];
+					for (var relation in tables) {
+						var reltable = tables[relation];
+						for (var key in reltable['relations']) {
+							var target = reltable['relations'][key];
+							if (target == table_name+'.'+column) {
+								column_indices = array_flip(reltable['columns']);
+								object[relation] = get_objects(tables,relation,column_indices[key],record[index]);
+							}
+						}
+					}
+				}
+				objects.push(object);
+			}
+		}
+		return objects;
+	};
+	tree = {};
+	for (var name in tables) {
+		var table = tables[name];
+		if (!table['relations']) {
+			tree[name] = get_objects(tables,name);
+			if (table['results']) {
+				tree['_results'] = table['results'];
+			}
+		}
+	}
+	return tree;
+}
+
+
+//fin funcion que transforma
+$scope.refreshTblsAll = function() {
+			$scope.tbl3s = [];
+			$http.get("api.php/tbl6s?order=id,desc&filter[]=del1,eq,0").then(function (response) {
+			   var data = $scope.php_crud_api_transform(response.data);
+			   $scope.tbl3s = data.tbl3s;
+			});	
+			}		
+			
+			
+//fin funcion que transforma
+$scope.refreshTbls = function() {
+			$scope.tbl3s = [];
+			$http.get("api.php/tbl6s?order=id,desc&filter[]=del1,eq,0&filter[]=ent3,eq,1").then(function (response) {
+			   var data = $scope.php_crud_api_transform(response.data);
+			   $scope.tbl3s = data.tbl3s;
+			});	
+			}		
+		
+$scope.headers4 = [{show: "0",column: "id",header:"ID",size:"1"},{show: "1",column: "str1",header:"Codigo",size:"5"},
+{show: "1",column: "str2",header:"Descripción",size:"10"},{show: "1",column: "ent1",header:"Cantidad",size:"1",type:"number"},
+{show: "1",column: "ent2",header:"Precio",size:"1",type:"number"},{show: "1",column: "ent3",header:"Total",size:"1",type:"number"}];		
+
+
+$scope.headers3 = [{show: "0",column: "id",header:"ID",size:"1"},{show: "1",column: "str1",header:"Codigo",size:"5"},
+{show: "1",column: "str2",header:"Descripción",size:"10"},{show: "1",column: "ent1",header:"Precio",size:"1",type:"number"}];		
+
+
+		
+		$scope.headers2 = [{show: "0",column: "id",header:"ID",size:"1"},{show: "1",column: "str1",header:"Estudiante",size:"5"},
+{show: "1",column: "str2",header:"Ruc/CI",size:"10"},{show: "1",column: "str3",header:"Telefono",size:"1"},{show: "1",column: "str4",header:"Correo",size:"1"},
+{show: "1",column: "str5",header:"Dirección",size:"1"}];
+
+		$scope.headers = [{column: "id",header:"ID",size:"1"},{column: "str1",header:"Codigo",size:"5"},
+{column: "ent1",header:"Peso mínimo",size:"10"},{column: "tbl1Id",header:"Sabor",size:"1"},{column: "tbl2Id",header:"Ubicación",size:"1"},
+{column: "ent3",header:"Activo/Inactivo",size:"1"},{column: "str2",header:"Fecha de baja",size:"10"}];
+   $scope.filters = {};
+   console.log("Seteando fecha");
+		$scope.Tbl6 = {}; 
+		$scope.tbl = {}; 
+ 		$scope.tbl.dat1 = moment().format('YYYY-MM-DD');
+		$scope.tbl.time1 = moment().format('HH:mm:ss'); 
+		console.log("La fecha seteada es ");
+		
+			$http.get("api.php/tbl6s?filter=ent3,eq,1&order=id,desc").then(function (response) {
+			   var data = $scope.php_crud_api_transform(response.data);
+			   $scope.tbl3s = data.tbl3s;
+			});
+			$scope.tbl.ent3 = 1;
+	$scope.refreshTbls();
+	$scope.refreshTbl1s();
+	$scope.refreshTbl2s();
+	//Save tbl1s via POST
+	$scope.saveTbl = function() {
+	console.log('TBL==');console.log($scope.tbl);console.log('==');
+	  $scope.tbl.id = null ;
+	var data = $scope.tbl;
+	$http.post("api.php/tbl6s",data).then(function (response) {$scope.tbl1 = {}; 
+	$scope.refreshTbls();
+	});
+	}
+	//Update tbl1s via PUT
+	$scope.updateTbl = function() {
+	var url = "api.php/tbl6s/";url = url.concat($scope.tbl.id);
+	$http.put(url,$scope.tbl).then(function (response){$scope.tbl1 = {};$scope.refreshTbls();});
+	}
+	
+	$scope.baja = function(a) {
+	a.str2 = moment().format('B-DD-MM-YY-HH-mm-ss');
+	var url = "api.php/tbl6s/";url = url.concat(a.id);
+	a.ent3 = 0;
+	$http.put(url,a).then(function (response){$scope.tbl1 = {};$scope.refreshTbls();});
+	}
+	
+	$scope.select = function(a) {$scope.tbl = a;var data = $scope.tbl1;}
+	$scope.selectTbl1 = function(a) {$scope.tbl.tbl1Id = a.id; $scope.myVar = !$scope.myVar;}
+		$scope.selectTbl2 = function(a) {$scope.tbl.tbl2Id = a.id; $scope.myVar2 = !$scope.myVar2;}
+	$scope.deleteTbl3 = function(x1) {
+		var url = "api.php/tbl6s/";url = url.concat(x1.id);
+		$http.delete(url).then(function (response) {$scope.refreshTbls();});
+	  	}		
+});
+        </script>
+</div>		
+    </body>
+</html>
