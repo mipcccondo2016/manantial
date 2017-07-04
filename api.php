@@ -2557,7 +2557,7 @@ class PHP_CRUD_API {
 'hostname'=>'localhost','username'=>'adminG5xMedX','password'=>'Ek8d8YWA3Iuq','database'=>'manantial','port'=>'3306', 	
 	'charset'=>'utf8'
  ));
- $api->executeCommand();
+ $api->executeCommand();   
 
 // For Microsoft SQL Server 2012 use:
 
