@@ -169,7 +169,9 @@ $scope.tbl8s.push($scope.tbl8);
 	 var data=$scope.tbl8s;
 	 var dat=$scope.tbl3s_aux;
 	 console.log(data);
-$http.post("api.php/tbl8s", data).then(function (response) {console.log( response.data);});		
+$http.post("api.php/tbl8s", data).then(function (response) {console.log( response.data);
+$scope.mensaje = "Objeto creado con éxito!"
+});		
 	}
 	//fin funcion saveTbl8
 	
