@@ -80,7 +80,7 @@
 						| filter:{tbl2Id:filters.tbl2Id} | filter:{ent3:filters.ent3} | filter:{str2:filters.str2}">
 							<td>{{ }}</td><td>{{ a.id }}</td>		<td>{{ a.str1 }}</td>	<td>{{ a.ent1 }}</td><td>{{ a.tbl1Id }}</td><td>{{ a.tbl2Id }}</td><td>{{a.ent3}}</td><td>{{a.str2}}</td>
 							<td><button ng-click="select(a)" type="button" class="btn btn-warning"> <span class="glyphicon glyphicon-ok"></span>Seleccionar</button>
-							<button ng-click="deleteTbl2(a)" type="button" class="btn btn-danger"> <span class="glyphicon glyphicon-remove"></span>Eliminar</button></td>
+							<button ng-click="deleteTbl3(a)" type="button" class="btn btn-danger"> <span class="glyphicon glyphicon-remove"></span>Eliminar</button></td>
 							<td><button ng-click="baja(a)" type="button" class="btn btn-danger"> <span class="glyphicon glyphicon-remove"></span>Dar de baja</button></td>
 						</tr>
 					</table>
@@ -235,7 +235,10 @@ $scope.refreshTbls = function() {
 		$scope.selectTbl2 = function(a) {$scope.tbl.tbl2Id = a.id; $scope.myVar2 = !$scope.myVar2;}
 	$scope.deleteTbl3 = function(x1) {
 		var url = "api.php/tbl3s/";url = url.concat(x1.id);
-		$http.delete(url).then(function (response) {$scope.refreshTbls();});
+		$http.delete(url).then(function (response) {
+		$scope.refreshTbls();
+		$scope.mensaje = "Eliminado de objeto exitoso!";
+		});
 	  	}		
 });
 
