@@ -114,7 +114,7 @@ table, th, td {
 	//refresh refreshTbl1s
 $scope.refreshTbl1s = function() {
 			$scope.tbl1s = [];
-			$http.get("api.php/tbl1s?order=id,desc").then(function (response) {
+			$http.get("api.php/tbl1s?order=id,desc&filter[]=ent1,neq,0").then(function (response) {
 			   var data = $scope.php_crud_api_transform(response.data);
 			   $scope.tbl1s = data.tbl1s;
 			});
