@@ -76,8 +76,11 @@
 						| filter:{tbl2Id:filters.tbl2Id} | filter:{ent3:filters.ent3} | filter:{str2:filters.str2}">
 							<td>{{ }}</td><td>{{ a.id }}</td>		<td>{{ a.str1 }}</td>	<td>{{ a.ent1 }}</td><td>{{ a.tbl1Id }}</td><td>{{ a.tbl2Id }}</td><td>{{a.ent3}}</td><td>{{a.str2}}</td>
 							<td><button ng-click="select(a)" type="button" class="btn btn-warning"> <span class="glyphicon glyphicon-ok"></span>Seleccionar</button>
-							<button ng-click="deleteTbl3(a)" type="button" class="btn btn-danger"> <span class="glyphicon glyphicon-remove"></span>Eliminar</button></td>
 							<td><button ng-click="baja(a)" type="button" class="btn btn-danger"> <span class="glyphicon glyphicon-remove"></span>Dar de baja</button></td>
+							<button ng-hide={{show}} ng-click="deleteTbl3(a)" type="button" class="btn btn-primary"> <span class="glyphicon glyphicon-remove"></span>Eliminar</button>
+							<button ng-hide={{!show}} ng-click="restore(a)" type="button" class="btn btn-primary"> <span class="glyphicon glyphicon-remove"></span>Restaurar</button></td>
+							
+							
 						</tr>
 					</table>
 					<dir-pagination-controls
@@ -119,6 +122,17 @@ $scope.refreshTbl1s = function() {
     return actual === parseInt(expected);
 }
 
+
+	//Restoring data		
+	$scope.restore = function(x1) {
+	var url = "api.php/tbl2s/";url = url.concat(x1.id);
+	$scope.Tbl2.del1 = null;
+	$scope.Tbl2.id = x1.id;
+	console.log("Restoring data");
+	$http.put(url,$scope.Tbl2).then(function (response){$scope.Tbl2 = {};$scope.refreshTbl2s();
+		$scope.mensaje =  "Objeto restaurado con éxito! ";});
+		$scope.show = !$scope.show;
+		}	
 
 
 //funcion que transforma
