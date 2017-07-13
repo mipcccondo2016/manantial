@@ -92,9 +92,11 @@
 	     <script >
 		 
 		var app = angular.module('myApp', ['angularUtils.directives.dirPagination']);
-		
+	
 		app.controller('formCtrl3', function($scope,$http) {
+		$scope.get_url = "api.php/tbl3s?order=id,desc&filter[]=ent1,neq,0&filter[]=ent3,eq,1&filter[]=del1,eq,0" ;
 		$scope.title = "Cajas";
+		$scope.tbl3s_del = {};
 //refresh refreshTblws		
 		$scope.refreshTbl2s = function() {
 			$scope.tbl2s = [];
@@ -170,17 +172,37 @@ $scope.refreshTbl1s = function() {
 //fin funcion que transforma
 $scope.refreshTblsAll = function() {
 			$scope.tbl3s = [];
-			$http.get("api.php/tbl3s?order=id,desc&filter[]=ent1,neq,0").then(function (response) {
+			$http.get($scope.get_url).then(function (response) {
 			   var data = $scope.php_crud_api_transform(response.data);
 			   $scope.tbl3s = data.tbl3s;
 			});	
 			}		
 			
 			
+			
+			
+	$scope.ListDeleted = function() {
+			console.log("ListDeleted de tbl3");
+			$scope.tbl1s = [];
+			console.log($scope.show);
+			if (!$scope.show) { $scope.append1 =  "eq,1";
+			$scope.show = true;}
+			else { $scope.append1 =  "eq,0";$scope.show = false;  }
+			console.log($scope.show);
+			$scope.query = "api.php/tbl3s?order=id,desc&filter[]=del1," ;
+			$scope.query = $scope.query.concat($scope.append1);
+			console.log($scope.query);
+			$http.get($scope.query).then(function (response) {
+			   var data = $scope.php_crud_api_transform(response.data);
+			   $scope.tbl3s = data.tbl3s;
+			});
+			}		
+			
+			
 //fin funcion que transforma
 $scope.refreshTbls = function() {
 			$scope.tbl3s = [];
-			$http.get("api.php/tbl3s?order=id,desc&filter[]=ent1,neq,0&filter[]=ent3,eq,1").then(function (response) {
+			$http.get($scope.get_url).then(function (response) {
 			   var data = $scope.php_crud_api_transform(response.data);
 			   $scope.tbl3s = data.tbl3s;
 			});	
@@ -230,8 +252,10 @@ $scope.refreshTbls = function() {
 	$scope.selectTbl1 = function(a) {$scope.tbl.tbl1Id = a.id; $scope.myVar = !$scope.myVar;}
 		$scope.selectTbl2 = function(a) {$scope.tbl.tbl2Id = a.id; $scope.myVar2 = !$scope.myVar2;}
 	$scope.deleteTbl3 = function(x1) {
+	console.log("Eliminandooo.....");
 		var url = "api.php/tbl3s/";url = url.concat(x1.id);
-		$http.delete(url).then(function (response) {
+		$scope.tbl3s_del.del1 = 1;
+		$http.put(url,$scope.tbl3s_del).then(function (response) {
 		$scope.refreshTbls();
 		$scope.mensaje = "Eliminado de objeto exitoso!";
 		});
