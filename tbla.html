@@ -7,17 +7,15 @@
 </style>
 <meta charset="UTF-8">
 	<script src="w3data.js"></script>
- 
-  <script src="jquery.min.js"></script>
-  <script src="moment-with-locales.js"></script>
-
+ <script src="moment-with-locales.js"></script>
   <script src="angular.min.js"></script>
       <link rel="stylesheet" href="w3mobile.css">
     </head>
     <body >
 	<div ng-app="myApp">	
-<div  ng-controller="formCtrl">
-<div ng-include="'b3.html'"></div>	
+	
+<div  ng-controller="formCtrlA">
+	<div ng-include="'b3.html'"></div>
 
 					<div <table class="table table-sm">
 					<table >
@@ -36,7 +34,11 @@
 	     <script >		
 
 		var app = angular.module('myApp', []);  
-		app.controller('formCtrl', function($scope,$http) {
+		app.controller('formCtrlA', function($scope,$http) {
+		console.log("Seteando el valor de titulo en menu Reportes ");
+			$scope.title = "Reportes";
+			console.log($scope.title);
+			
 $scope.headers = [{column: "id",header:"ID",size:"1"},{column: "str1",header:"Sabor",size:"2"},
 {column: "str2",header:" Ubicación"},{column: "ent1",header:"Peso mínimo"},{column: "sum",header:"Suma Cajas"},{column: "dif",header:"Valor a producir"}];
    $scope.filters = {};$scope.mensaje = {};
