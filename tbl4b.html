@@ -8,6 +8,10 @@
 	<div ng-app="myApp">	
 <div ng-include="'b4.html'"></div>	
 	<div  ng-controller="formCtrl2">
+	
+	<INPUT class="topright" NAME="buscar" placeholder="Buscar RUC Online">
+	
+	
 			<form>						
 					<div class="form-group">
 							<div ng-repeat="n in headers  | filter:{show:1}">
@@ -31,7 +35,8 @@
 				
 				</div>
 </div>				
-	     <script >		
+	     <script >	
+var URL3 = "http://www.ruc.com.py/index.php/inicio/consulta_ruc";		 
 		var app = angular.module('myApp', []);
 		app.controller('formCtrl2', function($scope,$http) {
 		$scope.headers = [{show: "0",column: "id",header:"ID",size:"1"},{show: "1",column: "str1",header:"Estudiante",size:"5"},

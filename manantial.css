@@ -1,8 +1,16 @@
-.table-fit {
-    width: 1px;
+.container {
+    position: relative;
 }
 
+.topright {
+    position: relative;
+    top: 8px;
+    right: 16px;
+    font-size: 18px;
+}
 
-.table-scrollable{
-    overflow: auto;
+img { 
+    width: 100%;
+    height: auto;
+    opacity: 0.3;
 }

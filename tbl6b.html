@@ -39,7 +39,7 @@
 		<div class="col-md-12">
 					<h2>Seleccionar Producto/Concepto/Servicio:</h2>				
 					<div>							
-						<table  class="table  table-sm" >
+						<table  class="table  table-sm  table-hover" >
 						<thead  ><td ng-repeat="n in headers3">{{n.header}}
 						<input type="text" ng-model="filters[n.column]" placeholder={{n.header}}></td></thead>
 						<tr ng-repeat="a in tbl5s | filter:{id:filters.id} | filter:{str1:filters.str1} | filter:{str2:filters.str2} | filter:{ent1:filters.ent1} ">
@@ -59,9 +59,10 @@
 	
 		
 	<h2>Servicios A Pagar</h2> 
-	<table  class="table  table-sm" >
+	<table  class="table  table-sm"    >
 						<thead  ><td ng-repeat="n in headers4  | filter:{show:1}">{{n.header}}
-						<input type="text" ng-model="filters[n.column]" placeholder={{n.header}}></td></thead>
+						<!-- <input type="text" ng-model="filters[n.column]" placeholder={{n.header}}> -->
+						</td></thead>
 						<tr contenteditable="true" ng-repeat="a in tbl7s_list  track by $index">
 							<td    ng-click="updateTotals(a)"  ng-repeat="x in headers4  | filter:{show:1}">
 							<div ng-if="x.column == 'ent1' || x.column == 'ent2' || x.column == 'ent3' ">{{a[x.column]  | number}}</div>
@@ -106,7 +107,8 @@
 					<div class="scroll">
 					<table  class="table table-sm table-responsive">
 						<thead  ><td ng-repeat="n in headers">{{n.header}}
-						<input type="text" ng-model="filters[n.column]" size={{n.size}} placeholder={{n.header}}></td></thead>
+						<input type="text" ng-model="filters[n.column]" size={{n.size}} placeholder={{n.header}}>
+						</td></thead>
 						<tr dir-paginate="a in tbl7s_list | filter:{id:filters.id}:identical | filter:{str1:filters.str1} | filter:{ent1:filters.ent1} | filter:{tbl1Id:filters.tbl1Id}:identical | filter:{tbl2Id:filters.tbl2Id}:identical 
 						| filter:{tbl2Id:filters.tbl2Id} | filter:{ent3:filters.ent3} | filter:{str2:filters.str2} | itemsPerPage: 5">
 							<td>{{ a.id }}</td>		<td>{{ a.str1 }}</td>	<td>{{ a.ent1 }}</td><td>{{ a.tbl1Id }}</td><td>{{ a.tbl2Id }}</td><td>{{a.ent3}}</td><td>{{a.str2}}</td>
@@ -168,9 +170,9 @@ $scope.refreshTbl1s = function() {
 
 $scope.updateTotals = function(a) {
 console.log("Actualizando totales............");
-console.log("Cantidad===============",a.ent1);
-
-$scope.tbl.ent3 = $scope.tbl.ent2 * $scope.tbl.ent1 ;
+console.log("Valor a procesar=========a======",a);
+console.log("Valor a procesar==========tbl=====",a);
+$scope.tbl.ent3 = a.ent2 * a.ent1 ;
 $scope.total.ent3  =  0 ;
 	$scope.tbl7s_list.forEach(function(value, index, array) {
 	$scope.total.ent3  = $scope.total.ent3  +  ( value.ent2 * value.ent1 ) ;
