@@ -36,7 +36,7 @@ div.scroll {
 					
 					<table    class="table ">
 						<thead  ><td ng-repeat="n in headers">{{n.header}}
-						<input type="text" ng-model="filters[n.column]" placeholder={{n.header}}></td></thead>
+						<input type="text" ng-model="filters[n.column]" size="1" placeholder={{n.header}}></td></thead>
 						<tr ng-repeat="a in tbl1s | filter:{id:filters.id} | filter:{str1:filters.str1} | filter:{ent1:filters.ent1} ">
 							<td class="numeric-cell" >{{ a.id }}</td>		<td class="label-cell">{{ a.str1 }}</td>	<td class="numeric-cell">{{ a.ent1 }}</td>
 							<td class="label-cell"><button ng-hide={{show}} ng-click="select(a)" type="button" class="btn btn-primary"> <span class="glyphicon glyphicon-ok"></span>Seleccionar</button>
@@ -53,6 +53,7 @@ div.scroll {
 		var app = angular.module('myApp', []);
 		  
 		app.controller('formCtrl', function($scope,$http) {
+		$scope.title = "Sabores";
 $scope.headers = [{show:0,column: "id",header:"ID"},{show:1,column: "str1",header:"Sabor"},{show:1,column: "ent1",header:"Peso mínimo"}];
    $scope.filters = {};
 		$scope.tbl1 = {}; $scope.tbl1_aux = {}; 

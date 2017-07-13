@@ -95,6 +95,7 @@
 
 var app = angular.module('myApp', []);
 app.controller('customersCtrl', function($scope, $http) {
+$scope.title = "Traslado masivo";
 $scope.headers2 = [{column: "id",header:"ID"},{column: "str1",header:"Ubicación"}];
    $scope.filters2 = {};
 $scope.headers = [{column: "id",header:"ID"},{column: "str1",header:"Código"},
@@ -173,6 +174,25 @@ $http.post("api.php/tbl8s", data).then(function (response) {console.log( respons
 $scope.mensaje = "Objeto creado con éxito!"
 });		
 	}
+	
+	
+	
+	
+	$scope.updateDestino = function() {
+	var data = $scope.tbl;
+	var url = "api.php/tbl3s/";url = url.concat($scope.tbl.ent3);
+	$scope.tbl3_aux = {};
+	$scope.tbl3_aux.tbl2Id = $scope.tbl.ent2;
+	$http.put(url,$scope.tbl3_aux).then(function (response) {$scope.tbl1 = {}; 
+	//$scope.refreshTbls();
+	});
+	}
+	
+	
+	
+	
+	
+	
 	//fin funcion saveTbl8
 	
     $scope.hideShow = function() {

@@ -32,8 +32,10 @@
 	     <script >		
 
 		var app = angular.module('myApp', []);
+		
 		  
 		app.controller('formCtrl2', function($scope,$http) {
+		$scope.title = "Ubicaciones";
 $scope.headers = [{column: "id",header:"ID"},{column: "str1",header:"Ubicación"}];
    $scope.filters = {};
    $scope.tbl2 = [];
