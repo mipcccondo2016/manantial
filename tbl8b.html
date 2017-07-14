@@ -2,6 +2,7 @@
 <html >
 <meta charset="UTF-8"/>
   <script src="moment-with-locales.js"></script>
+  <script src="jquery.min.js"></script>
   <script src="angular.min.js"></script>
 
 <style>
@@ -34,7 +35,7 @@
 	<td> <button class="btn btn-primary" ng-click="unSelect2(a)"> <i class="fa fa-close" style="font-size:40px;color:red"></i></button></td>
   </tr>
 </table>
-<button ng-click="saveTbl8()">Crear Traslado Masivo</button>
+<button class="w3-button w3-ripple w3-blue " ng-click="saveTbl8()">Crear Traslado Masivo</button>
 
 
 
@@ -96,6 +97,7 @@
 var app = angular.module('myApp', []);
 app.controller('customersCtrl', function($scope, $http) {
 $scope.title = "Traslado masivo";
+$scope.mensaje = {};$scope.mensajes = [];
 $scope.headers2 = [{column: "id",header:"ID"},{column: "str1",header:"Ubicación"}];
    $scope.filters2 = {};
 $scope.headers = [{column: "id",header:"ID"},{column: "str1",header:"Código"},
@@ -160,19 +162,57 @@ console.log("value");
 	$scope.tbl8.ent3 = value.id;
 	$scope.tbl3 = {};
 	$scope.tbl3 = value;
+	$scope.tbl3.id = value.id;
 	$scope.tbl3.tbl2Id = $scope.tbl8_aux.ent2;
 	var dat = $scope.tbl3;
 	var url = "api.php/tbl3s/";
 		url = url.concat($scope.tbl3.id);
-$http.put(url, dat).then(function (response) {console.log( response.data);});				
+		var tbl3_id = $scope.tbl3.id;
+	console.log("URL de actualizacion ====");
+	console.log(url);
+// $http.put(url, dat).then(function (response) {
+//console.log("Tratando de actualizar destino");
+//console.log( response.data);
+//$scope.mensaje.mens = {};
+//console.log("tbl3_id====================");console.log(tbl3_id);
+//$scope.mensaje.mens = "Ubicación de caja con ID ";
+//console.log($scope.mensaje.mens);
+//$scope.mensaje.mens = $scope.mensaje.mens.concat(tbl3_id);
+//console.log($scope.mensaje.mens);
+//$scope.mensaje.mens = $scope.mensaje.mens.concat("realizada con éxito");
+//console.log($scope.mensaje.mens);
+//$scope.mensajes.push($scope.mensaje);
+//console.log($scope.mensaje.mens);
+//}); -->
+
+$.ajax({
+    url: url,
+    type: 'PUT',
+	data: dat,
+	async:false,
+    success: function(result) {
+        // Do something with the result
+    }
+});
+
+
+
+
+console.log($scope.mensajes);				
 $scope.tbl8s.push($scope.tbl8);	    
 });
 	 var data=$scope.tbl8s;
 	 var dat=$scope.tbl3s_aux;
 	 console.log(data);
-$http.post("api.php/tbl8s", data).then(function (response) {console.log( response.data);
-$scope.mensaje = "Objeto creado con éxito!"
-});		
+$http.post("api.php/tbl8s", data).then(function (response) {
+setTimeout(function(){
+    console.log($scope.mensajes);
+}, 4000);
+console.log( response.data);
+$scope.mensaje.mens = "Traslado creado con éxito";
+$scope.mensajes.push($scope.mensajes);
+$scope.show_list_messages = true;
+});
 	}
 	
 	

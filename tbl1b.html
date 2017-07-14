@@ -53,6 +53,7 @@ div.scroll {
 		var app = angular.module('myApp', []);
 		  
 		app.controller('formCtrl', function($scope,$http) {
+		$scope.mensajes = [];
 		$scope.title = "Sabores";
 $scope.headers = [{show:0,column: "id",header:"ID"},{show:1,column: "str1",header:"Sabor"},{show:1,column: "ent1",header:"Peso mínimo"}];
    $scope.filters = {};

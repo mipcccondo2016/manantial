@@ -7,13 +7,15 @@
 </style>
 <meta charset="UTF-8">
 	<script src="w3data.js"></script>
+	
  <script src="moment-with-locales.js"></script>
   <script src="angular.min.js"></script>
+  <script src="dirPagination.js"></script>
       <link rel="stylesheet" href="w3mobile.css">
+	  <link rel="stylesheet" href="bootstrap.min.css">
     </head>
     <body >
 	<div ng-app="myApp">	
-	
 <div  ng-controller="formCtrlA">
 	<div ng-include="'b3.html'"></div>
 
@@ -21,19 +23,22 @@
 					<table >
 						<thead  ><td ng-repeat="n in headers">{{n.header}}
 						<input type="text" size={{n.size}} ng-model="filters[n.column]" placeholder={{n.header}}></td></thead>
-						<tr ng-repeat="a in tbl1s | filter:{id:filters.id} | filter:{str1:filters.str1} | filter:{str2:filters.str2} | 
-						filter:{ent1:filters.ent1} | filter:{sum:filters.sum} | filter:{dif:filters.dif} | orderBy: a">
+						<tr dir-paginate="a in tbl1s | filter:{id:filters.id} | filter:{str1:filters.str1} | filter:{str2:filters.str2} | 
+						filter:{ent1:filters.ent1} | filter:{sum:filters.sum} | filter:{dif:filters.dif} | orderBy: a  | itemsPerPage: 5">
 							<td class="numeric-cell">{{ a.id }}</td><td class="label-cell">{{a.str1}}</td><td class="label-cell">{{a.str2}}</td>	<td class="numeric-cell">{{ a.ent1 }}</td><td>{{ a.sum }}</td><td>{{ a.dif }}</td>
 					<!-- 		<td><button ng-click="select(a)" type="button"  class="btn btn-primary"> <span class="glyphicon glyphicon-ok"></span>Seleccionar</button>
 							<button ng-click="deleteTbl1(a)" type="button" class="btn btn-primary"> <span class="glyphicon glyphicon-remove"></span>Eliminar</button></td> -->
 						</tr>
 					</table>
+					
+					<ul class="pagination">
+  <li><dir-pagination-controls  ></dir-pagination-controls></li>
+</ul>
 					</div>
 				</div>
 </div>				
 	     <script >		
-
-		var app = angular.module('myApp', []);  
+			var app = angular.module('myApp', ['angularUtils.directives.dirPagination']);
 		app.controller('formCtrlA', function($scope,$http) {
 		console.log("Seteando el valor de titulo en menu Reportes ");
 			$scope.title = "Reportes";

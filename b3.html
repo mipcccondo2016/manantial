@@ -57,13 +57,7 @@ table td.expand {
 <div class="w3-panel w3-blue w3-center">
   <h1 class="w3-text-orange" style="text-shadow:2px 2px 0 #444">
   <b>{{title}}</b></h1>
-</div>
 
-
-
-  <div class="alert alert-success">
-    <strong>{{mensaje}}</strong> 
-  </div>	
-
-
-
+  <div ng-repeat="x in mensajes  track by $index" class="alert alert-success">
+  <strong>{{x.mens}}</strong> 
+  </div>

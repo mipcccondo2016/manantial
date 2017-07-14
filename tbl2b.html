@@ -35,6 +35,7 @@
 		
 		  
 		app.controller('formCtrl2', function($scope,$http) {
+		$scope.mensajes = [];
 		$scope.title = "Ubicaciones";
 $scope.headers = [{column: "id",header:"ID"},{column: "str1",header:"Ubicación"}];
    $scope.filters = {};

@@ -39,6 +39,7 @@
 var URL3 = "http://www.ruc.com.py/index.php/inicio/consulta_ruc";		 
 		var app = angular.module('myApp', []);
 		app.controller('formCtrl2', function($scope,$http) {
+		$scope.mensajes = [];
 		$scope.headers = [{show: "0",column: "id",header:"ID",size:"1"},{show: "1",column: "str1",header:"Estudiante",size:"5"},
 {show: "1",column: "str2",header:"Ruc/CI",size:"10"},{show: "1",column: "str3",header:"Telefono",size:"1"},{show: "1",column: "str4",header:"Correo",size:"1"},
 {show: "1",column: "str5",header:"Dirección",size:"1"}];

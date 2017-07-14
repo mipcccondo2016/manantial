@@ -36,6 +36,7 @@
 	     <script >		
 		var app = angular.module('myApp', []);
 		app.controller('formCtrl2', function($scope,$http) {
+		$scope.mensajes = [];
 		$scope.headers = [{show: "0",column: "id",header:"ID",size:"1"},{show: "1",column: "str1",header:"Codigo",size:"5"},
 {show: "1",column: "str2",header:"Descripción",size:"10"},{show: "1",column: "ent1",header:"Precio",size:"1",type:"number"}];
    $scope.filters = {};

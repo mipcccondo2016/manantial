@@ -138,6 +138,7 @@
 		 
 		var app = angular.module('myApp', ['angularUtils.directives.dirPagination']);
 		app.controller('formCtrl3', function($scope,$http) {
+		$scope.mensajes = [];
 		
 //refresh refreshTblws		
 		$scope.refreshTbl2s = function() {

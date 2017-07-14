@@ -4,8 +4,7 @@
 <script src="moment.min.js"></script>
   <script src="angular.min.js"></script>
     <script src="dirPagination.js"></script>
-
-  
+	<link rel="stylesheet" href="bootstrap.min.css">
     </head>
     <body >
 	<div ng-app="myApp">	
@@ -66,37 +65,39 @@
         </div>
     </div>
 </div>
-<div class="row">
+<div>
 
 					
 					<table  class="">
 						<thead  ><td ng-repeat="n in headers">{{n.header}}
 						<input type="text" ng-model="filters[n.column]" size={{n.size}} placeholder={{n.header}}></td></thead>
-						<tr ng-repeat="a in tbl3s | filter:{id:filters.id}:identical | filter:{str1:filters.str1} | filter:{ent1:filters.ent1} | filter:{tbl1Id:filters.tbl1Id}:identical | filter:{tbl2Id:filters.tbl2Id}:identical 
-						| filter:{tbl2Id:filters.tbl2Id} | filter:{ent3:filters.ent3} | filter:{str2:filters.str2}">
-							<td>{{ }}</td><td>{{ a.id }}</td>		<td>{{ a.str1 }}</td>	<td>{{ a.ent1 }}</td><td>{{ a.tbl1Id }}</td><td>{{ a.tbl2Id }}</td><td>{{a.ent3}}</td><td>{{a.str2}}</td>
+						<tr dir-paginate="a in tbl3s | filter:{id:filters.id}:identical | filter:{str1:filters.str1} | filter:{ent1:filters.ent1} | filter:{tbl1Id:filters.tbl1Id}:identical | filter:{tbl2Id:filters.tbl2Id}:identical 
+						| filter:{tbl2Id:filters.tbl2Id} | filter:{ent3:filters.ent3} | filter:{str2:filters.str2}  | itemsPerPage: 5">
+							<td>{{ a.id }}</td>		<td>{{ a.str1 }}</td>	<td>{{ a.ent1 }}</td><td>{{ a.tbl1Id }}</td><td>{{ a.tbl2Id }}</td><td>{{a.ent3}}</td><td>{{a.str2}}</td>
 							<td><button ng-click="select(a)" type="button" class="btn btn-warning"> <span class="glyphicon glyphicon-ok"></span>Seleccionar</button>
 							<td><button ng-click="baja(a)" type="button" class="btn btn-danger"> <span class="glyphicon glyphicon-remove"></span>Dar de baja</button></td>
 							<td><button ng-hide={{show}} ng-click="deleteTbl3(a)" type="button" class="btn btn-primary"> <span class="glyphicon glyphicon-remove"></span>Eliminar</button>
 							<button ng-hide={{!show}} ng-click="restore(a)" type="button" class="btn btn-primary"> <span class="glyphicon glyphicon-remove"></span>Restaurar</button></td>
-							
-							
-						</tr>
+						</tr>		
 					</table>
 					<dir-pagination-controls
-                max-size="5"
+                max-size="8"
                 direction-links="true"
                 boundary-links="true" >
-</dir-pagination-controls>  
-
+</dir-pagination-controls> 	
+				
 </div>
 				</div>
-</div>				
+</div>		
+
+
+
 	     <script >
 		 
 		var app = angular.module('myApp', ['angularUtils.directives.dirPagination']);
 	
 		app.controller('formCtrl3', function($scope,$http) {
+		$scope.mensajes = [];
 		$scope.get_url = "api.php/tbl3s?order=id,desc&filter[]=ent1,neq,0&filter[]=ent3,eq,1&filter[]=del1,eq,0" ;
 		$scope.title = "Cajas";
 		$scope.tbl3s_del = {};
@@ -181,8 +182,6 @@ $scope.refreshTbl1s = function() {
 	}
 	return tree;
 }
-
-
 //fin funcion que transforma
 $scope.refreshTblsAll = function() {
 			$scope.tbl3s = [];
@@ -222,7 +221,7 @@ $scope.refreshTbls = function() {
 			});	
 			}		
 		
-		$scope.headers = [{column: "",header:"",size:"1"},{column: "id",header:"ID",size:"1"},{column: "str1",header:"Codigo",size:"5"},
+		$scope.headers = [{column: "id",header:"ID",size:"1"},{column: "str1",header:"Codigo",size:"5"},
 {column: "ent1",header:"Peso",size:"10"},{column: "tbl1Id",header:"Sabor",size:"1"},{column: "tbl2Id",header:"Ubicación",size:"1"},
 {column: "ent3",header:"Activo/Inactivo",size:"1"},{column: "str2",header:"Fecha de baja",size:"10"}];
    $scope.filters = {};
