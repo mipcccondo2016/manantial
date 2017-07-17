@@ -185,14 +185,8 @@ console.log("value");
 //console.log($scope.mensaje.mens);
 //}); -->
 
-$.ajax({
-    url: url,
-    type: 'PUT',
-	data: dat,
-	async:false,
-    success: function(result) {
-        // Do something with the result
-    }
+$.ajax({url: url,type: 'PUT',data: dat,async:false,
+    success: function(result) {}
 });
 
 
