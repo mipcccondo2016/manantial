@@ -25,7 +25,7 @@
 				<button  ng-click="ListDeleted()" class="w3-btn w3-orange w3-jumbo">Listar Inactivos<i class="w3-margin-left fa fa-list-ul"></i></button>				
 			</div>
 			<div class="w3-col l6 m12 s12  ">		
-					<table style="width: 100%;"  class="w3-jumbo w3-brown letra_grande" >
+					<table style="width: 100%;"  class="w3-jumbo letra_grande" >
 						<thead  ><td ng-repeat="n in headers">{{n.header}}
 						<input type="text" size="1" ng-model="filters[n.column]" placeholder={{n.header}}></td></thead>
 						<tr  ng-click="select(a)" ng-repeat="a in tbls | filter:{id:filters.id} | filter:{str1:filters.str1} | filter:{str2:filters.str2} | filter:{str3:filters.str3}| filter:{str4:filters.str4}| filter:{str5:filters.str5} ">
