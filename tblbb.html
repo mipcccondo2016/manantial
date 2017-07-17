@@ -3,13 +3,13 @@
 <meta charset="UTF-8">
   <script src="moment.min.js"></script>
   <script src="angular.min.js"></script>
+  <script src="angular.min.js"></script>
     </head>
     <body >	
 	<div ng-app="myApp">	
 <div ng-include="'b4.html'"></div>	
 	<div  ng-controller="formCtrl2">
-
-			<form class="letra_grande">						
+			<form>						
 					<div class="form-group">
 							<div ng-repeat="n in headers  | filter:{show:1}">
 							{{n.header}}:<br><input type="text" ng-model="tbl[n.column]"><br>
@@ -17,38 +17,40 @@
 						</div>
 					</form>		<p class="buttons-row">  <button type="button" ng-click="saveTbl2()" class="btn btn-primary">Guardar</button>
 					<button type="button" ng-click="updateTbl2()" class="btn btn-primary" >Actualizar</button>
-					<button type="button" ng-click="ListDeleted()" class="btn btn-primary">Listar Eliminados/Activos</button></p>		
-					<table  class=" letra_grande" >
+					<button type="button" ng-click="ListDeleted()" class="btn btn-primary">Listar Eliminados/Activos</button></p>	
+						
+					<table  class="table  table-sm " >
 						<thead  ><td ng-repeat="n in headers">{{n.header}}
 						<input type="text" ng-model="filters[n.column]" placeholder={{n.header}}></td></thead>
-						<tr ng-repeat="a in tbls | filter:{id:filters.id} | filter:{str1:filters.str1} | filter:{str2:filters.str2} | filter:{ent1:filters.ent1} ">
-							<td ng-repeat="x in headers">
-							<div ng-if="x.column == 'ent1' || x.column == 'ent2'">{{a[x.column]  | number}}</div>
-							<div ng-if="x.column != 'ent1' && x.column != 'ent2'">{{a[x.column]}}</div>
-							</td>
+						<tr ng-repeat="a in tbls | filter:{id:filters.id} | filter:{str1:filters.str1} | filter:{str2:filters.str2} | filter:{str3:filters.str3}| filter:{str4:filters.str4}| filter:{str5:filters.str5} ">
+							<td ng-repeat="x in headers">{{a[x.column]}}</td>
 							<td><button ng-hide={{show}} ng-click="select(a)" type="button" class="btn btn-primary"> <span class="glyphicon glyphicon-ok"></span>Seleccionar</button>
 							<button ng-hide={{show}} ng-click="deleteTbl2(a)" type="button" class="btn btn-primary"> <span class="glyphicon glyphicon-remove"></span>Eliminar</button>
 							<button ng-hide={{!show}} ng-click="restore(a)" type="button" class="btn btn-primary"> <span class="glyphicon glyphicon-remove"></span>Restaurar</button></td>
 						</tr>
-					</table>				
-				</div></div>				
-	     <script >		
+					</table>
+				
+				</div>
+</div>				
+	     <script >	
+var URL3 = "http://www.ruc.com.py/index.php/inicio/consulta_ruc";		 
 		var app = angular.module('myApp', []);
 		app.controller('formCtrl2', function($scope,$http) {
 		$scope.mensajes = [];
-		$scope.headers = [{show: "0",column: "id",header:"ID",size:"1"},{show: "1",column: "str1",header:"Codigo",size:"5"},
-{show: "1",column: "str2",header:"Descripción",size:"10"},{show: "1",column: "ent1",header:"Precio",size:"1",type:"number"}];
+		$scope.headers = [{show: "0",column: "id",header:"ID",size:"1"},{show: "1",column: "str1",header:"Nombre",size:"5"},
+{show: "1",column: "str2",header:"Ruc/CI",size:"10"},{show: "1",column: "str3",header:"Telefono",size:"1"},{show: "1",column: "str4",header:"Correo",size:"1"},
+{show: "1",column: "str5",header:"Dirección",size:"1"}];
    $scope.filters = {};
    $scope.tbl = [];
 		$scope.tbl = {}; $scope.tbl_aux = {}; 
-   $http.get("api.php/tbl5s?order=id,desc&filter[]=del1,eq,0").then(function (response) {
+   $http.get("api.php/tblbs?order=id,desc&filter[]=del1,eq,0").then(function (response) {
    var data = $scope.php_crud_api_transform(response.data);
-			   $scope.tbls = data.tbl5s;
+			   $scope.tbls = data.tblbs;
    });
 	//Save tbl1s via POST
 	$scope.saveTbl2 = function() {
 	$scope.tbl.id = null;
-	$http.post("api.php/tbl5s",$scope.tbl).then(function (response) {$scope.tbl = {}; 
+	$http.post("api.php/tblbs",$scope.tbl).then(function (response) {$scope.tbl = {}; 
 	$scope.refreshTbl2s();
 	});
 	}
@@ -62,18 +64,18 @@
 			$scope.show = true;}
 			else { $scope.append1 =  "eq,0";$scope.show = false;  }
 			console.log($scope.show);
-			$scope.query = "api.php/tbl5s?order=id,desc&filter[]=del1," ;
+			$scope.query = "api.php/tblbs?order=id,desc&filter[]=del1," ;
 			$scope.query = $scope.query.concat($scope.append1);
 			console.log($scope.query);
 			$http.get($scope.query).then(function (response) {
 			   var data = $scope.php_crud_api_transform(response.data);
-			   $scope.tbls = data.tbl5s;
+			   $scope.tbls = data.tblbs;
 			});
 			}
 			
 	//Restoring data		
 	$scope.restore = function(x1) {
-	var url = "api.php/tbl5s/";url = url.concat(x1.id);
+	var url = "api.php/tblbs/";url = url.concat(x1.id);
 	$scope.tbl.del1 = null;
 	$scope.tbl.id = x1.id;
 	console.log("Restoring data");
@@ -132,20 +134,19 @@
 			
 	//Update tbl1s via PUT
 	$scope.updateTbl2 = function() {
-	var url = "api.php/tbl5s/";url = url.concat($scope.tbl.id);
-	alert($scope.tbl.id_image);
+	var url = "api.php/tblbs/";url = url.concat($scope.tbl.id);
 	$http.put(url,$scope.tbl).then(function (response){$scope.tbl = {};$scope.refreshTbl2s();});
 	}
 	$scope.select = function(a) {$scope.tbl = a;var data = $scope.tbl;}
 	
 	$scope.refreshTbl2s = function() {
-			 $http.get("api.php/tbl5s?order=id,desc&filter[]=del1,eq,0").then(function (response) {
+			 $http.get("api.php/tblbs?order=id,desc&filter[]=del1,eq,0").then(function (response) {
 				var data = $scope.php_crud_api_transform(response.data);
-			   $scope.tbls = data.tbl5s; });
+			   $scope.tbls = data.tblbs; });
 	}
 	
 $scope.deleteTbl2 = function(x1) {
-	var url = "api.php/tbl5s/";url = url.concat(x1.id);
+	var url = "api.php/tblbs/";url = url.concat(x1.id);
 	$scope.tbl.del1 = 1;
 	$scope.tbl.id = x1.id;
 	console.log("Intentando eliminado logico");

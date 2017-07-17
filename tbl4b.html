@@ -3,16 +3,13 @@
 <meta charset="UTF-8">
   <script src="moment.min.js"></script>
   <script src="angular.min.js"></script>
+  <script src="angular.min.js"></script>
     </head>
-    <body >	
+    <body class="w3-jumbo">	
 	<div ng-app="myApp">	
 <div ng-include="'b4.html'"></div>	
-	<div  ng-controller="formCtrl2">
-	
-	<INPUT class="topright" NAME="buscar" placeholder="Buscar RUC Online">
-	
-	
-			<form>						
+	<div  ng-controller="formCtrl2">	
+			<form  class="letra_grande">						
 					<div class="form-group">
 							<div ng-repeat="n in headers  | filter:{show:1}">
 							{{n.header}}:<br><input type="text" ng-model="tbl[n.column]"><br>
@@ -22,7 +19,7 @@
 					<button type="button" ng-click="updateTbl2()" class="btn btn-primary" >Actualizar</button>
 					<button type="button" ng-click="ListDeleted()" class="btn btn-primary">Listar Eliminados/Activos</button></p>	
 						
-					<table  class="table  table-sm " >
+					<table   class="w3-table-all w3-jumbo letra_grande" >
 						<thead  ><td ng-repeat="n in headers">{{n.header}}
 						<input type="text" ng-model="filters[n.column]" placeholder={{n.header}}></td></thead>
 						<tr ng-repeat="a in tbls | filter:{id:filters.id} | filter:{str1:filters.str1} | filter:{str2:filters.str2} | filter:{str3:filters.str3}| filter:{str4:filters.str4}| filter:{str5:filters.str5} ">
@@ -40,7 +37,7 @@ var URL3 = "http://www.ruc.com.py/index.php/inicio/consulta_ruc";
 		var app = angular.module('myApp', []);
 		app.controller('formCtrl2', function($scope,$http) {
 		$scope.mensajes = [];
-		$scope.headers = [{show: "0",column: "id",header:"ID",size:"1"},{show: "1",column: "str1",header:"Estudiante",size:"5"},
+		$scope.headers = [{show: "0",column: "id",header:"ID",size:"1"},{show: "1",column: "str1",header:"Nombre/Razón Social",size:"5"},
 {show: "1",column: "str2",header:"Ruc/CI",size:"10"},{show: "1",column: "str3",header:"Telefono",size:"1"},{show: "1",column: "str4",header:"Correo",size:"1"},
 {show: "1",column: "str5",header:"Dirección",size:"1"}];
    $scope.filters = {};

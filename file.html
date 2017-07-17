@@ -1,0 +1,6 @@
+<script src="angular.min.js"></script>
+	<form action="upload.php" method="post" enctype="multipart/form-data">
+    <input  ng-model="tbl.id_image" ng-model="tbl[id_image]" type="file" name="fileToUpload" id="fileToUpload">
+    <input type="submit" value="Upload Image" name="submit">
+</form>
+<p class="w3-organe w3-jumbo">{{tbl.id_image}}</p>

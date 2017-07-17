@@ -1,82 +1,91 @@
 <html>
     <head>
 <meta charset="UTF-8">
-	<script src="w3data.js"></script>
-  <link rel="stylesheet" href="bootstrap.min.css">
-  <script src="jquery.min.js"></script>
-  <script src="moment-with-locales.js"></script>
-  <script src="bootstrap.min.js"></script>
+  <script src="moment.min.js"></script>
+  <script src="angular.min.js"></script>
   <script src="angular.min.js"></script>
     </head>
-    <body >
+    <body >	
 	<div ng-app="myApp">	
-<div  ng-controller="formCtrl">
-<div ng-include="'b3.html'"></div>	
-
-<div id="jsGrid"></div>
-
-					<!-- <div class="w3-responsive">
-					<table class="w3-table-all w3-tiny">
+<div ng-include="'b4.html'"></div>	
+	<div  ng-controller="formCtrl2">
+			<form>						
+					<div class="form-group">
+							<div ng-repeat="n in headers  | filter:{show:1}">
+							{{n.header}}:<br><input type="text" ng-model="tbl[n.column]"><br>
+							</div>
+						</div>
+					</form>		<p class="buttons-row">  <button type="button" ng-click="saveTbl2()" class="btn btn-primary">Guardar</button>
+					<button type="button" ng-click="updateTbl2()" class="btn btn-primary" >Actualizar</button>
+					<button type="button" ng-click="ListDeleted()" class="btn btn-primary">Listar Eliminados/Activos</button></p>	
+						
+					<table  class="table  table-sm " >
 						<thead  ><td ng-repeat="n in headers">{{n.header}}
-						<input type="text" size={{n.size}} ng-model="filters[n.column]" placeholder={{n.header}}></td></thead>
-						<tr ng-repeat="a in tbl1s | filter:{id:filters.id} | filter:{str1:filters.str1} | filter:{str2:filters.str2} | 
-						filter:{ent1:filters.ent1} | filter:{sum:filters.sum} | filter:{dif:filters.dif} | orderBy: a">
-							<td>{{ a.id }}</td><td>{{a.str1}}</td><td>{{a.str2}}</td>	<td>{{ a.ent1 }}</td><td>{{ a.sum }}</td><td>{{ a.dif }}</td>
-							<td><button ng-click="select(a)" type="button" class="btn btn-warning"> <span class="glyphicon glyphicon-ok"></span>Seleccionar</button>
-							<button ng-click="deleteTbl1(a)" type="button" class="btn btn-danger"> <span class="glyphicon glyphicon-remove"></span>Eliminar</button></td>
+						<input type="text" ng-model="filters[n.column]" placeholder={{n.header}}></td></thead>
+						<tr ng-repeat="a in tbls | filter:{id:filters.id} | filter:{str1:filters.str1} | filter:{str2:filters.str2} | filter:{str3:filters.str3}| filter:{str4:filters.str4}| filter:{str5:filters.str5} ">
+							<td ng-repeat="x in headers">{{a[x.column]}}</td>
+							<td><button ng-hide={{show}} ng-click="select(a)" type="button" class="btn btn-primary"> <span class="glyphicon glyphicon-ok"></span>Seleccionar</button>
+							<button ng-hide={{show}} ng-click="deleteTbl2(a)" type="button" class="btn btn-primary"> <span class="glyphicon glyphicon-remove"></span>Eliminar</button>
+							<button ng-hide={{!show}} ng-click="restore(a)" type="button" class="btn btn-primary"> <span class="glyphicon glyphicon-remove"></span>Restaurar</button></td>
 						</tr>
 					</table>
-					</div> -->
+				
 				</div>
 </div>				
-	     <script >		
-
-		var app = angular.module('myApp', []);  
-		app.controller('formCtrl', function($scope,$http) {
-$scope.headers = [{column: "id",header:"ID",size:"1"},{column: "str1",header:"Sabor",size:"2"},
-{column: "str2",header:" Ubicación"},{column: "ent1",header:"Peso mínimo"},{column: "sum",header:"Suma Cajas"},{column: "dif",header:"Valor a producir"}];
+	     <script >	
+var URL3 = "http://www.ruc.com.py/index.php/inicio/consulta_ruc";		 
+		var app = angular.module('myApp', []);
+		app.controller('formCtrl2', function($scope,$http) {
+		$scope.mensajes = [];
+		$scope.headers = [{show: "0",column: "id",header:"ID",size:"1"},{show: "1",column: "str1",header:"Ubicación",size:"5"}
+		//,{show: "1",column: "str2",header:"Ruc/CI",size:"10"},{show: "1",column: "str3",header:"Telefono",size:"1"},{show: "1",column: "str4",header:"Correo",size:"1"},
+		//{show: "1",column: "str5",header:"Dirección",size:"1"}
+];
    $scope.filters = {};
-    $http.get("api.php/v1?order=dif").then(function (response) {
+   $scope.tbl = [];
+		$scope.tbl = {}; $scope.tbl_aux = {}; 
+   $http.get("api.php/tblas?order=id,desc&filter[]=del1,eq,0").then(function (response) {
    var data = $scope.php_crud_api_transform(response.data);
-   console.log(data.v1);
-			   $scope.tbl1s = data.v1;
+			   $scope.tbls = data.tblas;
    });
-	$("#jsGrid").jsGrid({
-        width: "100%",
-        height: "400px",
- 
-        inserting: true,
-        editing: true,
-        sorting: true,
-        paging: true,
- 
-        data: $scope.tbl1s,
- 
-        fields: [
-            { name: "id", type: "text", width: 150, validate: "required" },
-            { name: "str1", type: "number", width: 50 },
-            { name: "str2", type: "text", width: 200 },
-            { name: "ent1", type: "number", valueField: "Id", textField: "Name" },
-            { name: "sum", type: "checkbox", title: "Is Married", sorting: false },
-			{ name: "dif", type: "checkbox", title: "Is Married", sorting: false },
-            { type: "control" }
-        ]
-    });
-	
-	
-	
-	
-	
-	
-	$scope.refreshTbl1s = function() {
-			$scope.tbl1s = [];
-			$http.get("api.php/v1?order=id,desc").then(function (response) {
-			   var data = $scope.php_crud_api_transform(response.data);
-			   $scope.tbl1s = data.v1;
-			});
+	//Save tbl1s via POST
+	$scope.saveTbl2 = function() {
+	$scope.tbl.id = null;
+	$http.post("api.php/tblas",$scope.tbl).then(function (response) {$scope.tbl = {}; 
+	$scope.refreshTbl2s();
+	});
 	}
+	
+	
+	$scope.ListDeleted = function() {
+			console.log("ListDeleted de tbl2");
+			$scope.tbl1s = [];
+			console.log($scope.show);
+			if (!$scope.show) { $scope.append1 =  "eq,1";
+			$scope.show = true;}
+			else { $scope.append1 =  "eq,0";$scope.show = false;  }
+			console.log($scope.show);
+			$scope.query = "api.php/tblas?order=id,desc&filter[]=del1," ;
+			$scope.query = $scope.query.concat($scope.append1);
+			console.log($scope.query);
+			$http.get($scope.query).then(function (response) {
+			   var data = $scope.php_crud_api_transform(response.data);
+			   $scope.tbls = data.tblas;
+			});
+			}
 			
-		//funcion que transforma
+	//Restoring data		
+	$scope.restore = function(x1) {
+	var url = "api.php/tblas/";url = url.concat(x1.id);
+	$scope.tbl.del1 = null;
+	$scope.tbl.id = x1.id;
+	console.log("Restoring data");
+	$http.put(url,$scope.tbl).then(function (response){$scope.tbl = {};$scope.refreshTbl2s();});
+		$scope.show = !$scope.show;
+		}	
+			
+			
+			//funcion que transforma
 	$scope.php_crud_api_transform = function(tables) {
 	var array_flip = function (trans) {
 		var key, tmp_ar = {};
@@ -123,8 +132,29 @@ $scope.headers = [{column: "id",header:"ID",size:"1"},{column: "str1",header:"Sa
 	return tree;
 }
 //fin funcion que transforma
-		
+			
+	//Update tbl1s via PUT
+	$scope.updateTbl2 = function() {
+	var url = "api.php/tblas/";url = url.concat($scope.tbl.id);
+	$http.put(url,$scope.tbl).then(function (response){$scope.tbl = {};$scope.refreshTbl2s();});
+	}
+	$scope.select = function(a) {$scope.tbl = a;var data = $scope.tbl;}
+	
+	$scope.refreshTbl2s = function() {
+			 $http.get("api.php/tblas?order=id,desc&filter[]=del1,eq,0").then(function (response) {
+				var data = $scope.php_crud_api_transform(response.data);
+			   $scope.tbls = data.tblas; });
+	}
+	
+$scope.deleteTbl2 = function(x1) {
+	var url = "api.php/tblas/";url = url.concat(x1.id);
+	$scope.tbl.del1 = 1;
+	$scope.tbl.id = x1.id;
+	console.log("Intentando eliminado logico");
+	$http.put(url,$scope.tbl).then(function (response){$scope.tbl = {};$scope.refreshTbl2s();});	
+		}		
 });
         </script>
+		</div>
     </body>
 </html>
