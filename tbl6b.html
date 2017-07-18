@@ -2,38 +2,41 @@
 <html>
     <head>
 <meta charset="UTF-8">
-	<script src="w3data.js"></script>
   <script src="jquery.min.js"></script>
   <script src="moment.min.js"></script>
   <script src="angular.min.js"></script>
   <script src="dirPagination.js"></script>
+    <link rel="stylesheet" href="w3.css">
   <style>
 </style>
     </head>
-    <body  class="body_font">	<div ng-app="myApp">	
+    <body >	
+	<div ng-app="myApp">	
 <div  ng-controller="formCtrl3">
 <div ng-include="'b4.html'"></div>	
 
-<div class="row">
-    <div class="col-md-12">
+<div class="w3-row w3-container">
+    <div class="w3-col l4 m4 s4">
 	 Fecha: <input ng-model="tbl.dat1">
 	Hora: <input ng-model="tbl.time1">
+	</div>
+	<div class="w3-col l8 m8 s8">
 	Seleccionar Cliente: <input type="checkbox" ng-model="myVar"   ng-click="refreshTbl2s()" >
 	<input type="hidden" ng-model="tbl.tbl4s_id" >
 	<input type="text" ng-model="tbl4_selected.str1" >
 	<div ng-hide="!myVar">						
-					<table  class="table let1 table-sm" >
+					<table  class="" >
 						<thead  ><td ng-repeat="n in headers2">{{n.header}}
 						<input type="text" ng-model="filters[n.column]" placeholder={{n.header}}></td></thead>
 						<tr ng-repeat="a in tbl4s | filter:{id:filters.id} | filter:{str1:filters.str1} | filter:{str2:filters.str2} | filter:{str3:filters.str3}| filter:{str4:filters.str4}| filter:{str5:filters.str5} ">
 							<td ng-click="select_tbl4(a)"  ng-repeat="x in headers2">{{a[x.column]}}</td>
-							<!-- <td><button ng-hide={{show}} ng-click="select(a)" type="button" class="btn btn-primary"> <span class="glyphicon glyphicon-ok"></span>Seleccionar</button>
-							<button ng-hide={{show}} ng-click="deleteTbl2(a)" type="button" class="btn btn-primary"> <span class="glyphicon glyphicon-remove"></span>Eliminar</button>
-							<button ng-hide={{!show}} ng-click="restore(a)" type="button" class="btn btn-primary"> <span class="glyphicon glyphicon-remove"></span>Restaurar</button></td>
  -->						</tr>
 					</table>
 							</div>
-		
+	</div>
+	</div>
+	<div class="w3-row w3-container">
+	<div class="w3-col l12 m12 s12">	
 			Seleccionar Ubicación: <input type="checkbox" ng-model="myVar2"   ng-click="refreshTblas()" >
 	<input type="hidden" ng-model="tbl.tblas_id" >
 	<input type="text" ng-model="tbla_selected.str1" >
@@ -53,12 +56,11 @@
 					</div>
 							</div>
 
-
 			Seleccionar empleado: <input type="checkbox" ng-model="myVar3"   ng-click="refreshTblbs()" >
 	<input type="hidden" ng-model="tbl.tblbs_id" >
 	<input type="text" ng-model="tblb_selected.str1" >
 	<div ng-hide="!myVar3">						
-					<table  class="table  table-sm  let1" >
+					<table  class="" >
 						<thead  ><td ng-repeat="n in headers6">{{n.header}}
 						<input type="text" ng-model="filters[n.column]" placeholder={{n.header}}></td></thead>
 						<tr ng-repeat="a in tblbs | filter:{id:filters.id} | filter:{str1:filters.str1} | filter:{str2:filters.str2} | filter:{str3:filters.str3}| filter:{str4:filters.str4}| filter:{str5:filters.str5} ">
@@ -70,31 +72,11 @@
 					</table>
 							</div>
 		</div>
-		</div>
-		<div class="row">
-		<div class="col-md-12">
-					<h2>Seleccionar Producto/Concepto/Servicio:</h2>				
-					<div>							
-						<table  class="table  table-sm  table-hover let1" >
-						<thead  ><td ng-repeat="n in headers3">{{n.header}}
-						<input type="text" ng-model="filters[n.column]" placeholder={{n.header}}></td></thead>
-						<tr ng-repeat="a in tbl5s | filter:{id:filters.id} | filter:{str1:filters.str1} | filter:{str2:filters.str2} | filter:{ent1:filters.ent1} ">
-							<td    ng-repeat="x in headers3">
-							<div ng-click="select_tbl5(a)" ng-if="x.column == 'ent1' || x.column == 'ent2'">{{a[x.column]  | number}}</div>
-							<div  ng-click="select_tbl5(a)" ng-if="x.column != 'ent1' && x.column != 'ent2'">{{a[x.column]}}</div>
-							</td>
-<!-- 							<td><button ng-hide={{show}} ng-click="select(a)" type="button" class="btn btn-primary"> <span class="glyphicon glyphicon-ok"></span>Seleccionar</button>
-							<button ng-hide={{show}} ng-click="deleteTbl2(a)" type="button" class="btn btn-primary"> <span class="glyphicon glyphicon-remove"></span>Eliminar</button>
-							<button ng-hide={{!show}} ng-click="restore(a)" type="button" class="btn btn-primary"> <span class="glyphicon glyphicon-remove"></span>Restaurar</button></td> -->
-						</tr>
-					</table>	
-					
-				</div>
-		</div>
-    </div>
-		
-	<h2>Servicios A Pagar</h2> 
-	<table  class="table  table-sm  letra_grande"    >
+		</div>	
+			<div class="w3-row">
+  <div class="w3-col l5 m5 s5  w3-center">
+  <h2>Servicios A Pagar</h2> 
+	<table  class="w3-white"    >
 						<thead  ><td ng-repeat="n in headers4  | filter:{show:1}">{{n.header}}
 						<!-- <input type="text" ng-model="filters[n.column]" placeholder={{n.header}}> -->
 						</td></thead>
@@ -112,57 +94,48 @@
 							</td>
 						</tr>
 				</tfoot>
-				</table>	
-	
- <div class="row">
-    <div class="col-md-8">
-        <div class="well">
+				</table>
+  </div>
+  <div class="w3-col l7 m7 s7  w3-center ">
+  <div ng-click="select_tbl5(a)" ng-repeat="a in tbl5s"  class="w3-card-4 w3-bar">
+				<img class="w3-circle size_image_products" ng-src="uploads/{{a.filename}}" >
+				<p>{{a.str2}}</p> <p>{{a.ent1 | number}}Gs</p>
+			</div>
+  </div>
+</div>
+		</div>
+   
+ <div class="w3-row">
+    <div class="w3-col l12 m12 s12  w3-center">
 				<p class="buttons-row">	<button type="button" ng-click="saveTbl()" class="btn btn-primary">Crear Pago</button>
 					<button type="button" ng-click="updateTbl()" class="btn btn-primary">Actualizar</button>
 										<button type="button" ng-click="refreshTbls()" class="btn btn-primary">Solo Activos</button>
 					<button type="button" ng-click="refreshTblsAll()" class="btn btn-primary">Listar Todos</button> </p> 
-        </div>
-    </div>
-    <div class="col-md-4">
-        <div class="row">
-            <div class="col-md-12">
-                <div class="well">
-					
-				</div>
-			</div> 
-        </div>
-        <div class="row">
-           
-        </div>
-    </div>
+    </div> 
 </div>
-<div class="row">
-
-					<div class="scroll">
-					<table  class="table table-sm table-responsive">
+<div class="w3-row">					
+					<table  >
 						<thead  ><td ng-repeat="n in headers">{{n.header}}
 						<input type="text" ng-model="filters[n.column]" size={{n.size}} placeholder={{n.header}}>
 						</td></thead>
-						<tr dir-paginate="a in tbl7s_list | filter:{id:filters.id}:identical | filter:{str1:filters.str1} | filter:{ent1:filters.ent1} | filter:{tbl1Id:filters.tbl1Id}:identical | filter:{tbl2Id:filters.tbl2Id}:identical 
-						| filter:{tbl2Id:filters.tbl2Id} | filter:{ent3:filters.ent3} | filter:{str2:filters.str2} | itemsPerPage: 5">
+						<tr ng-repeat="a in tbl7s_list | filter:{id:filters.id}:identical | filter:{str1:filters.str1} | filter:{ent1:filters.ent1} | filter:{tbl1Id:filters.tbl1Id}:identical | filter:{tbl2Id:filters.tbl2Id}:identical 
+						| filter:{tbl2Id:filters.tbl2Id} | filter:{ent3:filters.ent3} | filter:{str2:filters.str2} ">
 							<td>{{ a.id }}</td>		<td>{{ a.str1 }}</td>	<td>{{ a.ent1 }}</td><td>{{ a.tbl1Id }}</td><td>{{ a.tbl2Id }}</td><td>{{a.ent3}}</td><td>{{a.str2}}</td>
 							<td><button ng-click="selected(a)" type="button" class="btn btn-warning"> <span class="glyphicon glyphicon-ok"></span>Seleccionar</button>
 							<button ng-click="deleteTbl2(a)" type="button" class="btn btn-danger"> <span class="glyphicon glyphicon-remove"></span>Eliminar</button></td>
 							<td><button ng-click="baja(a)" type="button" class="btn btn-danger"> <span class="glyphicon glyphicon-remove"></span>Dar de baja</button></td>
 						</tr>
-</table> 
-<div class="text-center">
-          <dir-pagination-controls 
-		  boundary-links="true" 
-		  on-page-change="pageChangeHandler(newPageNumber)" 
-		  template-url="dirPagination.tpl.html">
-		  </dir-pagination-controls>
-          </div>		  
+					</table> 
 </div>
-
-</div>
+				
+				<div class="w3-row w3-center">	
+				<div class="w3-col l12 m12 s12 ">
+				<p>Listado de ventas </p>
+					<div ng-repeat="x in tbl6s"><p>{{ x.dat1 }}<p></div>
+				</div>							
 				</div>
-</div>				
+</div>
+ </div>				
 	     <script >
 		 
 		var app = angular.module('myApp', ['angularUtils.directives.dirPagination']);
@@ -198,8 +171,6 @@
 
 	$scope.getClass = function() {
 	$scope.colors_list = ["w3-orange","w3-brown","w3-gray"];
-	console.log("Entrando en funcion getClass()");
-	console.log($scope.colors_list[2]);
 	return $scope.colors_list[2];
 	
 	}
@@ -237,8 +208,7 @@ $scope.refreshTbl1s = function() {
    });
 	}
 //end funcion refreshTbl1s
-
-
+//Funcion que actualiza los totales
 $scope.updateTotals = function(a) {
 console.log("Actualizando totales............");
 console.log("Valor a procesar=========a======",a);
@@ -288,13 +258,16 @@ $scope.select_tbl5 = function(a) {
 			$scope.tbl7s.ent3 = a.ent1 * 1 ;
 				//Save tbl1s via POST
 			$scope.tbl.id = null;
-			$http.post("api.php/tbl6s",$scope.tbl).then(function (response) {
-			$scope.tbl = {}; 
-			});
 			
+			$http.post("api.php/tbl6s",$scope.tbl).then(function (response) {
+			$scope.refreshTblsAll();
+			
+			});
 			$scope.tbl7s_list.push($scope.tbl7s);
 			$scope.myVar2 = false;
-	}
+			}
+			
+	
 //fin de funcion que selecciona select_tbl5
 		
 		$scope.identical = function(actual, expected){
@@ -354,10 +327,13 @@ $scope.select_tbl5 = function(a) {
 
 //fin funcion que transforma
 $scope.refreshTblsAll = function() {
-			$scope.tbl3s = [];
-			$http.get("api.php/tbl6s?order=id,desc&filter[]=del1,eq,0").then(function (response) {
+			console.log('Tratando de recuperar listado de TBL6s')
+			$scope.tbl6s = [];
+			$http.get("api.php/tbl6s?order=id,desc&filter[]=del1,eq,0&filter[]=ent1,eq,0").then(function (response) {
 			   var data = $scope.php_crud_api_transform(response.data);
-			   $scope.tbl3s = data.tbl3s;
+			   $scope.tbl6s = data.tbl6s;
+			   console.log("Se recupero el siguiente listado de tbl6s= ");
+			   console.log($scope.tbl6s);
 			});	
 			}		
 			
@@ -373,7 +349,13 @@ $scope.refreshTbls = function() {
 		
 $scope.headers4 = [{show: "0",column: "id",header:"ID",size:"1"},{show: "1",column: "str1",header:"Codigo",size:"5"},
 {show: "1",column: "str2",header:"Descripción",size:"10"},{show: "1",column: "ent1",header:"Cantidad",size:"1",type:"number"},
-{show: "1",column: "ent2",header:"Precio",size:"1",type:"number"},{show: "1",column: "ent3",header:"Total",size:"1",type:"number"}];		
+{show: "1",column: "ent2",header:"Precio",size:"1",type:"number"},{show: "1",column: "ent3",header:"Total",size:"1",type:"number"}];	
+
+
+$scope.headers_tbl6s = [{show: "0",column: "id",header:"ID",size:"1"},{show: "1",column: "dat1",header:"Fecha",size:"5"},
+{show: "1",column: "time1",header:"Hora",size:"10"},{show: "1",column: "ent1",header:"Total",size:"1",type:"number"},
+{show: "1",column: "ent2",header:"Pendiente de Pago",size:"1",type:"number"},{show: "1",column: "ent3",header:"Total",size:"1",type:"number"}];		
+	
 
 
 $scope.headers3 = [{show: "0",column: "id",header:"ID",size:"1"},{show: "1",column: "str1",header:"Codigo",size:"5"},
@@ -401,6 +383,7 @@ $scope.headers3 = [{show: "0",column: "id",header:"ID",size:"1"},{show: "1",colu
 			   $scope.tbl3s = data.tbl3s;
 			});
 			$scope.tbl.ent3 = 1;
+	$scope.refreshTblsAll();
 	$scope.refreshTbls();
 	$scope.refreshTbl1s();
 	$scope.refreshTbl2s();

@@ -23,7 +23,6 @@
 					{{n.header}}:
 					<br><input  class="w3-input" type="text" ng-model="tbl[n.column]"><br>
 					</div>
-			
 					</form>
 				<p><button ng-click="saveTbl2()" class="w3-btn w3-orange">Crear<i class="w3-margin-left fa fa-floppy-o"></i></button>
 					<button  ng-click="updateTbl2()" class="w3-btn w3-orange">Actutalizar<i class="w3-margin-left fa fa-pencil"></i></button>
@@ -35,9 +34,9 @@
 						<input type="text"  size={{n.size}} ng-model="filters[n.column]" placeholder={{n.header}}></td></thead>
 						<tr  ng-click="select(a)" ng-repeat="a in tbls | filter:{id:filters.id} | filter:{str1:filters.str1} | filter:{str2:filters.str2} | filter:{str3:filters.str3}| filter:{str4:filters.str4}| filter:{str5:filters.str5} ">
 							<td>
-							<button ng-hide={{show}} ng-click="select(a)" class="w3-btn w3-orange w3-jumbo" type="button"> <i class="fa fa-check-circle"></i> </button>
-							<button ng-hide={{show}} ng-click="deleteTbl2(a)" class="w3-btn w3-red w3-jumbo"><i class="w3-margin-left fa fa-trash"></i></button>
-							<button ng-hide={{!show}} ng-click="restore(a)" type="button" class="btn btn-primary"><i class="w3-margin-left fa fa-undo"></i></button>
+							<button ng-hide={{show}} ng-click="select(a)" class="w3-btn w3-orange" type="button"> <i class="fa fa-check-circle"></i> </button>
+							<button ng-hide={{show}} ng-click="deleteTbl2(a)" class="w3-btn w3-red "><i class="fa fa-trash"></i></button>
+							<button ng-hide={{!show}} ng-click="restore(a)" type="button" class="w3-btn w3-orange"><i class="fa fa-undo"></i></button>
 							</td>
 							<td ng-repeat="x in headers">{{a[x.column]}}</td>
 						</tr>

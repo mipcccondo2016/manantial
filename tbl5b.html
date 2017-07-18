@@ -1,3 +1,4 @@
+
 <html>
     <head>
 <meta charset="UTF-8">
@@ -63,22 +64,13 @@ height:90;
 
 <div class="w3-row w3-container">
  <div class="w3-col l1 m1 s1 w3-container"></div>
-  <div class="w3-col l3 m6 s4 w3-center">
+  <div class="w3-col l3 m6 s4 w3-center w3-container">
    <div class="w3-container "><h2>Listado de Productos con fotos</h2>
-   <div  ng-repeat="a in tbls"  class="w3-card-4">
+   <div  ng-repeat="a in tbls"  class="w3-card-4 w3-bar">
 		<img class="w3-circle size_image_products" ng-src="uploads/{{a.filename}}" >
-		{{a.str2}}
+		<p>{{a.str2}}</p> <p>{{a.ent1}}Gs</p>
 	</div>
-	</div>  
-  
-  
-  
-
-
-	
-	
-		
-									
+	</div>  									
 				</div></div>				
 	     <script >		
 		var app = angular.module('myApp', []);
