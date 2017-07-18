@@ -3,25 +3,52 @@
 <meta charset="UTF-8">
   <script src="moment.min.js"></script>
   <script src="angular.min.js"></script>
-    </head>
+    <style>
+ul#menu li {
+    display:inline;
+}
+
+.size_image_products{
+height:90;
+ width:50;
+
+}
+</style>
+	</head>
     <body >	
 	<div ng-app="myApp">	
 <div ng-include="'b4.html'"></div>	
-	<div  ng-controller="formCtrl2">
+	<div  ng-controller="formCtrl2">	
+	<div class="w3-row w3-container">
+  <div class="w3-col l1 m1 s1 w3-container w3-center">
+  <p>
+  <div ng-include="'menu2.html'"></div>	
+  </p></div>
+  <div class="w3-col l3 m3 s3 w3-center">
+  <div class="w3-card-4">
+<div class="w3-container"><h2>Productos</h2></div>
+<form class="w3-container ">
+<div ng-repeat="n in headers  | filter:{show:1}">
+	{{n.header}}:<br><input class="w3-input"  type="text" ng-model="tbl[n.column]"><br>
+</div>
+</form> 
+<form action="upload.php" method="post" enctype="multipart/form-data">
+    <input  ng-model="tbl.id_image"   id="id_image" ng-model="tbl[id_image]" type="file" name="fileToUpload" id="fileToUpload">
+    <input class="w3-btn w3-border " type="submit" ng-click="get_file_name()"value="Crear" name="submit">
+	<input class="w3-btn w3-border " type="submit" ng-click="update_with_image()"value="Modifcar " name="submit">
+	</form>
+<p class="w3-organe w3-jumbo">{{tbl.id_image}}</p>
 
-			<form class="letra_grande">						
-					<div class="form-group">
-							<div ng-repeat="n in headers  | filter:{show:1}">
-							{{n.header}}:<br><input type="text" ng-model="tbl[n.column]"><br>
-							</div>
-						</div>
-					</form>		<p class="buttons-row">  <button type="button" ng-click="saveTbl2()" class="btn btn-primary">Guardar</button>
-					<button type="button" ng-click="updateTbl2()" class="btn btn-primary" >Actualizar</button>
-					<button type="button" ng-click="ListDeleted()" class="btn btn-primary">Listar Eliminados/Activos</button></p>		
-					<table  class=" letra_grande" >
+<button type="button" ng-click="saveTbl2()" class="w3-btn w3-border ">Guardar</button>
+					<button type="button" ng-click="updateTbl2()" class="w3-btn w3-border" >Actualizar</button>
+					<button type="button" ng-click="ListDeleted()" class="w3-btn w3-border ">Listar Eliminados/Activos</button></p>
+</div>
+  </div>
+  <div class="w3-col l8 m8 s8  w3-center">
+  <table  class="" >
 						<thead  ><td ng-repeat="n in headers">{{n.header}}
 						<input type="text" ng-model="filters[n.column]" placeholder={{n.header}}></td></thead>
-						<tr ng-repeat="a in tbls | filter:{id:filters.id} | filter:{str1:filters.str1} | filter:{str2:filters.str2} | filter:{ent1:filters.ent1} ">
+						<tr  ng-click="select(a)" ng-repeat="a in tbls | filter:{id:filters.id} | filter:{str1:filters.str1} | filter:{str2:filters.str2} | filter:{ent1:filters.ent1} ">
 							<td ng-repeat="x in headers">
 							<div ng-if="x.column == 'ent1' || x.column == 'ent2'">{{a[x.column]  | number}}</div>
 							<div ng-if="x.column != 'ent1' && x.column != 'ent2'">{{a[x.column]}}</div>
@@ -30,10 +57,32 @@
 							<button ng-hide={{show}} ng-click="deleteTbl2(a)" type="button" class="btn btn-primary"> <span class="glyphicon glyphicon-remove"></span>Eliminar</button>
 							<button ng-hide={{!show}} ng-click="restore(a)" type="button" class="btn btn-primary"> <span class="glyphicon glyphicon-remove"></span>Restaurar</button></td>
 						</tr>
-					</table>				
+					</table>
+  </div>
+</div>
+
+<div class="w3-row w3-container">
+ <div class="w3-col l1 m1 s1 w3-container"></div>
+  <div class="w3-col l3 m6 s4 w3-center">
+   <div class="w3-container "><h2>Listado de Productos con fotos</h2>
+   <div  ng-repeat="a in tbls"  class="w3-card-4">
+		<img class="w3-circle size_image_products" ng-src="uploads/{{a.filename}}" >
+		{{a.str2}}
+	</div>
+	</div>  
+  
+  
+  
+
+
+	
+	
+		
+									
 				</div></div>				
 	     <script >		
 		var app = angular.module('myApp', []);
+	
 		app.controller('formCtrl2', function($scope,$http) {
 		$scope.mensajes = [];
 		$scope.headers = [{show: "0",column: "id",header:"ID",size:"1"},{show: "1",column: "str1",header:"Codigo",size:"5"},
@@ -51,6 +100,27 @@
 	$http.post("api.php/tbl5s",$scope.tbl).then(function (response) {$scope.tbl = {}; 
 	$scope.refreshTbl2s();
 	});
+	}
+	
+	
+	//Funcion que obtiente nomber de la imagen antes de adjuntar
+	$scope.update_with_image = function() {
+	var fullPath  = document.getElementById("id_image").value;
+	var filename = fullPath.replace(/^.*[\\\/]/, '')
+	var mensaje = "Paso por aqui al tratar de adjuntar el archivo===";
+	if(filename) {$scope.tbl.filename = filename ; }
+	
+	$scope.saveTbl2();
+	}
+	
+	
+	//Funcion que obtiente nomber de la imagen antes de adjuntar
+	$scope.get_file_name = function() {
+	var fullPath  = document.getElementById("id_image").value;
+	var filename = fullPath.replace(/^.*[\\\/]/, '')
+	var mensaje = "Paso por aqui al tratar de adjuntar el archivo===";
+	if (filename) { $scope.tbl.filename = filename ; }
+	$scope.updateTbl2();
 	}
 	
 	
@@ -133,7 +203,6 @@
 	//Update tbl1s via PUT
 	$scope.updateTbl2 = function() {
 	var url = "api.php/tbl5s/";url = url.concat($scope.tbl.id);
-	alert($scope.tbl.id_image);
 	$http.put(url,$scope.tbl).then(function (response){$scope.tbl = {};$scope.refreshTbl2s();});
 	}
 	$scope.select = function(a) {$scope.tbl = a;var data = $scope.tbl;}

@@ -5,27 +5,32 @@
   <script src="angular.min.js"></script>
   <script src="angular.min.js"></script>
     </head>
-    <body class="w3-jumbo">	
+    <body >	
 	<div ng-app="myApp">	
 <div ng-include="'b4.html'"></div>	
 	<div  ng-controller="formCtrl2">
 <div class="w3-container w3-card">
   	
 			<div class="w3-row">
-			<div class="w3-col l3 m12 s12">
-				<form >						
-							<div class="form-group">
-								<div ng-repeat="n in headers  | filter:{show:1}">
-								{{n.header}}:<br><input  style="width: 100%;" type="text" ng-model="tbl[n.column]"><br>
-							</div>
-						</div>
-					</form>
-				<p><button ng-click="saveTbl2()" class="w3-btn w3-orange w3-jumbo">Crear<i class="w3-margin-left fa fa-floppy-o"></i></button>
-					<button  ng-click="updateTbl2()" class="w3-btn w3-orange w3-jumbo">Actutalizar<i class="w3-margin-left fa fa-pencil"></i></button>
-				<button  ng-click="ListDeleted()" class="w3-btn w3-orange w3-jumbo">Listar Inactivos<i class="w3-margin-left fa fa-list-ul"></i></button>				
+			<div   class="w3-col l1 m1 s1 w3-container">		
+			<div ng-include="'menu2.html'"></div>
+
+				
 			</div>
-			<div class="w3-col l6 m12 s12  ">		
-					<table style="width: 100%;"  class="w3-jumbo letra_grande" >
+			<div class="w3-col l3 m3 s4  w3-container">
+				<form class="w3-container ">													
+					<div ng-repeat="n in headers  | filter:{show:1}">
+					{{n.header}}:
+					<br><input  class="w3-input" type="text" ng-model="tbl[n.column]"><br>
+					</div>
+			
+					</form>
+				<p><button ng-click="saveTbl2()" class="w3-btn w3-orange">Crear<i class="w3-margin-left fa fa-floppy-o"></i></button>
+					<button  ng-click="updateTbl2()" class="w3-btn w3-orange">Actutalizar<i class="w3-margin-left fa fa-pencil"></i></button>
+				<button  ng-click="ListDeleted()" class="w3-btn w3-orange">Listar Inactivos<i class="w3-margin-left fa fa-list-ul"></i></button>				
+			</div>
+			<div class="w3-col l8 m3 s4 w3-container">		
+					<table style="width: 100%;"  class="" >
 						<thead  > <td> </td> <td ng-repeat="n in headers">{{n.header}}
 						<input type="text"  size={{n.size}} ng-model="filters[n.column]" placeholder={{n.header}}></td></thead>
 						<tr  ng-click="select(a)" ng-repeat="a in tbls | filter:{id:filters.id} | filter:{str1:filters.str1} | filter:{str2:filters.str2} | filter:{str3:filters.str3}| filter:{str4:filters.str4}| filter:{str5:filters.str5} ">
