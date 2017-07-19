@@ -260,34 +260,36 @@ $scope.select_tbl5 = function(a) {
 			$scope.tbl7s.ent3 = a.ent1 * 1 ;
 				//Save tbl1s via POST
 			$scope.tbl.id = null;
-			var flag = true;
+			var flag = 0;
+			console.log("Tratando de agregar");
 			if ($scope.tbl6s_selected === undefined){
 				console.log("Es undefined.....");
 				$http.post("api.php/tbl6s",$scope.tbl).then(function (response) {			
-				$http.get("api.php/tbl6s?order=id,desc&filter[]=del1,eq,0&filter[]=ent1,eq,0").then(function (response) {
-			   var data = $scope.php_crud_api_transform(response.data);
-			   $scope.tbl6s = data.tbl6s;
-			   $scope.tbl6s_selected = $scope.tbl6s[0] ;
-			   $scope.tbl7s.tbl6s_id =  $scope.tbl6s_selected.id;
-			$http.post("api.php/tbl7s",$scope.tbl7s).then(function(response) {
-				$scope.tbl7s_list.push($scope.tbl7s);
-				$scope.myVar2 = false;
-				$scope.refreshTbl7s();
-				flag = false;
+					$http.get("api.php/tbl6s?order=id,desc&filter[]=del1,eq,0&filter[]=ent1,eq,0").then(function (response) {
+						var data = $scope.php_crud_api_transform(response.data);
+						$scope.tbl6s = data.tbl6s;
+						$scope.tbl6s_selected = $scope.tbl6s[0] ;
+						$scope.tbl7s.tbl6s_id =  $scope.tbl6s_selected.id;
+						$http.post("api.php/tbl7s",$scope.tbl7s).then(function(response) {
+							$scope.tbl7s_list.push($scope.tbl7s);
+							$scope.myVar2 = false;
+							$scope.refreshTbl7s();
+							flag = 1;});});
+						$scope.refreshTblsAll();
 			});
-			});
-			$scope.refreshTblsAll();
-			});
-				if (flag){
+			}
+			console.log("Valor del flag====");console.log(flag);
+				if (flag === 0){
+					console.log("Trata de cargar del selected");
 					$scope.tbl7s.tbl6s_id =  $scope.tbl6s_selected.id;
 					$http.post("api.php/tbl7s",$scope.tbl7s).then(function(response) {
 					$scope.tbl7s_list.push($scope.tbl7s);
 					$scope.myVar2 = false;
 					$scope.refreshTbl7s();});
 			
+				}
 			}
-			}
-			}
+			
 			
 //fin de funcion que selecciona select_tbl5
 		$scope.identical = function(actual, expected){
