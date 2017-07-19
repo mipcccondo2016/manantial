@@ -94,14 +94,12 @@ height:90;
 	});
 	}
 	
-	
 	//Funcion que obtiente nomber de la imagen antes de adjuntar
 	$scope.update_with_image = function() {
 	var fullPath  = document.getElementById("id_image").value;
 	var filename = fullPath.replace(/^.*[\\\/]/, '')
 	var mensaje = "Paso por aqui al tratar de adjuntar el archivo===";
 	if(filename) {$scope.tbl.filename = filename ; }
-	
 	$scope.saveTbl2();
 	}
 	
@@ -192,12 +190,13 @@ height:90;
 }
 //fin funcion que transforma
 			
-	//Update tbl1s via PUT
+	//Update de tbl5s 
 	$scope.updateTbl2 = function() {
 	var url = "api.php/tbl5s/";url = url.concat($scope.tbl.id);
 	$http.put(url,$scope.tbl).then(function (response){$scope.tbl = {};$scope.refreshTbl2s();});
 	}
-	$scope.select = function(a) {$scope.tbl = a;var data = $scope.tbl;}
+	
+	 $scope.select = function(a) {$scope.tbl = a;var data = $scope.tbl;}
 	
 	$scope.refreshTbl2s = function() {
 			 $http.get("api.php/tbl5s?order=id,desc&filter[]=del1,eq,0").then(function (response) {
