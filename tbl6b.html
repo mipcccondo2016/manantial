@@ -14,12 +14,6 @@
 	<div ng-app="myApp">	
 <div  ng-controller="formCtrl3">
 <div ng-include="'b4.html'"></div>	
-
-
-
-				
-				
-
 <div class="w3-row w3-container">
     <div class="w3-col l4 m4 s4">
 	 Fecha: <input ng-model="tbl.dat1">
@@ -40,8 +34,6 @@
 							</div>
 	</div>
 	</div>
-	
-	
 	
 	<div class="w3-row w3-container">
 	<div class="w3-col l12 m12 s12">	
@@ -80,11 +72,7 @@
 					</table>
 							</div>
 		</div>
-		</div>	
-		
-		
-		
-		
+		</div>			
 			<div class="w3-row w3-row w3-container">
   <div class="w3-col l5 m5 s5  w3-center">
   <h2>Servicios A Pagar</h2> 
@@ -93,7 +81,7 @@
 						<!-- <input type="text" ng-model="filters[n.column]" placeholder={{n.header}}> -->
 						</td></thead>
 						<tr contenteditable="true" ng-repeat="a in tbl7s_list  track by $index">
-							<td    ng-click="updateTotals(a)"  ng-repeat="x in headers4  | filter:{show:1}">
+							<td    ng-click="updateTotals()"  ng-repeat="x in headers4  | filter:{show:1}">
 							<div ng-if="x.column == 'ent1' || x.column == 'ent2' || x.column == 'ent3' ">{{a[x.column]  | number}}</div>
 							<div ng-if="x.column != 'ent1' && x.column != 'ent2' && x.column != 'ent3'">{{a[x.column]}}</div>
 							</td>
@@ -111,11 +99,10 @@
   <div class="w3-col l7 m7 s7  w3-center ">
   <div ng-click="select_tbl5(a)" ng-repeat="a in tbl5s"  class="w3-card-4 w3-bar">
 				<img class="w3-circle size_image_products" ng-src="uploads/{{a.filename}}" >
-				<p>{{a.str2}}</p> <p>{{a.ent1 | number}}Gs</p>
+				<p>{{a.str2}}</p> <p class="w3-red w3-large">{{a.ent1 | number}} Gs</p>
 			</div>
   </div>
 </div>
-
    
  <div class="w3-row  w3-container">
     <div class="w3-col l12 m12 s12  w3-center">
@@ -125,7 +112,6 @@
 					<button type="button" ng-click="refreshTblsAll()" class="btn btn-primary">Listar Todos</button> </p> 
     </div> 
 </div>
-
 
 <div class="w3-row w3-center">	
 				<div class="w3-col l12 m12 s12 ">
@@ -160,6 +146,9 @@
 	
 	$scope.select_tbl6s = function(x){
 	$scope.tbl6s_selected  = x ;
+	$scope.refreshTbl7s();
+	
+	$scope.updateTotals();
 	
 	}
 	
@@ -212,17 +201,28 @@ $scope.refreshTbl1s = function() {
    });
 	}
 //end funcion refreshTbl1s
+
+//refresh refreshTbl1s
+$scope.refreshTbl7s = function() {
+		var URL = "api.php/tbl7s?order=id,desc&filter[]=tbl6s_id,eq,";
+		URL = URL.concat($scope.tbl6s_selected.id);
+		$http.get(URL).then(function (response) {
+				var data = $scope.php_crud_api_transform(response.data);
+				$scope.tbl7s_list = data.tbl7s;
+				$scope.updateTotals();	
+		});
+	}
+//end funcion refreshTbl1s
+
+
 //Funcion que actualiza los totales
-$scope.updateTotals = function(a) {
+$scope.updateTotals = function() {
 console.log("Actualizando totales............");
-console.log("Valor a procesar=========a======",a);
-console.log("Valor a procesar==========tbl=====",a);
-$scope.tbl.ent3 = a.ent2 * a.ent1 ;
 $scope.total.ent3  =  0 ;
 	$scope.tbl7s_list.forEach(function(value, index, array) {
 	$scope.total.ent3  = $scope.total.ent3  +  ( value.ent2 * value.ent1 ) ;
 });
-console.log("El valor total calculado ");
+console.log("El valor total calculado  ======");
 console.log($scope.total.ent3);
 }
 
@@ -260,24 +260,40 @@ $scope.select_tbl5 = function(a) {
 			$scope.tbl7s.ent3 = a.ent1 * 1 ;
 				//Save tbl1s via POST
 			$scope.tbl.id = null;
-			$http.post("api.php/tbl6s",$scope.tbl).then(function (response) {			
-			$http.get("api.php/tbl6s",$scope.tbl).then(function (response) {
+			var flag = true;
+			if ($scope.tbl6s_selected === undefined){
+				console.log("Es undefined.....");
+				$http.post("api.php/tbl6s",$scope.tbl).then(function (response) {			
+				$http.get("api.php/tbl6s?order=id,desc&filter[]=del1,eq,0&filter[]=ent1,eq,0").then(function (response) {
+			   var data = $scope.php_crud_api_transform(response.data);
+			   $scope.tbl6s = data.tbl6s;
+			   $scope.tbl6s_selected = $scope.tbl6s[0] ;
+			   $scope.tbl7s.tbl6s_id =  $scope.tbl6s_selected.id;
+			$http.post("api.php/tbl7s",$scope.tbl7s).then(function(response) {
+				$scope.tbl7s_list.push($scope.tbl7s);
+				$scope.myVar2 = false;
+				$scope.refreshTbl7s();
+				flag = false;
+			});
 			});
 			$scope.refreshTblsAll();
 			});
-			$scope.tbl7s_list.push($scope.tbl7s);
-			$scope.myVar2 = false;
+				if (flag){
+					$scope.tbl7s.tbl6s_id =  $scope.tbl6s_selected.id;
+					$http.post("api.php/tbl7s",$scope.tbl7s).then(function(response) {
+					$scope.tbl7s_list.push($scope.tbl7s);
+					$scope.myVar2 = false;
+					$scope.refreshTbl7s();});
+			
+			}
+			}
 			}
 			
-	
 //fin de funcion que selecciona select_tbl5
-		
 		$scope.identical = function(actual, expected){
 		if ( expected === ''){ return true;}
     return actual === parseInt(expected);
 }
-
-
 
 //funcion que transforma
 	$scope.php_crud_api_transform = function(tables) {

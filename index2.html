@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+ <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
+<body>
+<div ng-app="myApp">
+
+<div class="container">
+  <h2>Manantial</h2>
+  <ul class="nav nav-tabs"> 
+	<li class="active"><a data-toggle="tab" href="#home">Sabores</a></li>
+	<li><a data-toggle="tab" href="#menu1">Ubicación</a></li>
+	<li><a data-toggle="tab" href="#menu2">Movimientos</a></li>
+  </ul>
+	  <div class="tab-content"> 
+			<div id="home" class="tab-pane fade in active">
+				<div  ng-controller="formCtrl">	
+					<form>
+						<div class="form-group">
+							Producto:<br><input type="text" ng-model="tbl1.str1"><br>
+							Cantidad inicial:<br><input type="number" ng-model="tbl1.ent1">
+						</div>
+					</form>
+					<button type="button" ng-click="saveTbl1()" class="btn btn-primary">Guardar</button>
+					<button type="button" ng-click="updateTbl1()" class="btn btn-success">Actualizar</button>
+					<table class="table">
+						<thead >	<td>ID</td>		<td>Producto</td>		<td>Cantidad inicial</td>	</thead>
+						<tr ng-repeat="a in tbl1s track by $index">
+							<td>{{ a.id }}</td>		<td>{{ a.str1 }}</td>	<td>{{ a.ent1 }}</td>
+							<td><button ng-click="select(a)" type="button" class="btn btn-warning"> <span class="glyphicon glyphicon-ok"></span>Seleccionar</button>
+							<button ng-click="deleteTbl1(a)" type="button" class="btn btn-danger"> <span class="glyphicon glyphicon-remove"></span>Eliminar</button></td>
+						</tr>
+					</table>
+				</div>
+			</div>    
+		<div id="menu1" class="tab-pane fade">
+			<div ng-controller="formCtrl2">
+				<form>
+					<div class="form-group">
+						Deposito:<br><input type="text" ng-model="tbl2.str1"><br>
+					</div>
+				</form>
+				<button type="button" ng-click="saveTbl2()" class="btn btn-primary">Guardar</button>
+				<button type="button" ng-click="updateTbl2()" class="btn btn-success">Actualizar</button>
+				<table class="table">
+				<thead >	<td>ID</td>		<td>Deposito</td>			</thead>
+					<tr ng-repeat="b in tbl2s track by $index">
+						<td>{{ b.id }}</td>		<td>{{ b.str1 }}</td>	
+						<td><button ng-click="select(b)" type="button" class="btn btn-warning"> <span class="glyphicon glyphicon-ok"></span>Seleccionar</button>
+						<button ng-click="deleteTbl2(b)" type="button" class="btn btn-danger"> <span class="glyphicon glyphicon-remove"></span>Eliminar</button></td>
+					</tr>
+				</table>
+			</div>  
+		</div>
+		<div id="menu2" class="tab-pane fade">
+			<div ng-controller="formCtrl3">
+				<form>
+					<div class="form-group">
+						Deposito:<br><input type="text" ng-model="tbl2.str1"><br>
+					</div>
+				</form>
+				<button type="button" ng-click="saveTbl2()" class="btn btn-primary">Guardar</button>
+				<button type="button" ng-click="updateTbl2()" class="btn btn-success">Actualizar</button>
+				<table class="table">
+				<thead >	<td>ID</td>		<td>Deposito</td>			</thead>
+					<tr ng-repeat="b in tbl2s track by $index">
+						<td>{{ b.id }}</td>		<td>{{ b.str1 }}</td>	
+						<td><button ng-click="select(b)" type="button" class="btn btn-warning"> <span class="glyphicon glyphicon-ok"></span>Seleccionar</button>
+						<button ng-click="deleteTbl2(b)" type="button" class="btn btn-danger"> <span class="glyphicon glyphicon-remove"></span>Eliminar</button></td>
+					</tr>
+				</table>
+			</div>  
+		</div>
+	</div>
+</div>
+</div>
+</body>
+<script>
+var app = angular.module('myApp', []);
+app.controller('formCtrl', function($scope,$http) {
+$scope.tbl1 = {}; $scope.tbl1_aux = {}; 
+   $http.get("api.php/tbl1s?transform=1").then(function (response) {$scope.tbl1s = response.data.tbl1s;});
+	//Save tbl1s via POST
+	$scope.saveTbl1 = function() {
+	$scope.tbl1_aux.str1 =  $scope.tbl1.str1; 
+	$scope.tbl1_aux.ent1 =  $scope.tbl1.ent1; 
+	var data = $scope.tbl1_aux;
+	$http.post("api.php/tbl1s",data).then(function (response) {$scope.tbl1 = {}; 
+	$scope.refreshTbl1s();
+	});
+	}
+	//Update tbl1s via PUT
+	$scope.updateTbl1 = function() {
+	var url = "api.php/tbl1s/";url = url.concat($scope.tbl1.id);
+	$http.put(url,$scope.tbl1).then(function (response){$scope.tbl1 = {};$scope.refreshTbl1s();});
+	}
+	$scope.select = function(a) {$scope.tbl1 = a;var data = $scope.tbl1;}
+	
+	$scope.refreshTbl1s = function() {
+			$scope.tbl1s = [];
+			$http.get("api.php/tbl1s?transform=1").then(function (response) {$scope.tbl1s = response.data.tbl1s;});
+	}
+	
+	$scope.deleteTbl1 = function(x1) {
+		var url = "api.php/tbl1s/";url = url.concat(x1.id);
+		$http.delete(url).then(function (response) {$scope.refreshTbl1s();});
+	  	}		
+});
+
+app.controller('formCtrl2', function($scope,$http) {
+	$scope.tbl2 = {}; $scope.tbl2_aux = {}; 
+   $http.get("api.php/tbl2s?transform=1").then(function (response) {$scope.tbl2s = response.data.tbl2s;});
+    //Save tbl1s via POST
+	$scope.saveTbl2 = function() {
+	$scope.tbl2_aux.str1 =  $scope.tbl2.str1; 
+	$scope.tbl2_aux.ent1 =  $scope.tbl2.ent1; 
+	var data = $scope.tbl2_aux;
+	$http.post("api.php/tbl2s",data).then(function (response) {$scope.tbl2 = {}; 
+	$scope.refreshTbl2s();
+	});
+	}
+	//Update tbl1s via PUT
+	$scope.updateTbl2 = function() {
+	var url = "api.php/tbl2s/";url = url.concat($scope.tbl2.id);
+	$http.put(url,$scope.tbl2).then(function (response) {$scope.tbl2 = {}; $scope.refreshTbl2s();});
+	}
+	$scope.select = function(a) {$scope.tbl2 = a;var data = $scope.tbl2; }
+	$scope.refreshTbl2s = function() {
+		$scope.tbl2s = [];
+		$http.get("api.php/tbl2s?transform=1").then(function (response) {$scope.tbl2s = response.data.tbl2s;});
+	}
+	
+	$scope.deleteTbl2 = function(x1) {
+		var url = "api.php/tbl2s/";url = url.concat(x1.id);
+		$http.delete(url).then(function (response) {$scope.refreshTbl2s();});
+	}		
+});
+//Controlador tbl3
+app.controller('formCtrl3', function($scope,$http) {
+	$scope.tbl2 = {}; $scope.tbl2_aux = {}; 
+   $http.get("api.php/tbl3s?transform=1").then(function (response) {$scope.tbl3s = response.data.tbl3s;});
+    //Save tbl1s via POST
+	$scope.saveTbl3 = function() {
+	$scope.tbl3_aux.str1 =  $scope.tbl3.str1; 
+	$scope.tbl3_aux.ent1 =  $scope.tbl3.ent1; 
+	var data = $scope.tbl3_aux;
+	$http.post("api.php/tbl3s",data).then(function (response) {$scope.tbl3 = {}; 
+	$scope.refreshTbl2s();
+	});
+	}
+	//Update tbl1s via PUT
+	$scope.updateTbl3 = function() {
+	var url = "api.php/tbl3s/";url = url.concat($scope.tbl3.id);
+	$http.put(url,$scope.tbl3).then(function (response) {$scope.tbl3 = {}; $scope.refreshTbl3s();});
+	}
+	$scope.select = function(a) {$scope.tbl3 = a;var data = $scope.tbl3; }
+	$scope.refreshTbl3s = function() {
+		$scope.tbl3s = [];
+		$http.get("api.php/tbl3s?transform=1").then(function (response) {$scope.tbl3s = response.data.tbl3s;});
+	}
+	
+	$scope.deleteTbl3 = function(x1) {
+		var url = "api.php/tbl3s/";url = url.concat(x1.id);
+		$http.delete(url).then(function (response) {$scope.refreshTbl3s();});
+	}		
+});
+
+
+
+
+
+
+
+</script>
+</body>
+</html>
