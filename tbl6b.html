@@ -7,6 +7,9 @@
   <script src="angular.min.js"></script>
   <script src="dirPagination.js"></script>
     <link rel="stylesheet" href="w3.css">
+	<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+<link rel="stylesheet" href="material.min.css">
+<script defer src="material.min.js"></script>
   <style>
 </style>
     </head>
@@ -76,7 +79,7 @@
 			<div class="w3-row w3-row w3-container">
   <div class="w3-col l5 m5 s5  w3-center">
   <h2>Servicios A Pagar</h2> 
-	<table  class="w3-white"    >
+	<table  class="mdl-data-table mdl-js-data-table mdl-data-table--selectable mdl-shadow--2dp"    >
 						<thead  ><td ng-repeat="n in headers4  | filter:{show:1}">{{n.header}}
 						<!-- <input type="text" ng-model="filters[n.column]" placeholder={{n.header}}> -->
 						</td></thead>
@@ -85,13 +88,14 @@
 							<div ng-if="x.column == 'ent1' || x.column == 'ent2' || x.column == 'ent3' ">{{a[x.column]  | number}}</div>
 							<div ng-if="x.column != 'ent1' && x.column != 'ent2' && x.column != 'ent3'">{{a[x.column]}}</div>
 							</td>
+							<td><p  ng-click="delete_tbl7s(a)"><i class="fa fa-window-close w3-red w3-xlarge"></i></p></td>
 						</tr>
 					<tfoot>
 					<tr >
 							<td ng-repeat="x in headers4  | filter:{show:1}">
 							<div ng-if="x.column == 'ent1' || x.column == 'ent2' || x.column == 'ent3' ">{{total[x.column]  | number}}</div>
 							<div ng-if="x.column != 'ent1' && x.column != 'ent2' && x.column != 'ent3'">{{total[x.column]}}</div>
-							</td>
+							
 						</tr>
 				</tfoot>
 				</table>
@@ -113,21 +117,22 @@
     </div> 
 </div>
 
-<div class="w3-row w3-center">	
-				<div class="w3-col l12 m12 s12 ">
-				<p>Listado de ventas </p>
-					<div ng-click="select_tbl6s(x)" ng-repeat="x in tbl6s"><p>{{ x.dat1 }}<p></div>
-				</div>							
-				</div>
-   <p>	Id tbl6s seleccionado {{tbl6s_selected.id}} </p>			
-</div>
+<div class="w3-row">
+ <div class="w3-col l12 m12 s12  w3-center ">
+  <div  ng-click="select_tbl6s(a)" ng-repeat="a in tbl6s"  class="w3-card-4 w3-bar">		
+				<p "w3-green w3-large">{{a.time1}}</p> 
+				<p class="w3-red w3-large">{{a.ent1 | number}} Gs</p>
+			</div>
+  </div>
+	</div>
+		<p>	Id tbl6s seleccionado {{tbl6s_selected.id}} </p>			
+	</div>
  </div>				
 	     <script >
-		 
 		var app = angular.module('myApp', ['angularUtils.directives.dirPagination']);
 		app.controller('formCtrl3', function($scope,$http) {
 		$scope.mensajes = [];
-		
+		$scope.get_url_tbl6s = "api.php/tbl6s?order=id,desc&filter[]=del1,eq,0&filter[]=bol1,eq,0";
 //refresh refreshTblws		
 		$scope.refreshTbl2s = function() {
 		console.log("Tbl4s ya cargadoooo.....");	
@@ -148,10 +153,16 @@
 	$scope.tbl6s_selected  = x ;
 	$scope.refreshTbl7s();
 	
-	$scope.updateTotals();
 	
 	}
-	
+	//funcion que elimina tbl7s
+		$scope.delete_tbl7s = function(x1) {
+		console.log("el objeto tbl7s a eliminar es===");
+		console.log(x1);
+		var url = "api.php/tbl7s/";url = url.concat(x1.id);
+		$http.delete(url).then(function (response) {$scope.refreshTbl1s();$scope.refreshTbl7s();});
+		
+		}	
 	//refresh refreshTblas		
 		$scope.refreshTblas = function() {
 		$scope.tbl7s_list = []; //Alamcena la listra de Detalles de tbl6s	
@@ -224,6 +235,19 @@ $scope.total.ent3  =  0 ;
 });
 console.log("El valor total calculado  ======");
 console.log($scope.total.ent3);
+var url = "api.php/tbl6s/";url = url.concat($scope.tbl6s_selected.id);
+$scope.tbl6s_selected.ent1 = $scope.total.ent3; 
+console.log("URL de modificacion total tbl6s ");
+console.log(url);
+	$http.put(url,$scope.tbl6s_selected).then(function (response){
+		$http.get($scope.get_url_tbl6s).then(function (response) {
+						var data = $scope.php_crud_api_transform(response.data);
+						console.log(data.tbl6s);
+						$scope.tbl6s = data.tbl6s; 
+						
+						});
+	});
+
 }
 
 
@@ -265,7 +289,7 @@ $scope.select_tbl5 = function(a) {
 			if ($scope.tbl6s_selected === undefined){
 				console.log("Es undefined.....");
 				$http.post("api.php/tbl6s",$scope.tbl).then(function (response) {			
-					$http.get("api.php/tbl6s?order=id,desc&filter[]=del1,eq,0&filter[]=ent1,eq,0").then(function (response) {
+					$http.get($scope.get_url_tbl6s).then(function (response) {
 						var data = $scope.php_crud_api_transform(response.data);
 						$scope.tbl6s = data.tbl6s;
 						$scope.tbl6s_selected = $scope.tbl6s[0] ;
@@ -349,7 +373,7 @@ $scope.select_tbl5 = function(a) {
 $scope.refreshTblsAll = function() {
 			console.log('Tratando de recuperar listado de TBL6s')
 			$scope.tbl6s = [];
-			$http.get("api.php/tbl6s?order=id,desc&filter[]=del1,eq,0&filter[]=ent1,eq,0").then(function (response) {
+			$http.get($scope.get_url_tbl6s).then(function (response) {
 			   var data = $scope.php_crud_api_transform(response.data);
 			   $scope.tbl6s = data.tbl6s;
 			   console.log("Se recupero el siguiente listado de tbl6s= ");
