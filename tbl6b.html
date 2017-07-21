@@ -78,6 +78,10 @@
 		</div>			
 			<div class="w3-row w3-row w3-container">
   <div class="w3-col l5 m5 s5  w3-center">
+  <div class="w3-black w3-jumbo">
+		<p >	Id Pedido: {{tbl6s_selected.id}} </p>			
+	</div>
+  
   <h2>Servicios A Pagar</h2> 
 	<table  class="w3-table w3-orange">
 						<thead  ><td ng-repeat="n in headers4  | filter:{show:1}">{{n.header}}
@@ -117,16 +121,17 @@
     </div> 
 </div>
 
+
 <div class="w3-row">
  <div class="w3-col l12 m12 s12  w3-center ">
-  <div  ng-click="select_tbl6s(a)" ng-repeat="a in tbl6s"  class="w3-card-4 w3-bar">		
-				<p "w3-green w3-large">{{a.time1}}</p> 
-				<p class="w3-red w3-large">{{a.ent1 | number}} Gs</p>
+  <div  ng-click="select_tbl6s(a)" ng-repeat="a in tbl6s"  class="w3-card-4 w3-bar">
+  
+				<p "w3-green w3-large">Hora de pedido: {{a.time1}}</p> 
+				<p class="w3-green w3-large">{{a.ent1 | number}} Gs</p>
+				<td><p  ng-click="delete_tbl6s(a)"><i class="fa fa-window-close w3-red w3-xlarge"></i></p></td>
 			</div>
   </div>
-	</div>
-		<p>	Id tbl6s seleccionado {{tbl6s_selected.id}} </p>			
-	</div>
+	
  </div>				
 	     <script >
 		var app = angular.module('myApp', ['angularUtils.directives.dirPagination']);
@@ -161,8 +166,32 @@
 		console.log(x1);
 		var url = "api.php/tbl7s/";url = url.concat(x1.id);
 		$http.delete(url).then(function (response) {$scope.refreshTbl1s();$scope.refreshTbl7s();});
+		}
+//fin funcion delete_tbl7s		
+
+//funcion que elimina tbl7s
+		$scope.delete_tbl6s = function(x1) {
+		console.log("el objeto tbl6s a eliminar es===");
+		console.log(x1);		
+		var url = "api.php/tbl6s/";url = url.concat(x1.id);
+		$http.delete(url).then(function (response) {$scope.refreshTbl1s();$scope.refreshTbl6s();});
+		var url2 = "api.php/tbl7s/";
+		$scope.tbl7s_list.forEach(function(value, index, array) { 
+		var url2 = "api.php/tbl7s/";url2 = url2.concat(value.id);
+		$http.delete(url2).then(function (response) { 
+		console.log("Vaciando variables");
+		$scope.tbl7s_list = [];
+		$scope.tbl6s_selected = {};
+		});
 		
-		}	
+		});
+		
+		
+		
+		}
+//fin funcion delete_tbl7s		
+
+	
 	//refresh refreshTblas		
 		$scope.refreshTblas = function() {
 		$scope.tbl7s_list = []; //Alamcena la listra de Detalles de tbl6s	
