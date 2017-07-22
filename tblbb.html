@@ -9,29 +9,35 @@
 	<div ng-app="myApp">	
 <div ng-include="'b4.html'"></div>	
 	<div  ng-controller="formCtrl2">
-			<form>						
-					<div class="form-group">
+	<div class="w3-row w3-container">
+	<div   class="w3-col l1 m1 s1 w3-container">		
+			<div ng-include="'menu2.html'">
+			</div>
+			</div>
+				<div   class="w3-col l3 m3 s3 w3-container">
+                     <form>	
 							<div ng-repeat="n in headers  | filter:{show:1}">
 							{{n.header}}:<br><input type="text" ng-model="tbl[n.column]"><br>
 							</div>
-						</div>
-					</form>		
-					<p class="buttons-row">  <button type="button" ng-click="saveTbl2()" class="btn btn-primary">Guardar</button>
-					<button type="button" ng-click="updateTbl2()" class="btn btn-primary" >Actualizar</button>
-					<button type="button" ng-click="ListDeleted()" class="btn btn-primary">Listar Eliminados/Activos</button></p>	
 						
+					</form>		
+					<p class="buttons-row">  <button type="button" ng-click="saveTbl2()" class="w3-btn w3-orange">Crear<i class="w3-margin-left fa fa-floppy-o"></i></button>
+					<button type="button" ng-click="updateTbl2()" class="w3-btn w3-orange" >Actualizar</button>
+					<button type="button" ng-click="ListDeleted()" class="w3-btn w3-orange">Listar Eliminados/Activos</button></p>	
+			<</div>
+				<div   class="w3-col l8 m8 s8 w3-container">		
 					<table  class="table  table-sm " >
 						<thead  ><td ng-repeat="n in headers">{{n.header}}
 						<input type="text" ng-model="filters[n.column]" placeholder={{n.header}}></td></thead>
-						<tr ng-repeat="a in tbls | filter:{id:filters.id} | filter:{str1:filters.str1} | filter:{str2:filters.str2} | filter:{str3:filters.str3}| filter:{str4:filters.str4}| filter:{str5:filters.str5} ">
+						<tr ng-click="select(a)" ng-repeat="a in tbls | filter:{id:filters.id} | filter:{str1:filters.str1} | filter:{str2:filters.str2} | filter:{str3:filters.str3}| filter:{str4:filters.str4}| filter:{str5:filters.str5} ">
 							<td ng-repeat="x in headers">{{a[x.column]}}</td>
-							<td><button ng-hide={{show}} ng-click="select(a)" type="button" class="btn btn-primary"> <span class="glyphicon glyphicon-ok"></span>Seleccionar</button>
-							<button ng-hide={{show}} ng-click="deleteTbl2(a)" type="button" class="btn btn-primary"> <span class="glyphicon glyphicon-remove"></span>Eliminar</button>
-							<button ng-hide={{!show}} ng-click="restore(a)" type="button" class="btn btn-primary"> <span class="glyphicon glyphicon-remove"></span>Restaurar</button></td>
+							<td><button ng-hide={{show}} ng-click="select(a)" type="button" class="w3-btn w3-orange"> <span class="glyphicon glyphicon-ok"></span>Seleccionar</button>
+							<button ng-hide={{show}} ng-click="deleteTbl2(a)" type="button" class="w3-btn w3-orange"> <span class="glyphicon glyphicon-remove"></span>Eliminar</button>
+							<button ng-hide={{!show}} ng-click="restore(a)" type="button" class="w3-btn w3-orange"> <span class="glyphicon glyphicon-remove"></span>Restaurar</button></td>
 						</tr>
 					</table>
-				
-				</div>
+			</div></div>	
+		</div></div>
 </div>				
 	     <script >	
 var URL3 = "http://www.ruc.com.py/index.php/inicio/consulta_ruc";		 
