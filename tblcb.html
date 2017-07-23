@@ -44,20 +44,19 @@ var URL3 = "http://www.ruc.com.py/index.php/inicio/consulta_ruc";
 		var app = angular.module('myApp', []);
 		app.controller('formCtrl2', function($scope,$http) {
 		$scope.mensajes = [];
-		$scope.headers = [{show: "0",column: "id",header:"ID",size:"1"},{show: "1",column: "str1",header:"Nombre",size:"5"},
-{show: "1",column: "str2",header:"Ruc/CI",size:"10"},{show: "1",column: "str3",header:"Telefono",size:"1"},{show: "1",column: "str4",header:"Correo",size:"1"},
-{show: "1",column: "str5",header:"Dirección",size:"1"}];
+		$scope.headers = [{show: "0",column: "id",header:"ID",size:"1"},{show: "1",column: "str1",header:"Descripción del gasto",size:"5"},
+{show: "1",column: "ent1",header:"Monto del gasto",size:"10"},{show: "1",column: "dat1",header:"Fecha del gasto ",size:"1"}];
    $scope.filters = {};
    $scope.tbl = [];
 		$scope.tbl = {}; $scope.tbl_aux = {}; 
-   $http.get("api.php/tblbs?order=id,desc&filter[]=del1,eq,0").then(function (response) {
+   $http.get("api.php/tblcs?order=id,desc&filter[]=del1,eq,0").then(function (response) {
    var data = $scope.php_crud_api_transform(response.data);
 			   $scope.tbls = data.tblbs;
    });
 	//Save tbl1s via POST
 	$scope.saveTbl2 = function() {
 	$scope.tbl.id = null;
-	$http.post("api.php/tblbs",$scope.tbl).then(function (response) {$scope.tbl = {}; 
+	$http.post("api.php/tblcs",$scope.tbl).then(function (response) {$scope.tbl = {}; 
 	$scope.refreshTbl2s();
 	});
 	}
@@ -71,7 +70,7 @@ var URL3 = "http://www.ruc.com.py/index.php/inicio/consulta_ruc";
 			$scope.show = true;}
 			else { $scope.append1 =  "eq,0";$scope.show = false;  }
 			console.log($scope.show);
-			$scope.query = "api.php/tblbs?order=id,desc&filter[]=del1," ;
+			$scope.query = "api.php/tblcs?order=id,desc&filter[]=del1," ;
 			$scope.query = $scope.query.concat($scope.append1);
 			console.log($scope.query);
 			$http.get($scope.query).then(function (response) {
@@ -82,7 +81,7 @@ var URL3 = "http://www.ruc.com.py/index.php/inicio/consulta_ruc";
 			
 	//Restoring data		
 	$scope.restore = function(x1) {
-	var url = "api.php/tblbs/";url = url.concat(x1.id);
+	var url = "api.php/tblcs/";url = url.concat(x1.id);
 	$scope.tbl.del1 = null;
 	$scope.tbl.id = x1.id;
 	console.log("Restoring data");
@@ -141,19 +140,21 @@ var URL3 = "http://www.ruc.com.py/index.php/inicio/consulta_ruc";
 			
 	//Update tbl1s via PUT
 	$scope.updateTbl2 = function() {
-	var url = "api.php/tblbs/";url = url.concat($scope.tbl.id);
+	var url = "api.php/tblcs/";url = url.concat($scope.tbl.id);
 	$http.put(url,$scope.tbl).then(function (response){$scope.tbl = {};$scope.refreshTbl2s();});
 	}
+	
+	
 	$scope.select = function(a) {$scope.tbl = a;var data = $scope.tbl;}
 	
 	$scope.refreshTbl2s = function() {
-			 $http.get("api.php/tblbs?order=id,desc&filter[]=del1,eq,0").then(function (response) {
+			 $http.get("api.php/tblcs?order=id,desc&filter[]=del1,eq,0").then(function (response) {
 				var data = $scope.php_crud_api_transform(response.data);
 			   $scope.tbls = data.tblbs; });
 	}
 	
 $scope.deleteTbl2 = function(x1) {
-	var url = "api.php/tblbs/";url = url.concat(x1.id);
+	var url = "api.php/tblcs/";url = url.concat(x1.id);
 	$scope.tbl.del1 = 1;
 	$scope.tbl.id = x1.id;
 	console.log("Intentando eliminado logico");

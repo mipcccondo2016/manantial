@@ -105,7 +105,7 @@
 		<b>Id Pedido: {{tbl6s_selected.id}}</b></h1>
 		</div>
   
-  <h2>Servicios A Pagar</h2> 
+  <h2>Lista de ítems</h2> 
 	<table  class="w3-table w3-orange">
 						<thead  ><td ng-repeat="n in headers4  | filter:{show:1}">{{n.header}}
 						<!-- <input type="text" ng-model="filters[n.column]" placeholder={{n.header}}> -->
@@ -122,10 +122,14 @@
 							<td ng-repeat="x in headers4  | filter:{show:1}">
 							<div ng-if="x.column == 'ent1' || x.column == 'ent2' || x.column == 'ent3' ">{{total[x.column]  | number}}</div>
 							<div ng-if="x.column != 'ent1' && x.column != 'ent2' && x.column != 'ent3'">{{total[x.column]}}</div>
-							
 						</tr>
 				</tfoot>
 				</table>
+				<div  ng-click="select_tbl6s(a)" ng-repeat="a in tbl6s"  class="w3-card-4 w3-bar w3-padding-64">
+				<p "w3-green w3-large">Hora de pedido: {{a.time1}}</p> 
+				<p class="w3-green w3-large">{{a.ent1 | number}} Gs</p>
+				<td><p  ng-click="delete_tbl6s(a)"><i class="fa fa-window-close w3-red w3-xlarge"></i></p></td>
+			</div>
   </div>
   <div class="w3-col l7 m7 s7  w3-center ">
   <div ng-click="select_tbl5(a)" ng-repeat="a in tbl5s"  class="w3-card-4 w3-bar">
@@ -144,11 +148,7 @@
 </div>
 <div class="w3-row">
  <div class="w3-col l12 m12 s12  w3-center ">
-  <div  ng-click="select_tbl6s(a)" ng-repeat="a in tbl6s"  class="w3-card-4 w3-bar w3-padding-64">
-				<p "w3-green w3-large">Hora de pedido: {{a.time1}}</p> 
-				<p class="w3-green w3-large">{{a.ent1 | number}} Gs</p>
-				<td><p  ng-click="delete_tbl6s(a)"><i class="fa fa-window-close w3-red w3-xlarge"></i></p></td>
-			</div>
+  
   </div>
  </div>				
 	     <script >
@@ -435,8 +435,8 @@ $scope.refreshTbls = function() {
 			});	
 			}		
 		
-$scope.headers4 = [{show: "0",column: "id",header:"ID",size:"1"},{show: "1",column: "str1",header:"Codigo",size:"5"},
-{show: "1",column: "str2",header:"Descripción",size:"10"},{show: "1",column: "ent1",header:"Cantidad",size:"1",type:"number"},
+$scope.headers4 = [{show: "0",column: "id",header:"ID",size:"1"},,{show: "1",column: "ent1",header:"Cantidad",size:"1",type:"number"}
+,{show: "0",column: "str1",header:"Codigo",size:"5"},{show: "1",column: "str2",header:"Descripción",size:"10"},
 {show: "1",column: "ent2",header:"Precio",size:"1",type:"number"},{show: "1",column: "ent3",header:"Total",size:"1",type:"number"}];	
 
 
