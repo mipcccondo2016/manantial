@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
+<link rel="stylesheet" href="w3.css">
+<body>
+
+<div ng-app="myApp" ng-controller="myCtrl"> 
+
+<script>
+var app = angular.module('myApp', []);
+app.controller('myCtrl', function($scope, $http) {
+  $http.get("http://www.japochi.com/admin/getPhotos.php?c1=jp&c2=cn")
+  .then(function(response) {
+      $scope.data = response.data;
+	  console.log(response.data);
+  });
+});
+</script>
+
+ <div class="w3-row  w3-container">
+    <div class="w3-col l12 m12 s12  w3-center">
+
+<div  ng-repeat="a in data"  class="w3-card-4 w3-bar">
+				<img class="w3-circle size_image_products" ng-src="http://www.japochi.com/photos/{{a.name}}" >
+				
+			</div>
+			</div>
+</div>
+
+
+</body>
+</html>

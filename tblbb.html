@@ -10,7 +10,7 @@
 <div ng-include="'b4.html'"></div>	
 	<div  ng-controller="formCtrl2">
 	<div class="w3-row w3-container">
-	<div   class="w3-col l2 m2 s2 w3-container">		
+	<div   class="w3-col l1 m1 s1 w3-container">		
 			<div ng-include="'menu2.html'">
 			</div>
 			</div>
@@ -25,7 +25,7 @@
 					<button type="button" ng-click="updateTbl2()" class="w3-btn w3-orange" >Actualizar</button>
 					<button type="button" ng-click="ListDeleted()" class="w3-btn w3-orange">Listar Eliminados/Activos</button></p>	
 			<</div>
-				<div   class="w3-col l7 m7 s7 w3-container">		
+				<div   class="w3-col l8 m8 s8 w3-container">		
 					<table  class="table  table-sm " >
 						<thead  ><td ng-repeat="n in headers">{{n.header}}
 						<input type="text" ng-model="filters[n.column]" placeholder={{n.header}}></td></thead>

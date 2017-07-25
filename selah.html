@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<title>Selah System</title>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<link rel="stylesheet" href="css/font-awesome.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
+<body>
+
+<div class="w3-sidebar w3-bar-block w3-black w3-xxlarge" style="width:70px">
+  <a href="#" class="w3-bar-item w3-button"><i class="fa fa-home"></i></a> 
+  <a href="#" class="w3-bar-item w3-button"><i class="fa fa-search"></i></a> 
+  <a href="#" class="w3-bar-item w3-button"><i class="fa fa-envelope"></i></a> 
+  <a href="#" class="w3-bar-item w3-button"><i class="fa fa-globe"></i></a>
+  <a href="#" class="w3-bar-item w3-button"><i class="fa fa-trash"></i></a> 
+</div>
+
+<div style="margin-left:70px">
+
+<div class="w3-container">
+<h2>Selah su escuela de música</h2>
+<div ng-app="myApp" ng-controller="myCtrl">
+    <input type="text" placeholder="Nombre y Apellido" ng-model="tbl.str1">
+	<input type="text" placeholder="Telefono" ng-model="tbl.str2">
+	<input type="text" placeholder="Dirección" ng-model="tbl.str3">
+	<input type="text" placeholder="Correo" ng-model="tbl.str3">
+	<input type="text" ng-model="tbl.str4">
+</div>
+</div>
+</div>
+
+<script>
+var app = angular.module('myApp', []);
+app.controller('myCtrl', function($scope,$http) {
+    
+
+
+
+	
+});
+</script>
+
+      
+</body>
+</html>
