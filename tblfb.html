@@ -8,15 +8,24 @@
 	<div ng-app="myApp">	
 <div ng-include="'b5.html'"></div>	
 	<div  ng-controller="formCtrl2">
-<div class="w3-container w3-card">
-  	
+<div class="w3-container w3-card">	
 			<div class="w3-row">
 			<div class="w3-col l4 m4 s12  w3-container">
-				<form class="w3-container ">													
+				<form class="w3-container ">
+					<select ng-model="tbl.tblds_id">
+						<option ng-repeat="x2 in tblds" value="{{x2.id}}">{{x2.id}}-{{x2.str1}}</option>
+					</select>	
+							
 					<div ng-repeat="n in headers  | filter:{show:1}">
 					{{n.header}}:
 					<br><input  class="w3-input" type="text" ng-model="tbl[n.column]"><br>
 					</div>
+					<select ng-model="tbl.tblfs_id">
+						<option ng-repeat="x2 in tblfs" value="{{x2.id}}">{{x2.id}}-{{x2.str1}}</option>
+					</select>
+					<select ng-model="tbl.tbles_id">
+						<option ng-repeat="x2 in tbles" value="{{x2.id}}">{{x2.id}}-{{x2.str1}}</option>
+					</select>
 					</form>
 				<p><button ng-click="saveTbl2()" class="w3-btn w3-orange">Crear<i class="w3-margin-left fa fa-floppy-o"></i></button>
 					<button  ng-click="updateTbl2()" class="w3-btn w3-orange">Actutalizar<i class="w3-margin-left fa fa-pencil"></i></button>
@@ -32,10 +41,7 @@
 							<button ng-hide={{show}} ng-click="deleteTbl2(a)" class="w3-btn w3-red "><i class="fa fa-trash"></i></button>
 							<button ng-hide={{!show}} ng-click="restore(a)" type="button" class="w3-btn w3-orange"><i class="fa fa-undo"></i></button>
 							</td>
-							<td ng-repeat="x in headers">
-							<div ng-if="x.column == 'ent1' || x.column == 'ent2'">{{a[x.column]  | number}}</div>
-							<div ng-if="x.column != 'ent1' && x.column != 'ent2'">{{a[x.column]}}</div>
-							</td>
+							<td ng-repeat="x in headers">{{a[x.column]}}</td>
 						</tr>
 					</table>				
 				</div>
@@ -43,22 +49,29 @@
 				</div>
 </div>				
 	     <script >	
-var URL3 = "http://www.ruc.com.py/index.php/inicio/consulta_ruc";
-		
 		var app = angular.module('myApp', []);
 		app.controller('formCtrl2', function($scope,$http) {
 		$scope.url_cloud = ""	;
 		//$scope.url_cloud = "http://manantial-hcht.rhcloud.com/"	;
-		$scope.url_root =  "api.php/tbles/";
-		$scope.url_get =  "api.php/tbles?order=id,desc&filter[]=del1,eq,0";
-		$scope.url_get_2 =  "api.php/tbles?order=id,desc&filter[]=del1,";
+		$scope.url_root =  "api.php/tblds/";
+		$scope.url_root_tblfs =  "api.php/tblfs/";
+		$scope.url_get_tblfs =  "api.php/tblfs?order=id,desc&filter[]=del1,eq,0";
+		$scope.url_root_tbles =  "api.php/tbles/";
+		$scope.url_get_tbles =  "api.php/tbles?order=id,desc&filter[]=del1,eq,0";
+				$scope.url_root_tblds =  "api.php/tblds/";
+		$scope.url_get_tblds =  "api.php/tblds?order=id,desc&filter[]=del1,eq,0";
+		$scope.url_get =  "api.php/tblds?order=id,desc&filter[]=del1,eq,0";
+		$scope.url_get_2 =  "api.php/tblds?order=id,desc&filter[]=del1,";
 		$scope.url_temp = {};
 		$scope.mensajes = [];
-		$scope.headers = [{show: "0",column: "id",header:"ID",size:"1"},{show: "1",column: "str1",header:"Categoría",size:"10"},
-{show: "1",column: "ent1",header:"Precio",size:"6"}
-//,{show: "1",column: "str3",header:"Telefono",size:"1"},
-//{show: "1",column: "str4",header:"Correo",size:"1"},
-//{show: "1",column: "str5",header:"Dirección",size:"1"}
+		$scope.headers = [{show: "0",column: "id",header:"ID",size:"1"},
+		{show: "1",column: "str1",header:"Concepto de pago",size:"10"},
+		{show: "1",column: "ent1",header:"Monto",size:"6"},
+		//{show: "1",column: "str3",header:"Telefono",size:"1"},
+		//{show: "1",column: "str4",header:"Correo",size:"1"},
+		//{show: "1",column: "str5",header:"Dirección",size:"1"},
+		//{show: "1",column: "tblfs_id",header:"Horario",size:"1"},
+		//{show: "1",column: "tbles_id",header:"Categoría",size:"1"}
 ];
    $scope.filters = {};
    $scope.tbl = [];
@@ -66,8 +79,26 @@ var URL3 = "http://www.ruc.com.py/index.php/inicio/consulta_ruc";
 	$scope.url_temp = $scope.url_cloud.concat($scope.url_get);		
    $http.get($scope.url_temp).then(function (response) {
    var data = $scope.php_crud_api_transform(response.data);
-			   $scope.tbls = data.tbles;
+			   $scope.tbls = data.tblds;
    });
+   
+   $http.get($scope.url_get_tblds).then(function (response) {
+   var data = $scope.php_crud_api_transform(response.data);
+			   $scope.tblds = data.tblds;
+   });
+   
+   $http.get($scope.url_get_tblfs).then(function (response) {
+   var data = $scope.php_crud_api_transform(response.data);
+			   $scope.tblfs = data.tblfs;
+   });
+   
+   $http.get($scope.url_get_tbles).then(function (response) {
+   var data = $scope.php_crud_api_transform(response.data);
+			   $scope.tbles = data.tbles;
+   });
+   
+   $scope.upd = function(){	$http.get(url).then(function (response) {$scope.tblfs_selected = response.data; });}
+   
 	//Save tbl1s via POST
 	$scope.saveTbl2 = function() {
 	$scope.tbl.id = null;
@@ -99,7 +130,7 @@ var URL3 = "http://www.ruc.com.py/index.php/inicio/consulta_ruc";
 			console.log($scope.url_temp);
 			$http.get($scope.url_temp).then(function (response) {
 			   var data = $scope.php_crud_api_transform(response.data);
-			   $scope.tbls = data.tbles;
+			   $scope.tbls = data.tblds;
 			});
 			}
 			
@@ -173,7 +204,11 @@ var URL3 = "http://www.ruc.com.py/index.php/inicio/consulta_ruc";
 	}
 	
 	
-	$scope.select = function(a) {$scope.tbl = a;var data = $scope.tbl;}
+	$scope.select = function(a) {
+	$scope.tbl = a;
+	var url = $scope.url_root_tblfs.concat(a.id);
+	$http.get(url).then(function (response) {$scope.tblfs_selected = response.data; });
+	}
 		
 	//inicio funcion que recupera lista de clientes
 		$scope.refreshTbl2s = function() {
@@ -181,7 +216,7 @@ var URL3 = "http://www.ruc.com.py/index.php/inicio/consulta_ruc";
 			 $http.get($scope.url_temp).then(function (response) {
 				console.log()
 				var data = $scope.php_crud_api_transform(response.data);
-			   $scope.tbls = data.tbles; 
+			   $scope.tbls = data.tblds; 
 			   });
 	}
 	//fin funcion que recupera lista de clientes
