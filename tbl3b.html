@@ -72,8 +72,8 @@
 						<thead  ><td ng-repeat="n in headers">{{n.header}}
 						<input type="text" ng-model="filters[n.column]" size={{n.size}} placeholder={{n.header}}></td></thead>
 						<tr dir-paginate="a in tbl3s | filter:{id:filters.id}:identical | filter:{str1:filters.str1} | filter:{ent1:filters.ent1} | filter:{tbl1Id:filters.tbl1Id}:identical | filter:{tbl2Id:filters.tbl2Id}:identical 
-						| filter:{tbl2Id:filters.tbl2Id} | filter:{ent3:filters.ent3} | filter:{str2:filters.str2}  | itemsPerPage: 5">
-							<td>{{ a.id }}</td>		<td>{{ a.str1 }}</td>	<td>{{ a.ent1 }}</td><td>{{ a.tbl1Id }}</td><td>{{ a.tbl2Id }}</td><td>{{a.ent3}}</td><td>{{a.str2}}</td>
+						| filter:{tbl2Id:filters.tbl2Id} | filter:{ent3:filters.ent3} | filter:{str2:filters.str2}  | filter:{ent4:filters.ent4}  | itemsPerPage: 5">
+							<td>{{ a.id }}</td>		<td>{{ a.str1 }}</td>	<td>{{ a.ent1 }}</td><td>{{ a.tbl1Id }}</td><td>{{ a.tbl2Id }}</td><td>{{a.ent3}}</td><td>{{a.str2}}</td><td>{{a.ent4}}</td>
 							<td><button ng-click="select(a)" type="button" class="btn btn-warning"> <span class="glyphicon glyphicon-ok"></span>Seleccionar</button>
 							<td><button ng-click="baja(a)" type="button" class="btn btn-danger"> <span class="glyphicon glyphicon-remove"></span>Dar de baja</button></td>
 							<td><button ng-hide={{show}} ng-click="deleteTbl3(a)" type="button" class="btn btn-primary"> <span class="glyphicon glyphicon-remove"></span>Eliminar</button>
@@ -224,7 +224,8 @@ $scope.refreshTbls = function() {
 		
 		$scope.headers = [{column: "id",header:"ID",size:"1"},{column: "str1",header:"Codigo",size:"5"},
 {column: "ent1",header:"Peso",size:"10"},{column: "tbl1Id",header:"Sabor",size:"1"},{column: "tbl2Id",header:"Ubicación",size:"1"},
-{column: "ent3",header:"Activo/Inactivo",size:"1"},{column: "str2",header:"Fecha de baja",size:"10"}];
+{column: "ent3",header:"Activo/Inactivo",size:"1"},{column: "str2",header:"Fecha de baja",size:"10"},
+{column: "ent4",header:"0-con Impacto en Stock 1-Sin Impacto en Stock",size:"1"}];
    $scope.filters = {};
 		$scope.Tbl3 = {}; $scope.tbl3_aux = {}; 
    $scope.tbl3s = [];
