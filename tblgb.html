@@ -11,17 +11,26 @@
 <div class="w3-container w3-card">	
 			<div class="w3-row">
 			<div class="w3-col l4 m4 s12  w3-container">
-				<form class="w3-container ">													
+				<div class="w3-row-padding">
+				
+				Seleccionar estudiante....
+				<input class="w3-check w3-border w3-blue" type="checkbox" ng-model="myVar">
+				</div>		
+			
+				<form class="w3-container ">
+				
+				<div class="w3-card-4">
+				<div ng-hide="!myVar">
+				<input  placeholder="Seleccionar Estudiante...."type="text" ng-model="test">
+				<ul class="w3-ul w3-hoverable">
+					<li ng-repeat="x2 in tblds  | filter : test"  ng-click="select_tblds(x2)">{{x2.id}}-{{x2.str1}}</li>
+				</ul>
+				</div>
+				</div>
 					<div ng-repeat="n in headers  | filter:{show:1}">
 					{{n.header}}:
-					<br><input  class="w3-input" type="text" ng-model="tbl[n.column]"><br>
+					<br><input  class="w3-input  w3-animate-input" type="text" ng-model="tbl[n.column]"><br>
 					</div>
-					<select ng-model="tbl.tblfs_id">
-						<option ng-repeat="x2 in tblfs" value="{{x2.id}}">{{x2.id}}-{{x2.str1}}</option>
-					</select>
-					<select ng-model="tbl.tbles_id">
-						<option ng-repeat="x2 in tbles" value="{{x2.id}}">{{x2.id}}-{{x2.str1}}</option>
-					</select>
 					</form>
 				<p><button ng-click="saveTbl2()" class="w3-btn w3-orange">Crear<i class="w3-margin-left fa fa-floppy-o"></i></button>
 					<button  ng-click="updateTbl2()" class="w3-btn w3-orange">Actutalizar<i class="w3-margin-left fa fa-pencil"></i></button>
@@ -31,13 +40,16 @@
 					<table style="width: 100%;"  class="w3-border" >
 						<thead  > <td> </td> <td ng-repeat="n in headers">{{n.header}}
 						<input type="text"  size={{n.size}} ng-model="filters[n.column]" placeholder={{n.header}}></td></thead>
-						<tr  ng-click="select(a)" ng-repeat="a in tbls | filter:{id:filters.id} | filter:{str1:filters.str1} | filter:{str2:filters.str2} | filter:{str3:filters.str3}| filter:{str4:filters.str4}| filter:{str5:filters.str5} ">
+						<tr  ng-click="select(a)" ng-repeat="a in tbls | filter:{id:filters.id} | filter:{tblds_id:filters.tblds_id} | filter:{str1:filters.str1} | filter:{str2:filters.str2} | filter:{ent1:filters.ent1}| filter:{str4:filters.str4}| filter:{dat1:filters.dat1} ">
 							<td>
 							<button ng-hide={{show}} ng-click="select(a)" class="w3-btn w3-orange" type="button"> <i class="fa fa-check-circle"></i> </button>
 							<button ng-hide={{show}} ng-click="deleteTbl2(a)" class="w3-btn w3-red "><i class="fa fa-trash"></i></button>
 							<button ng-hide={{!show}} ng-click="restore(a)" type="button" class="w3-btn w3-orange"><i class="fa fa-undo"></i></button>
 							</td>
-							<td ng-repeat="x in headers">{{a[x.column]}}</td>
+							<td ng-repeat="x in headers">
+							<div ng-if="x.column == 'ent1' || x.column == 'ent2'">{{a[x.column]  | number}}</div>
+							<div ng-if="x.column != 'ent1' && x.column != 'ent2'">{{a[x.column]}}</div>
+							</td>
 						</tr>
 					</table>				
 				</div>
@@ -45,26 +57,33 @@
 				</div>
 </div>				
 	     <script >	
-var URL3 = "http://www.ruc.com.py/index.php/inicio/consulta_ruc";
-		
 		var app = angular.module('myApp', []);
 		app.controller('formCtrl2', function($scope,$http) {
 		$scope.url_cloud = ""	;
+		
 		//$scope.url_cloud = "http://manantial-hcht.rhcloud.com/"	;
 		$scope.url_root =  "api.php/tblgs/";
 		$scope.url_root_tblfs =  "api.php/tblfs/";
 		$scope.url_get_tblfs =  "api.php/tblfs?order=id,desc&filter[]=del1,eq,0";
 		$scope.url_root_tbles =  "api.php/tbles/";
 		$scope.url_get_tbles =  "api.php/tbles?order=id,desc&filter[]=del1,eq,0";
+				$scope.url_root_tblds =  "api.php/tblds/";
+		$scope.url_get_tblds =  "api.php/tblds?order=id,desc&filter[]=del1,eq,0";
 		$scope.url_get =  "api.php/tblgs?order=id,desc&filter[]=del1,eq,0";
-		$scope.url_get_2 =  "api.php/tblds?order=id,desc&filter[]=del1,";
+		$scope.url_get_2 =  "api.php/tblgs?order=id,desc&filter[]=del1,";
 		$scope.url_temp = {};
+		$scope.selected_tbles = {};
 		$scope.mensajes = [];
-		$scope.headers = [{show: "0",column: "id",header:"ID",size:"1"},{show: "1",column: "str1",header:"Nombre y Apellido",size:"10"},
-		{show: "1",column: "str2",header:"C.I",size:"6"},{show: "1",column: "str3",header:"Telefono",size:"1"},{show: "1",column: "str4",header:"Correo",size:"1"},
-		{show: "1",column: "str5",header:"Dirección",size:"1"},
-		{show: "1",column: "tblfs_id",header:"Horario",size:"1"},
-		{show: "1",column: "tbles_id",header:"Categoría",size:"1"}
+		$scope.headers = [{show: "0",column: "id",header:"ID",size:"1"},
+		{show: "1",column: "tblds_id",header:"ID Estudiante",size:"10"},
+		{show: "1",column: "str1",header:"Concepto de pago",size:"10"},
+		{show: "1",column: "ent1",header:"Monto",size:"6"},
+		{show: "1",column: "dat1",header:"Fecha de pago",size:"6"},	
+		//{show: "1",column: "str3",header:"Telefono",size:"1"},
+		//{show: "1",column: "str4",header:"Correo",size:"1"},
+		//{show: "1",column: "str5",header:"Dirección",size:"1"},
+		//{show: "1",column: "tblfs_id",header:"Horario",size:"1"},
+		//{show: "1",column: "tbles_id",header:"Categoría",size:"1"}
 ];
    $scope.filters = {};
    $scope.tbl = [];
@@ -72,16 +91,25 @@ var URL3 = "http://www.ruc.com.py/index.php/inicio/consulta_ruc";
 	$scope.url_temp = $scope.url_cloud.concat($scope.url_get);		
    $http.get($scope.url_temp).then(function (response) {
    var data = $scope.php_crud_api_transform(response.data);
-			   $scope.tbls = data.tblds;
+			   $scope.tbls = data.tblgs;
    });
    
-   console.log("Cargamos selectbox de tblfs");
+   
+   
+   	$scope.tbl.dat1 = moment().format('YYYY-MM-DD');
+   
+   
+   
+   $http.get($scope.url_get_tblds).then(function (response) {
+   var data = $scope.php_crud_api_transform(response.data);
+			   $scope.tblds = data.tblds;
+   });
+   
    $http.get($scope.url_get_tblfs).then(function (response) {
    var data = $scope.php_crud_api_transform(response.data);
 			   $scope.tblfs = data.tblfs;
    });
    
-   console.log("Cargamos selectbox de tblfs");
    $http.get($scope.url_get_tbles).then(function (response) {
    var data = $scope.php_crud_api_transform(response.data);
 			   $scope.tbles = data.tbles;
@@ -93,10 +121,30 @@ var URL3 = "http://www.ruc.com.py/index.php/inicio/consulta_ruc";
 	$scope.saveTbl2 = function() {
 	$scope.tbl.id = null;
 	$scope.url_temp = $scope.url_cloud.concat($scope.url_root);	
+	console.log("Saving......");
+	console.log($scope.url_root);
+	console.log($scope.tbl);
 	$http.post($scope.url_temp,$scope.tbl).then(function (response) {$scope.tbl = {}; 
 	$scope.refreshTbl2s();
 	});
 	}
+	
+	$scope.select_tblds = function(x1) {
+	console.log("select_tblds.......");
+		console.log(x1);	
+	   $scope.url_temp  = $scope.url_root_tbles.concat(x1.tbles_id);
+	   console.log($scope.url_temp);
+	   $http.get($scope.url_temp).then(function (response) {
+   		   $scope.selected_tbles = response.data;
+		   console.log($scope.selected_tbles);
+		   $scope.tbl.tblds_id = x1.id ;
+		   $scope.tbl.ent1 = $scope.selected_tbles.ent1 ;
+		   $scope.tbl.str1 = $scope.selected_tbles.str1 ;
+	});
+	$scope.myVar = false;
+	}
+	
+	
 	
 	$scope.local = function() {
 	console.log("Seteando URL de local");
@@ -120,7 +168,7 @@ var URL3 = "http://www.ruc.com.py/index.php/inicio/consulta_ruc";
 			console.log($scope.url_temp);
 			$http.get($scope.url_temp).then(function (response) {
 			   var data = $scope.php_crud_api_transform(response.data);
-			   $scope.tbls = data.tblds;
+			   $scope.tbls = data.tblgs;
 			});
 			}
 			
@@ -188,6 +236,9 @@ var URL3 = "http://www.ruc.com.py/index.php/inicio/consulta_ruc";
 			
 	//Update tbl1s via PUT
 	$scope.updateTbl2 = function() {
+	console.log("Updating......");
+	console.log($scope.url_root);
+	console.log($scope.tbl);
 	$scope.url_temp = $scope.url_cloud.concat($scope.url_root);
 	$scope.url_temp = $scope.url_temp.concat($scope.tbl.id);
 	$http.put($scope.url_temp,$scope.tbl).then(function (response){$scope.tbl = {};$scope.refreshTbl2s();});
@@ -206,7 +257,7 @@ var URL3 = "http://www.ruc.com.py/index.php/inicio/consulta_ruc";
 			 $http.get($scope.url_temp).then(function (response) {
 				console.log()
 				var data = $scope.php_crud_api_transform(response.data);
-			   $scope.tbls = data.tblds; 
+			   $scope.tbls = data.tblgs; 
 			   });
 	}
 	//fin funcion que recupera lista de clientes
