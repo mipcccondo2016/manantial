@@ -102,6 +102,7 @@
 		$scope.get_all_url = "api.php/tbl3s?order=id,desc&filter[]=ent1,neq,0&filter[]=del1,eq,0" ;
 		$scope.title = "Cajas";
 		$scope.tbl3s_del = {};
+		$scope.tbl = {};
 //refresh refreshTblws		
 		$scope.refreshTbl2s = function() {
 			$scope.tbl2s = [];
@@ -225,7 +226,7 @@ $scope.refreshTbls = function() {
 		$scope.headers = [{column: "id",header:"ID",size:"1"},{column: "str1",header:"Codigo",size:"5"},
 {column: "ent1",header:"Peso",size:"10"},{column: "tbl1Id",header:"Sabor",size:"1"},{column: "tbl2Id",header:"Ubicación",size:"1"},
 {column: "ent3",header:"Activo/Inactivo",size:"1"},{column: "str2",header:"Fecha de baja",size:"10"},
-{column: "ent4",header:"0-con Impacto en Stock 1-Sin Impacto en Stock",size:"1"}];
+{column: "ent4",header:"0- Reservas Gele 1-Venta externa",size:"1"}];
    $scope.filters = {};
 		$scope.Tbl3 = {}; $scope.tbl3_aux = {}; 
    $scope.tbl3s = [];

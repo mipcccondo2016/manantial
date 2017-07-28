@@ -153,10 +153,13 @@
  </div>				
 	     <script >
 		var app = angular.module('myApp', ['angularUtils.directives.dirPagination']);
-		app.controller('formCtrl3', function($scope,$http) {
+		app.controller('formCtrl3', function($scope,$http,$interval) {
 		$scope.mensajes = [];
+		
 		$scope.get_url_tbl6s = "api.php/tbl6s?order=id,desc&filter[]=del1,eq,0&filter[]=bol1,eq,0";
 //refresh refreshTblws		
+		$scope.url_root_tbl6s = "api.php/tbl6s/";
+		
 		$scope.refreshTbl2s = function() {
 		console.log("Tbl4s ya cargadoooo.....");	
 		console.log($scope.tbl4_id);
@@ -215,6 +218,8 @@
    });
 	}
 	//end refreshTblas
+	
+	 
 
 	$scope.getClass = function() {
 	$scope.colors_list = ["w3-orange","w3-brown","w3-gray"];
@@ -268,6 +273,16 @@ $scope.refreshTbl7s = function() {
 	}
 //end funcion refreshTbl1s
 
+//refresh refreshTbl1s
+$scope.refreshTbl6s = function() {
+console.log("Actualizando lista de tbl6s.......");
+		$http.get($scope.get_url_tbl6s).then(function (response) {
+				var data = $scope.php_crud_api_transform(response.data);
+				$scope.tbl6s = data.tbl6s;
+		});
+	}
+//end funcion refreshTbl1s
+
 
 //Funcion que actualiza los totales
 $scope.updateTotals = function() {
@@ -299,6 +314,11 @@ $scope.select_tbl4 = function(a) {
 			$scope.tbl4_selected = a ;
 			$scope.myVar = false;
 			document.getElementById('id01').style.display='none';
+			console.log("Id cliente a actualizar");
+			console.log(a.id);
+			$scope.tbl.tbl4s_id = a.id;
+			$scope.tbl.id = $scope.tbl6s_selected.id;
+			$scope.updateTbl();
 	}
 //fin de funcion que selecciona tbl4
 
@@ -466,6 +486,7 @@ $scope.headers3 = [{show: "0",column: "id",header:"ID",size:"1"},{show: "1",colu
 		$scope.tbl.time1 = moment().format('HH:mm:ss'); 
 		console.log("La fecha seteada es ");
 		
+		
 			$http.get("api.php/tbl6s?filter=ent3,eq,1&order=id,desc").then(function (response) {
 			   var data = $scope.php_crud_api_transform(response.data);
 			   $scope.tbl3s = data.tbl3s;
@@ -477,6 +498,17 @@ $scope.headers3 = [{show: "0",column: "id",header:"ID",size:"1"},{show: "1",colu
 	$scope.refreshTbl2s();
 	$scope.refreshTblas();
 	$scope.refreshTblbs();
+	$scope.refreshTbl6s()
+	
+	$interval(function () {
+       // console.log("Actualizando lista de tbl6s.......");
+		$http.get($scope.get_url_tbl6s).then(function (response) {
+				var data = $scope.php_crud_api_transform(response.data);
+				$scope.tbl6s = data.tbl6s;
+		});
+    }, 5000);
+	
+
 	//Save tbl1s via POST
 	$scope.saveTbl = function() {
 	console.log('TBL==');console.log($scope.tbl);console.log('==');
@@ -488,6 +520,9 @@ $scope.headers3 = [{show: "0",column: "id",header:"ID",size:"1"},{show: "1",colu
 	}
 	//Update tbl1s via PUT
 	$scope.updateTbl = function() {
+	console.log("Actualizando los valores de tbl6s.......");
+	console.log("Objeto a actualizar=====");
+	console.log($scope.tbl);
 	var url = "api.php/tbl6s/";url = url.concat($scope.tbl.id);
 	$http.put(url,$scope.tbl).then(function (response){$scope.tbl1 = {};$scope.refreshTbls();});
 	}

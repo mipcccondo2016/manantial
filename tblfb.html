@@ -43,7 +43,7 @@
 </div>				
 	     <script >	
 		var app = angular.module('myApp', []);
-		app.controller('formCtrl2', function($scope,$http) {
+		app.controller('formCtrl2', function($scope,$http, $interval) {
 		$scope.url_cloud = ""	;
 		//$scope.url_cloud = "http://manantial-hcht.rhcloud.com/"	;
 		$scope.url_root =  "api.php/tblfs/";
@@ -66,6 +66,8 @@
 		//{show: "1",column: "tblfs_id",header:"Horario",size:"1"},
 		//{show: "1",column: "tbles_id",header:"Categoría",size:"1"}
 ];
+
+ $interval(refreshTbl2s(), 5000);
    $scope.filters = {};
    $scope.tbl = [];
 	$scope.tbl = {}; $scope.tbl_aux = {};
