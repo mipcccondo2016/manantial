@@ -17,12 +17,20 @@
 	<div ng-app="myApp">	
 <div  ng-controller="formCtrl3">
 <div ng-include="'b4.html'"></div>	
-<div class="w3-row w3-container">
-    <div class="w3-col l4 m4 s4">
+
+	
+	<div class="w3-row w3-container">
+	<div   class="w3-col l1 m1 s1 w3-container">		
+			<div ng-include="'menu2.html'"></div>
+			</div>
+	<div class="w3-col l4 m4 s4">	
+	<div class="w3-row w3-container">
+
+    <div class="w3-col l3 m3 s3">
 	 Fecha: <input ng-model="tbl.dat1">
 	Hora: <input ng-model="tbl.time1">
 	</div>
-	<div class="w3-col l8 m8 s8">
+	<div class="w3-col l7 m7 s7">
 	<div class="w3-container">
   <button onclick="document.getElementById('id01').style.display='block'" class="w3-button w3-black">Cliente</button>
 
@@ -59,10 +67,8 @@
 				</div>
 	</div>
 	</div>
-	
-	<div class="w3-row w3-container">
-	<div class="w3-col l12 m12 s12">	
-			Seleccionar Ubicación: <input type="checkbox" ng-model="myVar2"   ng-click="refreshTblas()" >
+
+	Seleccionar Ubicación: <input type="checkbox" ng-model="myVar2"   ng-click="refreshTblas()" >
 	<input type="hidden" ng-model="tbl.tblas_id" >
 	<input type="text" ng-model="tbla_selected.str1" >
 	<div ng-hide="!myVar2">						
@@ -104,6 +110,8 @@
 		<h1 class="w3-text-orange" style="text-shadow:1px 1px 0 #444">
 		<b>Id Pedido: {{tbl6s_selected.id}}</b></h1>
 		</div>
+		
+  
   
   <h2>Servicios A Pagar</h2> 
 	<table  class="w3-table w3-orange">
@@ -147,8 +155,9 @@
   <div  ng-click="select_tbl6s(a)" ng-repeat="a in tbl6s"  class="w3-card-4 w3-bar w3-padding-64">
 				<p "w3-green w3-large">Cliente: {{a.tbl4s_id}}</p> 
 				<p "w3-green w3-large">Ubicación: {{a.tblas_id}}</p> 
-				<p "w3-green w3-large">Empleado: {{a.tblbs_id}}</p> 
-				<p "w3-green w3-large">Hora de pedido: {{a.time1}}</p> 
+				<p "w3-green w3-large">Empleado: {{a.tblbs_id}}</p>
+				<p "w3-green w3-large">Fecha: {{a.dat1}}</p>				
+				<p "w3-green w3-large">Hora: {{a.time1}}</p> 
 				<p class="w3-green w3-large">{{a.ent1 | number}} Gs</p>
 				<td><p  ng-click="delete_tbl6s(a)"><i class="fa fa-window-close w3-red w3-xlarge"></i></p></td>
 			</div>
@@ -214,7 +223,7 @@
 	
 	//refresh refreshTblas		
 		$scope.refreshTblas = function() {
-		$scope.tbl7s_list = []; //Alamcena la listra de Detalles de tbl6s	
+		
 		$http.get("api.php/tblas?order=id,desc&filter[]=del1,eq,0").then(function (response) {
 		var data = $scope.php_crud_api_transform(response.data);
 		$scope.tblas = data.tblas;
@@ -231,7 +240,7 @@
 	}
 		//refresh refreshTblbs		
 		$scope.refreshTblbs = function() {
-		$scope.tbl7s_list = []; //Alamcena la listra de Detalles de tbl6s	
+		//$scope.tbl7s_list = []; //Alamcena la listra de Detalles de tbl6s	
 		$http.get("api.php/tblbs?order=id,desc&filter[]=del1,eq,0").then(function (response) {
 		var data = $scope.php_crud_api_transform(response.data);
 		$scope.tblbs = data.tblbs;
