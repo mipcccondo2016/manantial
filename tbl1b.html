@@ -1,6 +1,7 @@
 <html>
     <head>
 <meta charset="UTF-8">
+<script src="jquery.min.js"></script>
   <script src="moment-with-locales.js"></script>
   <script src="angular.min.js"></script>
  <style>
@@ -18,22 +19,16 @@ div.scroll {
 	<div ng-app="myApp">	
 <div  ng-controller="formCtrl">
 <div ng-include="'b3.html'"></div>	
-
 				<form>	
-			
 					<div class="form-group">
 							<div ng-repeat="n in headers  | filter:{show:1}">
 							{{n.header}}:<br><input type="text" ng-model="tbl1[n.column]"><br>
 							</div>
 						</div>
 					</form>	
-					
 		<p class="buttons-row"> <button type="button" ng-click="saveTbl1()" class="btn btn-primary">Crear</button>
 					<button type="button" ng-click="updateTbl1()" class="btn btn-primary">Actualizar</button>
 					<button type="button" ng-click="ListDeleted()" class="btn btn-primary">Listar Eliminados/Activos</button>	</p>
-		
-									
-					
 					<table    class="table ">
 						<thead  ><td ng-repeat="n in headers">{{n.header}}
 						<input type="text" ng-model="filters[n.column]" size="1" placeholder={{n.header}}></td></thead>
@@ -46,15 +41,16 @@ div.scroll {
 						</tr>
 					</table>
     </div>
-	
 </div>				
 	     <script >		
 
 		var app = angular.module('myApp', []);
 		  
 		app.controller('formCtrl', function($scope,$http) {
+		$scope.permiso = "01";
 		$scope.mensajes = [];
 		$scope.title = "Sabores";
+		$scope.user = sessionStorage.user; 
 $scope.headers = [{show:0,column: "id",header:"ID"},{show:1,column: "str1",header:"Sabor"},{show:1,column: "ent1",header:"Peso mínimo"}];
    $scope.filters = {};
 		$scope.tbl1 = {}; $scope.tbl1_aux = {}; 
@@ -188,5 +184,8 @@ $scope.headers = [{show:0,column: "id",header:"ID"},{show:1,column: "str1",heade
 		
 });
         </script>
+<script src="controller.js"></script>		
+		
+		
     </body>
 </html>

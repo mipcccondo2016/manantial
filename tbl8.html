@@ -1,6 +1,7 @@
 <html>
     <head>
 <meta charset="UTF-8">
+<script src="jquery.min.js"></script>
 	<script src="w3data.js"></script>
   <script src="moment.min.js"></script>
   <script src="angular.min.js"></script>
@@ -14,23 +15,28 @@
         <div class="well">
             <form>
 						<div class="form-group">
-							<div ng-repeat="n in headers">
-							{{n.header}}:<input type="text" ng-model="tbl[n.column]">
+							<div ng-repeat="n in headers | filter:{show:1}">
+							{{n.header}}:<input  ng-style="n.style"  type="text" ng-model="tbl[n.column]">
 							</div>
 						</div>
 					</form>
-					<button type="button" ng-click="saveTbl()" class="btn btn-primary">Crear</button>
-					<button type="button" ng-click="updateTbl()" class="btn btn-success">Actualizar</button>
+					<button type="button" ng-click="saveTbl()" class="0801 btn btn-primary">Crear</button>
+					<button type="button" ng-click="updateTbl()" class="0802 btn btn-success">Actualizar</button>
+										<button type="button" ng-click="refreshTbls2()" class="0807 btn btn-success">Listar pendientes de verificación</button>
 					
 					<table class="table">
 						<thead  ><td ng-repeat="n in headers">{{n.header}}
 						<input size="1" type="text" ng-model="filters[n.column]" placeholder={{n.header}}></td></thead>
 						<tr ng-repeat="a in tbl8s | filter:{id:filters.id}:identical | filter:{str1:filters.str1} | filter:{ent1:filters.ent1} | filter:{ent2:filters.ent2}:identical 
 						|  filter:{ent3:filters.ent3}:identical |  filter:{tbl1s_id:filters.tbl1s_id}:identical">
-							<td>{{ a.id }}</td>		<td>{{ a.str1 }}</td>	<td>{{ a.ent1 }}</td><td>{{ a.ent2 }}</td><td>{{ a.ent3 }}</td><td>{{ a.tbl1s_id }}</td><td>{{ a.tbl3s_ent1 }}</td>   
-							<td><button ng-click="select(a)" type="button" class="btn btn-warning"> <span class="glyphicon glyphicon-ok"></span>Seleccionar</button>
-							<button ng-click="deleteTbl(a)" type="button" class="btn btn-danger"> <span class="glyphicon glyphicon-remove"></span>Eliminar</button></td>
-							<td><button ng-click="revert(a)" type="button" class="btn btn-danger"> <span class="glyphicon glyphicon-remove"></span>Eliminar y regresar a origen</button></td>
+						<!-- <td>{{ a.id }}</td><td>{{ a.str1 }}</td>	<td>{{ a.ent1 }}</td><td>{{ a.ent2 }}</td><td>{{ a.ent3 }}</td><td>{{ a.tbl1s_id }}</td><td>{{ a.tbl3s_ent1 }}</td>    -->
+						<td ng-repeat="x in headers"><div >{{a[x.column]}}</div></td>	
+							<td><button ng-click="select(a)" type="button" class="0806 w3-button w3-ripple w3-red"> <span class="glyphicon glyphicon-ok"></span>Seleccionar</button>
+							<button ng-click="deleteTbl(a)" type="button" class="0804 w3-button w3-ripple w3-red"> <span class="glyphicon glyphicon-remove"></span>Eliminar</button></td>
+							<td><button ng-click="revert(a)" type="button" class="0805 w3-button w3-ripple w3-red"> <span class="glyphicon glyphicon-remove"></span>Eliminar y &#x00A; regresar a  &#x00A; origen</button>
+							</td>
+						<td><button ng-click="verify(a)" type="button" class="w3-button w3-ripple w3-red 0808"> <span class="glyphicon glyphicon-remove"></span>Verificar</button></td>
+						<td><button ng-click="undo_verify(a)" type="button" class="w3-button w3-ripple w3-red 0809"> <span class="glyphicon glyphicon-remove"></span>Regresar a pendiente de verificación</button></td>
 						</tr>
 					</table>
         </div>
@@ -111,6 +117,7 @@
 		 
 		var app = angular.module('myApp', []);
 		app.controller('formCtrl3', function($scope,$http) {
+		$scope.permiso = "08";
 		$scope.title = "Traslados";
 //refresh refreshTblws		
 		$scope.refreshTbl2s = function() {
@@ -212,10 +219,33 @@ $scope.refreshTbls = function() {
 			});	
 			}
 //Fin funcion refreshTbls
+
+//inicio funcion refreshTbls
+$scope.refreshTbls2 = function() {
+			$scope.tbl8s = [];			
+			$http.get("api.php/tbl8s?order=id,desc&filter[]=ent4,eq,1").then(function (response) {
+			var data = $scope.php_crud_api_transform(response.data);
+			$scope.tbl8s = data.tbl8s;
+			$scope.tbl8s.forEach(function(value, index, array) {	
+				var url = "api.php/tbl3s/";
+				url = url.concat(value.ent3);
+				$http.get(url).then(function (response) {
+				value.tbl1s_id = response.data.tbl1Id;
+				value.tbl3s_ent1 = response.data.ent1;
+				$scope.tbl8s[index] = value;
+				});				
+					    
+			});
+			});	
+			}
+//Fin funcion refreshTbls
+
 			
 		
-		$scope.headers = [{column: "id",header:"ID"},{column: "str1",header:"Codigo"},
-{column: "ent1",header:"Origen"},{column: "ent2",header:"Destino"},{column: "ent3",header:"ID caja"},{column: "tbl1s_id",header:"ID Sabor"},{column: "tbl3s_ent1",header:"Peso"}];
+		$scope.headers = [{column: "id",header:"ID",show:0},{column: "str1",header:"Codigo",show:1},
+{column: "ent1",header:"Origen",show:1},{column: "ent2",header:"Destino",show:1},{column: "ent3",header:"ID caja",show:1},
+{column: "tbl1s_id",header:"ID Sabor",show:0},{column: "tbl3s_ent1",header:"Peso",show:0},
+{column: "ent4",show:0,header:"0-Verificado 1-A verificar"}];
    $scope.filters = {};
 		$scope.Tbl3 = {}; $scope.tbl3_aux = {}; 
    $scope.tbl3s = [];
@@ -241,12 +271,10 @@ $scope.refreshTbls = function() {
 	//$scope.refreshTbls();
 	});
 	}	
-	
-	
-	
+		
 	$scope.saveTbl = function() {
 	console.log('TBL==');console.log($scope.tbl);console.log('==');
-	  $scope.tbl.id = null ;
+	  $scope.tbl.id = null ;$scope.tbl.ent4 = 1;
 	var data = $scope.tbl;
 	$scope.updateDestino();
 	$http.post("api.php/tbl8s",data).then(function (response) {$scope.tbl1 = {}; 
@@ -259,6 +287,27 @@ $scope.refreshTbls = function() {
 	var url = "api.php/tbl8s/";url = url.concat($scope.tbl.id);
 	$http.put(url,$scope.tbl).then(function (response){$scope.tbl1 = {};$scope.refreshTbls();});
 	}
+	//Update tbl1s via PUT
+	$scope.verify = function(a) {
+	var url = "api.php/tbl8s/";
+	$scope.tbl = a ;
+	$scope.tbl.ent4 = 0;
+	url = url.concat($scope.tbl.id);
+	$http.put(url,$scope.tbl).then(function (response){$scope.tbl1 = {};$scope.refreshTbl2s();});
+	}
+	
+	
+	//Update tbl1s via PUT
+	$scope.undo_verify = function(a) {
+	var url = "api.php/tbl8s/";
+	$scope.tbl = a ;
+	$scope.tbl.ent4 = 1;
+	url = url.concat($scope.tbl.id);
+	$http.put(url,$scope.tbl).then(function (response){$scope.tbl1 = {};$scope.refreshTbl2s();});
+	}
+	
+	
+	
 	
 	$scope.baja = function(a) {
 	a.str2 = moment().format('C-DD-MM-YY-HH-mm-ss');
@@ -285,12 +334,10 @@ $scope.refreshTbls = function() {
 		var url = "api.php/tbl3s/";url = url.concat(x1.ent3);
 		$scope.tbl3_aux.tbl2Id = x1.ent1;
 		$http.put(url,$scope.tbl3_aux).then(function (response) {$scope.refreshTbls();});
-	  	$scope.deleteTbl(x1);
-			
+	  	$scope.deleteTbl(x1);		
 		}
 });
-
-
         </script>
+		<script src="controller.js"></script>
     </body>
 </html>

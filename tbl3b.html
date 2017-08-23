@@ -1,6 +1,7 @@
 <html>
     <head>
 <meta charset="UTF-8">
+<script src="jquery.min.js"></script>
 <script src="moment.min.js"></script>
   <script src="angular.min.js"></script>
     <script src="dirPagination.js"></script>
@@ -10,7 +11,6 @@
 	<div ng-app="myApp">	
 <div  ng-controller="formCtrl3">
 <div ng-include="'b3.html'"></div>	
-
  <div class="row">
     <div class="col-md-8">
         <div class="well">
@@ -21,10 +21,10 @@
 							</div>
 						</div>
 					</form>
-				<p class="buttons-row">	<button type="button" ng-click="saveTbl()" class="btn btn-primary">Crear</button>
-					<button type="button" ng-click="updateTbl()" class="btn btn-primary">Actualizar</button>
+				<p class="buttons-row">	<button  type="button" ng-click="saveTbl()" class="btn btn-primary 0301">Crear</button>
+					<button type="button" ng-click="updateTbl()" class="btn btn-primary 0302">Actualizar</button>
 										<button type="button" ng-click="refreshTbls()" class="btn btn-primary">Solo Activos</button>
-					<button type="button" ng-click="refreshTblsAll()" class="btn btn-primary">Listar Todos</button> </p> 
+					<button  type="button" ng-click="refreshTblsAll()" class="btn btn-primary 0307">Listar Todos</button> </p> 
         </div>
     </div>
     <div class="col-md-4">
@@ -66,17 +66,16 @@
     </div>
 </div>
 <div>
-
-					
 					<table  class="">
 						<thead  ><td ng-repeat="n in headers">{{n.header}}
-						<input type="text" ng-model="filters[n.column]" size={{n.size}} placeholder={{n.header}}></td></thead>
+						<input type="text" ng-model="filters[n.column]" size={{n.size}} placeholder={{n.header}}></td>
+						</thead>
 						<tr dir-paginate="a in tbl3s | filter:{id:filters.id}:identical | filter:{str1:filters.str1} | filter:{ent1:filters.ent1} | filter:{tbl1Id:filters.tbl1Id}:identical | filter:{tbl2Id:filters.tbl2Id}:identical 
-						| filter:{tbl2Id:filters.tbl2Id} | filter:{ent3:filters.ent3} | filter:{str2:filters.str2}  | filter:{ent4:filters.ent4}  | itemsPerPage: 5">
-							<td>{{ a.id }}</td>		<td>{{ a.str1 }}</td>	<td>{{ a.ent1 }}</td><td>{{ a.tbl1Id }}</td><td>{{ a.tbl2Id }}</td><td>{{a.ent3}}</td><td>{{a.str2}}</td><td>{{a.ent4}}</td>
+						| filter:{tbl2Id:filters.tbl2Id} | filter:{ent3:filters.ent3} | filter:{str2:filters.str2}  | filter:{ent4:filters.ent4}  | itemsPerPage: 200">
+							<td>{{ a.id }}</td><td>{{ a.str1 }}</td><td>{{ a.ent1 }}</td><td>{{ a.tbl1Id }}</td><td>{{ a.tbl2Id }}</td><td>{{a.ent3}}</td><td>{{a.str2}}</td><td>{{a.ent4}}</td>
 							<td><button ng-click="select(a)" type="button" class="btn btn-warning"> <span class="glyphicon glyphicon-ok"></span>Seleccionar</button>
-							<td><button ng-click="baja(a)" type="button" class="btn btn-danger"> <span class="glyphicon glyphicon-remove"></span>Dar de baja</button></td>
-							<td><button ng-hide={{show}} ng-click="deleteTbl3(a)" type="button" class="btn btn-primary"> <span class="glyphicon glyphicon-remove"></span>Eliminar</button>
+							<td><button   ng-click="baja(a)" type="button" class="btn btn-danger 0304"> <span class="glyphicon glyphicon-remove"></span>Dar de baja</button></td>
+							<td><button ng-hide={{show}} ng-click="deleteTbl3(a)" type="button" class="btn btn-primary 0303"> <span class="glyphicon glyphicon-remove"></span>Eliminar</button>
 							<button ng-hide={{!show}} ng-click="restore(a)" type="button" class="btn btn-primary"> <span class="glyphicon glyphicon-remove"></span>Restaurar</button></td>
 						</tr>		
 					</table>
@@ -84,19 +83,14 @@
                 max-size="8"
                 direction-links="true"
                 boundary-links="true" >
-</dir-pagination-controls> 	
-				
+</dir-pagination-controls> 		
 </div>
 				</div>
 </div>		
-
-
-
 	     <script >
-		 
 		var app = angular.module('myApp', ['angularUtils.directives.dirPagination']);
-	
 		app.controller('formCtrl3', function($scope,$http) {
+		$scope.permiso = "03";
 		$scope.mensajes = [];
 		$scope.get_url = "api.php/tbl3s?order=id,desc&filter[]=ent1,neq,0&filter[]=ent3,eq,1&filter[]=del1,eq,0" ;
 		$scope.get_all_url = "api.php/tbl3s?order=id,desc&filter[]=ent1,neq,0&filter[]=del1,eq,0" ;
@@ -277,9 +271,8 @@ $scope.refreshTbls = function() {
 		});
 	  	}		
 });
-
-
         </script>
+		<script src="controller.js"></script>
 </div>		
     </body>
 </html>
