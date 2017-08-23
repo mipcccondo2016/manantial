@@ -1,0 +1,77 @@
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+<script src="tether.min.js"></script>
+</script><script src="moment.min.js"></script>
+<script src="jquery.min.js"></script> 
+ <script src="dirPagination.js"></script>
+<script src="common.js"></script>
+<link rel="stylesheet" href="bootstrap.min2.css">
+<link rel="stylesheet" href="w3.css">
+<link rel="stylesheet" href="font-awesome.min.css">
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+<style>
+table {
+    border: 1px solid green;
+}
+
+table td {
+    border: 1px solid green;
+}
+
+table td.shrink {
+    white-space:nowrap
+}
+</style>
+ <div>
+<div class="container"  >
+ <div class="navbar">
+  <div class="navbar-inner">
+    <div class="center">
+      <!-- Buttons row as tabs controller in navbar-->
+	  
+	 <div ng-controller="inside_controller as inside">
+	 
+	  <div class="w3-row">
+  <div class="w3-col l11 m11 s11  w3-center"><h1 class="w3-text-orange" style="text-shadow:2px 2px 0 #444"><b>Ingreso al sistema con usuario {{user_inside}}</b></h1></div>
+  <div class="w3-col l1 m1 s1 w3-blue  w3-center"><button ng-click="log_out()" class="w3-button w3-ripple">Cerrar Sesión</button></div>
+</div>
+<div class="w3-row">
+   <div class="alert alert-success">
+  <strong>{{mensaje_login}}</strong> 
+  </div>
+</div>
+
+</div>
+
+      <div class="buttons-row">
+  <a href="tbl1b.html" class="button tab-link">Sabores</a>
+  <a href="tbl2b.html"  class="button tab-link">Ubicaciones</a>
+  <a  class="button tab-link" href="tbl3b.html">Cajas</a>
+  <a href="tbla.html"  class="button tab-link">Reportes</a>
+<!--     <a class="button tab-link" href="tbl4.html">Clientes</a>
+   <a class="button tab-link" href="tbl5.html">Productos</a>
+    <a class="button tab-link" href="tbl6.html">Ventas</a> -->
+  <a href="tbl8.html"  class="button tab-link">Traslados</a>
+  <!-- <a class="button tab-link" href="tbl8a.html">Traslado masivc</a> -->
+  <a href="tbl8b.html"  class="button tab-link">Traslado masivc B</a>
+    <a href="tblhb.html" style=" display: none;"  class="bt  button tab-link">Usuarios</a>
+ </div> </div> </div>
+ </div>
+	<div id="box" ></div>
+</div>
+<div class="w3-panel w3-blue w3-center">
+  <h1 class="w3-text-orange" style="text-shadow:2px 2px 0 #444">
+  <b>{{title}}</b></h1>
+  <h1 class="w3-text-orange" style="text-shadow:2px 2px 0 #444">
+  <b>{{permiso}}</b></h1>
+  <div ng-repeat="x in mensajes  track by $index" class="alert alert-success">
+  <strong>{{x.mens}}</strong> 
+  </div>
+  </div>
+  </div>
+
+  
+  
+  
