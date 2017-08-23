@@ -1,0 +1,265 @@
+<html>
+    <head>
+<meta charset="UTF-8">
+<script src="jquery.min.js"></script>
+  <script src="moment.min.js"></script>
+  <script src="angular.min.js"></script>
+    </head>
+    <body >	
+	<div ng-app="myApp">	
+
+	<div  ng-controller="formCtrl">
+	<div ng-include="'b3.html'"></div>	
+<div class="w3-container w3-card">	
+			<div class="w3-row">
+			<div class="w3-col l4 m4 s12  w3-container">
+				
+			
+				<form class="w3-container ">
+				
+				<div class="w3-card-4">
+				<div ng-hide="!myVar">
+				<input  placeholder="Seleccionar Estudiante...."type="text" ng-model="test">
+				<ul class="w3-ul w3-hoverable">
+					<li ng-repeat="x2 in tblds  | filter : test"  ng-click="select_tblds(x2)">{{x2.id}}-{{x2.str1}}</li>
+				</ul>
+				</div>
+				</div>
+					<div ng-repeat="n in headers  | filter:{show:1}">
+					{{n.header}}:
+					<br><input  class="w3-input  w3-animate-input" type="text" ng-model="tbl[n.column]"><br>
+					</div>
+					</form>
+				<p><button ng-click="saveTbl2()" class="w3-btn w3-orange">Crear<i class="w3-margin-left fa fa-floppy-o"></i></button>
+					<button  ng-click="updateTbl2()" class="w3-btn w3-orange">Actutalizar<i class="w3-margin-left fa fa-pencil"></i></button>
+				<button  ng-click="ListDeleted()" class="w3-btn w3-orange">Listar Inactivos<i class="w3-margin-left fa fa-list-ul"></i></button>				
+			</div>
+			<div class="w3-col l8 m3 s12 w3-container">		
+					<table style="width: 100%;"  class="w3-border" >
+						<thead  > <td> </td> <td ng-repeat="n in headers">{{n.header}}
+						<input type="text"  size={{n.size}} ng-model="filters[n.column]" placeholder={{n.header}}></td></thead>
+						<tr  ng-click="select(a)" ng-repeat="a in tbls | filter:{id:filters.id} | filter:{tblds_id:filters.tblds_id} | filter:{str1:filters.str1} | filter:{str2:filters.str2} | filter:{ent1:filters.ent1}| filter:{str4:filters.str4}| filter:{dat1:filters.dat1} ">
+							<td>
+							<button ng-hide={{show}} ng-click="select(a)" class="w3-btn w3-orange" type="button"> <i class="fa fa-check-circle"></i> </button>
+							<button ng-hide={{show}} ng-click="deleteTbl2(a)" class="w3-btn w3-red "><i class="fa fa-trash"></i></button>
+							<button ng-hide={{!show}} ng-click="restore(a)" type="button" class="w3-btn w3-orange"><i class="fa fa-undo"></i></button>
+							</td>
+							<td ng-repeat="x in headers">
+							<div ng-if="x.column == 'ent1' || x.column == 'ent2'">{{a[x.column]  | number}}</div>
+							<div ng-if="x.column != 'ent1' && x.column != 'ent2'">{{a[x.column]}}</div>
+							</td>
+						</tr>
+					</table>				
+				</div>
+				</div>
+				</div>
+</div>				
+	     <script >	
+		var app = angular.module('myApp', []);
+		app.controller('formCtrl', function($scope,$http) {
+		$scope.url_cloud = ""	;
+		$scope.permiso = "0h";
+		//$scope.url_cloud = "http://manantial-hcht.rhcloud.com/"	;
+		$scope.url_root =  "api.php/tblhs/";
+		$scope.url_root_tblfs =  "api.php/tblfs/";
+		$scope.url_get_tblfs =  "api.php/tblfs?order=id,desc&filter[]=del1,eq,0";
+		$scope.url_root_tbles =  "api.php/tbles/";
+		$scope.url_get_tbles =  "api.php/tbles?order=id,desc&filter[]=del1,eq,0";
+				$scope.url_root_tblds =  "api.php/tblds/";
+		$scope.url_get_tblds =  "api.php/tblds?order=id,desc&filter[]=del1,eq,0";
+		$scope.url_get =  "api.php/tblhs?order=id,desc&filter[]=del1,eq,0";
+		$scope.url_get_2 =  "api.php/tblhs?order=id,desc&filter[]=del1,";
+		$scope.url_temp = {};
+		$scope.selected_tbles = {};
+		$scope.mensajes = [];
+		$scope.headers = [{show: "0",column: "id",header:"ID",size:"1"},
+		{show: "1",column: "str1",header:"Usuario",size:"10"},
+		{show: "1",column: "str2",header:"Password",size:"6"},
+		//{show: "1",column: "dat1",header:"Fecha de pago",size:"6"},	
+		//{show: "1",column: "str3",header:"Telefono",size:"1"},
+		//{show: "1",column: "str4",header:"Correo",size:"1"},
+		//{show: "1",column: "str5",header:"Dirección",size:"1"},
+		//{show: "1",column: "tblfs_id",header:"Horario",size:"1"},
+		//{show: "1",column: "tbles_id",header:"Categoría",size:"1"}
+];
+   $scope.filters = {};
+   $scope.tbl = [];
+	$scope.tbl = {}; $scope.tbl_aux = {};
+	$scope.url_temp = $scope.url_cloud.concat($scope.url_get);		
+   $http.get($scope.url_temp).then(function (response) {
+   var data = $scope.php_crud_api_transform(response.data);
+			   $scope.tbls = data.tblhs;
+   });
+   	$scope.tbl.dat1 = moment().format('YYYY-MM-DD');
+   $http.get($scope.url_get_tblds).then(function (response) {
+   var data = $scope.php_crud_api_transform(response.data);
+			   $scope.tblds = data.tblds;
+   });
+   $http.get($scope.url_get_tblfs).then(function (response) {
+   var data = $scope.php_crud_api_transform(response.data);
+			   $scope.tblfs = data.tblfs;
+   });
+   
+   $http.get($scope.url_get_tbles).then(function (response) {
+   var data = $scope.php_crud_api_transform(response.data);
+			   $scope.tbles = data.tbles;
+   });
+   
+   $scope.upd = function(){	$http.get(url).then(function (response) {$scope.tblfs_selected = response.data; });}
+   
+	//Save tbl1s via POST
+	$scope.saveTbl2 = function() {
+	$scope.tbl.id = null;
+	$scope.url_temp = $scope.url_cloud.concat($scope.url_root);	
+	console.log("Saving......");
+	console.log($scope.url_root);
+	console.log($scope.tbl);
+	$http.post($scope.url_temp,$scope.tbl).then(function (response) {$scope.tbl = {}; 
+	$scope.refreshTbl2s();
+	});
+	}
+	
+	$scope.select_tblds = function(x1) {
+	console.log("select_tblds.......");
+		console.log(x1);	
+	   $scope.url_temp  = $scope.url_root_tbles.concat(x1.tbles_id);
+	   console.log($scope.url_temp);
+	   $http.get($scope.url_temp).then(function (response) {
+   		   $scope.selected_tbles = response.data;
+		   console.log($scope.selected_tbles);
+		   $scope.tbl.tblds_id = x1.id ;
+		   $scope.tbl.ent1 = $scope.selected_tbles.ent1 ;
+		   $scope.tbl.str1 = $scope.selected_tbles.str1 ;
+	});
+	$scope.myVar = false;
+	}
+	
+	$scope.local = function() {
+	console.log("Seteando URL de local");
+	$scope.url_cloud = ""	;
+	}
+	
+	$scope.remoto = function() {
+	console.log("Seteando URL de remoto");
+	$scope.url_cloud = "http://manantial-hcht.rhcloud.com/"	;
+	}
+	
+	$scope.ListDeleted = function() {
+			console.log("ListDeleted de tbl2");
+			$scope.tbl1s = [];
+			console.log($scope.show);
+			if (!$scope.show) { $scope.append1 =  "eq,1";
+			$scope.show = true;}
+			else { $scope.append1 =  "eq,0";$scope.show = false;  }
+			$scope.url_temp = $scope.url_cloud.concat($scope.url_get_2);
+			$scope.url_temp = $scope.url_temp.concat($scope.append1);
+			console.log($scope.url_temp);
+			$http.get($scope.url_temp).then(function (response) {
+			   var data = $scope.php_crud_api_transform(response.data);
+			   $scope.tbls = data.tblhs;
+			});
+			}
+			
+	//Restoring data		
+	$scope.restore = function(x1) {
+	$scope.url_temp = $scope.url_cloud.concat($scope.url_root);
+	$scope.url_temp = $scope.url_temp.concat(x1.id);
+	$scope.tbl.del1 = null;
+	$scope.tbl.id = x1.id;
+	$http.put($scope.url_temp,$scope.tbl).then(function (response){
+		console.log("Restaurandoooo objeto......");
+		$scope.tbl = {};$scope.refreshTbl2s();
+		});
+		$scope.show = !$scope.show;
+		}	
+
+			//funcion que transforma
+	$scope.php_crud_api_transform = function(tables) {
+	var array_flip = function (trans) {
+		var key, tmp_ar = {};
+		for (key in trans) {
+			tmp_ar[trans[key]] = key;
+		}
+		return tmp_ar;
+	};
+	var get_objects = function (tables,table_name,where_index,match_value) {
+		var objects = [];
+		for (var record in tables[table_name]['records']) {
+			record = tables[table_name]['records'][record];
+			if (!where_index || record[where_index]==match_value) {
+				var object = {};
+				for (var index in tables[table_name]['columns']) {
+					var column = tables[table_name]['columns'][index];
+					object[column] = record[index];
+					for (var relation in tables) {
+						var reltable = tables[relation];
+						for (var key in reltable['relations']) {
+							var target = reltable['relations'][key];
+							if (target == table_name+'.'+column) {
+								column_indices = array_flip(reltable['columns']);
+								object[relation] = get_objects(tables,relation,column_indices[key],record[index]);
+							}
+						}
+					}
+				}
+				objects.push(object);
+			}
+		}
+		return objects;
+	};
+	tree = {};
+	for (var name in tables) {
+		var table = tables[name];
+		if (!table['relations']) {
+			tree[name] = get_objects(tables,name);
+			if (table['results']) {
+				tree['_results'] = table['results'];
+			}
+		}
+	}
+	return tree;
+}
+//fin funcion que transforma
+			
+	//Update tbl1s via PUT
+	$scope.updateTbl2 = function() {
+	console.log("Updating......");
+	console.log($scope.url_root);
+	console.log($scope.tbl);
+	$scope.url_temp = $scope.url_cloud.concat($scope.url_root);
+	$scope.url_temp = $scope.url_temp.concat($scope.tbl.id);
+	$http.put($scope.url_temp,$scope.tbl).then(function (response){$scope.tbl = {};$scope.refreshTbl2s();});
+	}
+	$scope.select = function(a) {
+	$scope.tbl = a;
+	var url = $scope.url_root_tblfs.concat(a.id);
+	$http.get(url).then(function (response) {$scope.tblfs_selected = response.data; });
+	}
+		
+	//inicio funcion que recupera lista de clientes
+		$scope.refreshTbl2s = function() {
+			 $scope.url_temp = $scope.url_cloud.concat($scope.url_get);
+			 $http.get($scope.url_temp).then(function (response) {
+				console.log()
+				var data = $scope.php_crud_api_transform(response.data);
+					
+					$scope.tbls = data.tblhs; 
+			   });
+	}
+	//fin funcion que recupera lista de clientes
+	
+$scope.deleteTbl2 = function(x1) {
+	$scope.url_temp = $scope.url_cloud.concat($scope.url_root);
+	//url = url.concat(x1.id);
+	$scope.url_temp = $scope.url_temp.concat(x1.id);
+	$scope.tbl.del1 = 1;
+	$scope.tbl.id = x1.id;
+	console.log("Intentando eliminado logico");
+	$http.put($scope.url_temp,$scope.tbl).then(function (response){$scope.tbl = {};$scope.refreshTbl2s();});	
+		}		
+});
+        </script>
+		<script src="controller.js"></script>
+		</div>
+    </body>
+</html>

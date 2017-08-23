@@ -37,7 +37,9 @@
 </div>				
 	     <script >		
 			var app = angular.module('myApp', ['angularUtils.directives.dirPagination']);
+		
 		app.controller('formCtrlA', function($scope,$http) {
+			$scope.permiso = "0a";
 		console.log("Seteando el valor de titulo en menu Reportes ");
 			$scope.title = "Reportes";
 			console.log($scope.title);
@@ -110,5 +112,6 @@ $scope.headers = [{column: "id",header:"ID",size:"1"},{column: "str1",header:"Sa
 		
 });
         </script>
+		<script src="controller.js"></script>
     </body>
 </html>

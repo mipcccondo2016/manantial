@@ -1,6 +1,7 @@
 <html>
     <head>
 <meta charset="UTF-8">
+<script src="jquery.min.js"></script>
   <script src="moment-with-locales.js"></script>
   <script src="angular.min.js"></script>
     </head>
@@ -35,6 +36,7 @@
 		
 		  
 		app.controller('formCtrl2', function($scope,$http) {
+		$scope.permiso = "02";
 		$scope.mensajes = [];
 		$scope.title = "Ubicaciones";
 $scope.headers = [{column: "id",header:"ID"},{column: "str1",header:"Ubicación"}];
@@ -158,6 +160,7 @@ $scope.deleteTbl2 = function(x1) {
 		}		
 });
         </script>
+		<script src="controller.js"></script>
 		</div>
     </body>
 </html>
