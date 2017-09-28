@@ -2550,7 +2550,7 @@ class PHP_CRUD_API {
  $api = new PHP_CRUD_API(array('dbengine'=>'MySQL',
  //config local
 //'hostname'=>'localhost','username'=>'root','password'=>'1234','database'=>'mn','port'=>'3307',
-'hostname'=>'localhost','username'=>'root','password'=>'1234','database'=>'manantial','port'=>'3306',
+'hostname'=>'mysql','username'=>'root','password'=>'1234','database'=>'manantial','port'=>'3306',
 //config nube
 //'hostname'=>'localhost','username'=>'id911945_root','password'=>'12345','database'=>'id911945_mn','port'=>'3306', 	
 //config openshift
